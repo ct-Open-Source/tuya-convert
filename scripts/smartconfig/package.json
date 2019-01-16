@@ -1,0 +1,25 @@
+{
+  "name": "tuya-helper",
+  "version": "1.0.0",
+  "description": "Send Smartlink Packets to Devices",
+  "main": "smartconfig.js",
+  "keywords": [
+    "tuya",
+    "cli",
+    "iot"
+  ],
+  "author": "Zimbo Boyd <zimbo.boyd@gmail.com> (https://vtrust.de)",
+  "license": "MIT",
+  "homepage": "https://github.com/vtrust-de/smarthack",
+  "dependencies": {
+    "@tuyapi/link": "^0.2.0",
+    "debug": "^4.1.1",
+    "ora": "^3.0.0"
+  },
+  "devDependencies": {
+    "xo": "^0.21.1"
+  },
+  "engines": {
+    "node": ">=8"
+  }
+}
