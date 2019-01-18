@@ -1,42 +1,52 @@
-# smarthome-smarthack
-Here you can find scripts to upgrade certain IoT-devices using esp8266 to any firmware without soldering etc.
-The devices and methods were analyzed and described at the 35c3 conference in Germany.
-The talk "Smart home - Smart hack" from Michael Steigerwald can be viewed here:
-https://media.ccc.de/v/35c3-9723-smart_home_-_smart_hack
+# VTRUST-TUYA-CONVERTER
+A Chinese company named Tuya offers a free-to-brand turnkey smart home solution to anyone willing to pay 1500 US-Dollars (was once free). Using their offer is dead-simple, since everything can be done by clicking through the tuya webpage, from choosing your pre-designed products or pre-programmed wifi-modules (mostly ESP8266) to building your own app. In the end, this has resulted in as they claim over 11 000 devices 'made' by over 10 000 vendors using tuya based firmware and cloud services.
 
-!!! USE THIS SCRIPTS AT YOUR OWN RISK !!!
+Aside from that, they claim their cloud solution has 'military grade security'. Michael Steigerwald, founder of the German IT security startup VTRUST, was able to disprove this claim and presented his results in the "Smart home - Smart hack" talk at 35C3 in Leipzig: https://media.ccc.de/v/35c3-9723-smart_home_-_smart_hack
+
+In the following days, VTRUST and the German tech magazine c't decided to work together. Since reflashing devices using the ESP8266/85 is widespread among DIY smart home enthusiasts, we wanted to provide an easy way for everyone to free their devices from the cloud without the need for a soldering iron. 
+
+Please make sure to visit VTRUST (https://www.vtrust.de/), since the hack is their work.
+
+## WARNING
+Please be sure that you understand what you're doing before using this software. Flashing an alternative firmware can lead to unexpected behavior and/or render the device unusable, so that it might be permanentely damaged (highly unlikely) or require soldering a serial connection to the processor in order to reflash it (likely). 
+# Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality. 
+The VTRUST-TUYA-CONVERTER only provides with the means to backup the original and flash an alternative firmware. Please do not ask for hardware support for your favorite alternative firmware in this repository, rather open an issue in the corresponding repository.
+
+## DOCUMENTATION
+Since tuya devices are spread around the world with likely a vast amount of different brand names, please tell the community if you find one! There is a device list in the wiki that you can help extend. Please at least add the device model number, brand name, geographical area where you have bought the device and its flash mode (as seen in the device information). Add the GPIO assignments as well if you have found them to save the developers of alternative firmwares some time.
 
 ## REQUIREMENTS
 These scripts were tested in 
 * Kali-Linux 2018.4 in VMWARE
+* a Raspberry Pi 3B with Raspbian and its internal Wifi chip
+* a Raspberry Pi Zero W ?????????????????????
 * a Raspberry Pi 3B+ + USB-WIFI with this image from [here](https://www.offensive-security.com/kali-linux-arm-images/)
 	https://images.offensive-security.com/arm-images/kali-linux-2018.4a-rpi3-nexmon-64.img.xz
 	
-Any Linux with a Wifi which can act as an Access Point should work.
-We did not succeed to use the built-in Wifi of a Raspberry Pi 3B+ or 3B
+Any Linux with a Wifi adapter which can act as an Access Point should also work.
 
 ## PROCEDURE
 ### INSTALLATION
-    # git clone https://github.com/vtrust-de/smarthome-smarthack
+    # git clone ????????????????????
     # cd smarthome-smarthack
     # ./install_prereq.sh
-### FLASH loader firmware + backup
+### flash loader firmware + backup
     # ./start_flash.sh
 
-Follow the instructions and our FLASH loader will be installed in the esp8266.
-After it will connect with a static IP to the WIFI
+Follow the instructions in the start_flash script. It will install our flash loader onto the ESP and connect to the access point created by your wifi adapter.
 
     WIFI: vtrust-flash
     PASS: flashmeifyoucan
     IP: 10.42.42.42
 A backup of the original firmware will be created and stored locally
 ### Device information
-During loading some information about your device will been shown.
-You can see them in a browser or by using following command:
+After the firmware backup procedure, the retrieved device information will be shown.
+Please make sure to write down your devices flash mode and size!
+You can show this information again by executing:
 
     # curl http://10.42.42.42
 ### BACKUP only and UNDO
-You can use the FLASH loader to create a backup only.
+You can use the flash loader to create a backup only.
 If you want to delete the FLASH loader out of the flash again and go back to the stock software just do following:
 
     # curl http://10.42.42.42/undo
