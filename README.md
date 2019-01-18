@@ -9,7 +9,7 @@ Please make sure to visit VTRUST (https://www.vtrust.de/), since the hack is the
 
 ## WARNING
 Please be sure that you understand what you're doing before using this software. Flashing an alternative firmware can lead to unexpected behavior and/or render the device unusable, so that it might be permanentely damaged (highly unlikely) or require soldering a serial connection to the processor in order to reflash it (likely). 
-# Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality. 
+### Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality. 
 The VTRUST-TUYA-CONVERTER only provides with the means to backup the original and flash an alternative firmware. Please do not ask for hardware support for your favorite alternative firmware in this repository, rather open an issue in the corresponding repository.
 
 ## DOCUMENTATION
