@@ -16,6 +16,10 @@ The VTRUST-TUYA-CONVERTER only provides with the means to backup the original an
 Since tuya devices are spread around the world with likely a vast amount of different brand names, please tell the community if you find one! There is a device list in the wiki that you can help extend. Please at least add the device model number, brand name, geographical area where you have bought the device and its flash mode (as seen in the device information). Add the GPIO assignments as well if you have found them to save the developers of alternative firmwares some time.
 
 ## REQUIREMENTS
+* Linux computer with a wifi adapter
+* Secondary wifi device (e.g. smartphone)
+* Dependencies (will be installed by install_prereq): python2, python3, dnsmasq, hostapd, screen, curl, python-pip, python-setuptools, python-wheel, mosquitto, nodejs, paho-mqtt, pyaes, tornado
+
 These scripts were tested in 
 * Kali-Linux 2018.4 in VMWARE
 * a Raspberry Pi 3B with Raspbian and its internal Wifi chip
@@ -23,7 +27,7 @@ These scripts were tested in
 * a Raspberry Pi 3B+ + USB-WIFI with this image from [here](https://www.offensive-security.com/kali-linux-arm-images/)
 	https://images.offensive-security.com/arm-images/kali-linux-2018.4a-rpi3-nexmon-64.img.xz
 	
-Any Linux with a Wifi adapter which can act as an Access Point should also work. Please note, that we have tested the Raspberry Pi with clean installations only. If you use your Raspberry Pi as a smart home server, we recommend using another SD card for a clean installation.
+Any Linux with a Wifi adapter which can act as an Access Point should also work. Please note that we have tested the Raspberry Pi with clean installations only. If you use your Raspberry Pi as a smart home server, we recommend using another SD card with a clean installation.
 
 ## PROCEDURE
 ### INSTALLATION
@@ -39,6 +43,7 @@ Follow the instructions in the start_flash script. It will install our flash loa
     PASS: flashmeifyoucan
     IP: 10.42.42.42
 A backup of the original firmware will be created and stored locally
+
 ### Device information
 After the firmware backup procedure, the retrieved device information will be shown.
 Please make sure to write down your devices flash mode and size!
