@@ -68,6 +68,7 @@ Binary requirements:
 * maximum filesize 512KB
 
 2. Start flashing process
+
     # curl http://10.42.42.42/flash3
 ## EXAMPLE
 Here you can see a recording of the full process:
