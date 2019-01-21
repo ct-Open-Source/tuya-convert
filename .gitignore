@@ -107,3 +107,4 @@ venv.bak/
 node_modules/
 *.bin
 device-info.txt
+scripts/smartconfig/package-lock.json
