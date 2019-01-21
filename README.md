@@ -22,8 +22,7 @@ Since tuya devices are spread around the world with likely a vast amount of diff
 
 These scripts were tested in 
 * Kali-Linux 2018.4 in VMWARE
-* a Raspberry Pi 3B with Raspbian and its internal Wifi chip
-* a Raspberry Pi Zero W ?????????????????????
+* a Raspberry Pi 3B with Raspbian Stretch and its internal Wifi chip
 * a Raspberry Pi 3B+ + USB-WIFI with this image from [here](https://www.offensive-security.com/kali-linux-arm-images/)
 	https://images.offensive-security.com/arm-images/kali-linux-2018.4a-rpi3-nexmon-64.img.xz
 	
