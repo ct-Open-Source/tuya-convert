@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # encoding: utf-8
 """
 mq_pub_15.py
@@ -39,12 +39,12 @@ class iotAES(object):
     @staticmethod
     def _unpad(s):
         return s[:-ord(s[len(s)-1:])]
-def iot_dec(message,local_key):
+def iot_dec(message, local_key):
 	iot_aes = iotAES(local_key)
 	message_clear = iot_aes.decrypt(message[19:])
 	print (message_clear)
 	return message_clear
-def iot_enc(message,local_key):
+def iot_enc(message, local_key):
 	iot_aes = iotAES(local_key)
 	messge_enc = iot_aes.encrypt(message)
 	m = md5()
@@ -98,12 +98,12 @@ def main(argv=None):
 		print (help_message)
 		return 2
 	
-	message = '{"data":{"gwId":"%s"},"protocol":15,"s":%d,"t":%d}'  %(deviceID,1523715,time.time())
-	m1 = iot_enc(message,localKey)
+	message = '{"data":{"gwId":"%s"},"protocol":15,"s":%d,"t":%d}'  %(deviceID, 1523715, time.time())
+	m1 = iot_enc(message, localKey)
 
 	client = mqtt.Client("P1")
 	client.connect(broker)
-	client.publish("smart/device/in/%s" % (deviceID),m1)
+	client.publish("smart/device/in/%s" % (deviceID), m1)
 	client.disconnect()
 
 if __name__ == "__main__":
