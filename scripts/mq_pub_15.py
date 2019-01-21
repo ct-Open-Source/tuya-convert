@@ -22,7 +22,7 @@ class iotAES(object):
         self.key = key
     def encrypt(self, raw):
         _ = self._pad(raw)
-        cipher = pyaes.blockfeeder.Encrypter(pyaes.AESModeOfOperationECB(self.key))
+        cipher = pyaes.blockfeeder.Encrypter(pyaes.AESModeOfOperationECB(self.key.encode()))
         crypted_text = cipher.feed(raw)
         crypted_text += cipher.feed()
         crypted_text_b64 = base64.b64encode(crypted_text)
@@ -35,7 +35,7 @@ class iotAES(object):
         return plain_text
     def _pad(self, s):
         padnum = self.bs - len(s) % self.bs
-        return s + padnum * chr(padnum).encode()
+        return s + padnum * chr(padnum)
     @staticmethod
     def _unpad(s):
         return s[:-ord(s[len(s)-1:])]
@@ -50,7 +50,7 @@ def iot_enc(message, local_key):
 	m = md5()
 	PROTOCOL_VERSION_BYTES = b'2.1'
 	#	preMd5String = b'data=' + messge_enc + b'||lpv=' + PROTOCOL_VERSION_BYTES + b'||' + local_key
-	preMd5String = b'data=' + messge_enc + b'||pv=' + PROTOCOL_VERSION_BYTES + b'||' + local_key
+	preMd5String = b'data=' + messge_enc + b'||pv=' + PROTOCOL_VERSION_BYTES + b'||' + local_key.encode()
 	#	print (preMd5String)
 	m.update(preMd5String)
 	md5sum = m.hexdigest()
