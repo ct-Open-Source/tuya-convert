@@ -1,5 +1,5 @@
 # TUYA-CONVERT
-A Chinese company named Tuya offers a free-to-brand turnkey smart home solution to anyone willing to pay 1500 US-Dollars (was once free). Using their offer is dead-simple, since everything can be done by clicking through the tuya webpage, from choosing your pre-designed products or pre-programmed wifi-modules (mostly ESP8266) to building your own app. In the end, this has resulted in as they claim over 11 000 devices 'made' by over 10 000 vendors using tuya based firmware and cloud services.
+A Chinese company named Tuya offers a free-to-brand turnkey smart home solution to anyone. Using their offer is dead-simple, since everything can be done by clicking through the tuya webpage, from choosing your pre-designed products or pre-programmed wifi-modules (mostly ESP8266) to building your own app. In the end, this has resulted in as they claim over 11 000 devices 'made' by over 10 000 vendors using tuya based firmware and cloud services.
 
 Aside from that, they claim their cloud solution has 'military grade security'. Michael Steigerwald, founder of the German IT security startup VTRUST, was able to disprove this claim and presented his results in the "Smart home - Smart hack" talk at 35C3 in Leipzig: https://media.ccc.de/v/35c3-9723-smart_home_-_smart_hack
 
@@ -10,7 +10,7 @@ Please make sure to visit VTRUST (https://www.vtrust.de/), since the hack is the
 ## WARNING
 Please be sure that you understand what you're doing before using this software. Flashing an alternative firmware can lead to unexpected behavior and/or render the device unusable, so that it might be permanentely damaged (highly unlikely) or require soldering a serial connection to the processor in order to reflash it (likely). 
 ### Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality. 
-The VTRUST-TUYA-CONVERTER only provides with the means to backup the original and flash an alternative firmware. Please do not ask for hardware support for your favorite alternative firmware in this repository, rather open an issue in the corresponding repository.
+TUYA-CONVERT only provides with the means to backup the original and flash an alternative firmware. Please do not ask for hardware support for your favorite alternative firmware in this repository, rather open an issue in the corresponding repository.
 
 ## DOCUMENTATION
 Since tuya devices are spread around the world with likely a vast amount of different brand names, please tell the community if you find one! There is a device list in the wiki that you can help extend. Please at least add the device model number, brand name, geographical area where you have bought the device and its flash mode (as seen in the device information). Add the GPIO assignments as well if you have found them to save the developers of alternative firmwares some time.
@@ -62,8 +62,12 @@ It will destroy your ability to undo and go back to the original firmware
     # curl http://10.42.42.42/flash2
 ### FLASH third-party firmware
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
-Place or link your binary file to ./files/thirdparty.bin
+1. Place or link your binary file to ./files/thirdparty.bin
+Binary requirements:
+* full binary including first-stage bootloader
+* maximum filesize 512KB
 
+2. Start flashing process
     # curl http://10.42.42.42/flash3
 ## EXAMPLE
 Here you can see a recording of the full process:
