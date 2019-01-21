@@ -1,4 +1,4 @@
-# VTRUST-TUYA-CONVERTER
+# TUYA-CONVERT
 A Chinese company named Tuya offers a free-to-brand turnkey smart home solution to anyone willing to pay 1500 US-Dollars (was once free). Using their offer is dead-simple, since everything can be done by clicking through the tuya webpage, from choosing your pre-designed products or pre-programmed wifi-modules (mostly ESP8266) to building your own app. In the end, this has resulted in as they claim over 11 000 devices 'made' by over 10 000 vendors using tuya based firmware and cloud services.
 
 Aside from that, they claim their cloud solution has 'military grade security'. Michael Steigerwald, founder of the German IT security startup VTRUST, was able to disprove this claim and presented his results in the "Smart home - Smart hack" talk at 35C3 in Leipzig: https://media.ccc.de/v/35c3-9723-smart_home_-_smart_hack
