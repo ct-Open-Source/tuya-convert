@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 """
-mq_pub_15.py
+fake-registration-server.py
 Created by nano on 2018-11-22.
 Copyright (c) 2018 VTRUST. All rights reserved.
 """
