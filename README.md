@@ -1,5 +1,7 @@
+﻿
 # TUYA-CONVERT
-A Chinese company named Tuya offers a free-to-brand turnkey smart home solution to anyone. Using their offer is dead-simple, since everything can be done by clicking through the tuya webpage, from choosing your pre-designed products or pre-programmed wifi-modules (mostly ESP8266) to building your own app. In the end, this has resulted in as they claim over 11 000 devices 'made' by over 10 000 vendors using tuya based firmware and cloud services.
+
+A Chinese company named Tuya offers a free-to-brand turnkey smart home solution to anyone. Using their offer is dead-simple, since everything can be done by clicking through the [Tuya web page](https://en.tuya.com/), from choosing your pre-designed products or pre-programmed wifi-modules (mostly ESP8266) to building your own app. In the end, this has resulted in as they claim over 11 000 devices 'made' by over 10 000 vendors using Tuyas firmware and cloud services.
 
 Aside from that, they claim their cloud solution has 'military grade security'. Michael Steigerwald, founder of the German IT security startup VTRUST, was able to disprove this claim and presented his results in the "Smart home - Smart hack" talk at 35C3 in Leipzig: https://media.ccc.de/v/35c3-9723-smart_home_-_smart_hack
 
@@ -7,18 +9,23 @@ In the following days, VTRUST and the German tech magazine c't decided to work t
 
 Please make sure to visit VTRUST (https://www.vtrust.de/), since the hack is their work.
 
-## WARNING
-Please be sure that you understand what you're doing before using this software. Flashing an alternative firmware can lead to unexpected behavior and/or render the device unusable, so that it might be permanentely damaged (highly unlikely) or require soldering a serial connection to the processor in order to reflash it (likely). 
-### Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality. 
+## 🚨WARNING🚨
+Please be sure that you understand what you're doing before using this software. Flashing an alternative firmware can lead to unexpected behavior and/or render the device unusable, so that it might be permanently damaged (highly unlikely) or require soldering a serial connection to the processor in order to reflash it (likely). 
+
+### ⚠️Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality⚠️. 
+
 TUYA-CONVERT only provides with the means to backup the original and flash an alternative firmware. Please do not ask for hardware support for your favorite alternative firmware in this repository, rather open an issue in the corresponding repository.
 
 ## DOCUMENTATION
-Since tuya devices are spread around the world with likely a vast amount of different brand names, please tell the community if you find one! There is a device list in the wiki that you can help extend. Please at least add the device model number, brand name, geographical area where you have bought the device and its flash mode (as seen in the device information). Add the GPIO assignments as well if you have found them to save the developers of alternative firmwares some time.
+Since Tuya devices are spread around the world with likely a vast amount of different brand names, please tell the community if you find one! There is a device list in the wiki that you can help extend. Please at least add the device model number, brand name, geographical area where you have bought the device and its flash mode (as seen in the device information). Add the GPIO assignments as well if you have found them to save the developers of alternative firmwares some time.
+
+[![asciicast](https://asciinema.org/a/2aDZweVGfliwc9TjB1ncwmKvm.png)](https://asciinema.org/a/2aDZweVGfliwc9TjB1ncwmKvm
+)
 
 ## REQUIREMENTS
 * Linux computer with a wifi adapter
 * Secondary wifi device (e.g. smartphone)
-* Dependencies (will be installed by install_prereq): python2, python3, dnsmasq, hostapd, screen, curl, python-pip, python-setuptools, python-wheel, mosquitto, nodejs, paho-mqtt, pyaes, tornado
+* Dependencies (will be installed by install_prereq): python3, dnsmasq, hostapd, screen, curl, python3-pip, python3-setuptools, python3-wheel, mosquitto, nodejs, npm, paho-mqtt, pyaes, tornado
 
 These scripts were tested in 
 * Kali-Linux 2018.4 in VMWARE
@@ -55,21 +62,25 @@ If you want to delete the FLASH loader out of the flash again and go back to the
 
     # curl http://10.42.42.42/undo
 ### FLASH loader to user2
-The FLASH loader only allows flashing the thirdparty firmware, if the loader is running in the userspace user2 starting from 0x81000.
+The FLASH loader only allows flashing the third party firmware, if the loader is running in the userspace user2 starting from 0x81000.
 This will flash the FLASH loader in user2 if it is not already there.
 It will destroy your ability to undo and go back to the original firmware
 
     # curl http://10.42.42.42/flash2
+
 ### FLASH third-party firmware
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
-1. Place or link your binary file to ./files/thirdparty.bin
-Binary requirements:
-* full binary including first-stage bootloader
-* maximum filesize 512KB
+1. Place or link your binary file to ./files/thirdparty.bin.
 
-2. Start flashing process
+	Currently a Sonoff-Tasmota [v6.4.1](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.4.1) minimal build is already included.
+	Binary requirements:
+	* full binary including first-stage bootloader
+	* maximum filesize 512KB
 
-    # curl http://10.42.42.42/flash3
-## EXAMPLE
-Here you can see a recording of the full process:
-https://asciinema.org/a/2aDZweVGfliwc9TjB1ncwmKvm
+3. Start flashing process
+
+        # curl http://10.42.42.42/flash3
+
+Alternatively you can request a certain file to be requested and flashed by the device:
+
+	# curl http://10.42.42.42/flashURL?url=http://10.42.42.1/files/thirdparty.bin
