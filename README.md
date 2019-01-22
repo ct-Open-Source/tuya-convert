@@ -33,12 +33,12 @@ These scripts were tested in
 * a Raspberry Pi 3B+ + USB-WIFI with this image from [here](https://www.offensive-security.com/kali-linux-arm-images/)
 	https://images.offensive-security.com/arm-images/kali-linux-2018.4a-rpi3-nexmon-64.img.xz
 	
-Any Linux with a Wifi adapter which can act as an Access Point should also work. Please note that we have tested the Raspberry Pi with clean installations only. If you use your Raspberry Pi as a smart home server, we recommend using another SD card with a clean installation.
+Any Linux with a Wifi adapter which can act as an Access Point should also work. Please note that we have tested the Raspberry Pi with clean installations only. If you use your Raspberry Pi for anything else, we recommend using another SD card with a clean installation.
 
 ## PROCEDURE
 ### INSTALLATION
-    # git clone ????????????????????
-    # cd smarthome-smarthack
+    # git clone https://github.com/ct-Open-Source/tuya-convert
+    # cd tuya-convert
     # ./install_prereq.sh
 ### flash loader firmware + backup
     # ./start_flash.sh
