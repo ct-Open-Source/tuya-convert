@@ -72,7 +72,7 @@ It will destroy your ability to undo and go back to the original firmware
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
 1. Place or link your binary file to ./files/thirdparty.bin.
 
-	Currently a Sonoff-Tasmota [v6.4.1](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.4.1) minimal build is already included.
+	Currently a Sonoff-Tasmota [v6.4.1](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.4.1) classic build is already included.
 	Binary requirements:
 	* full binary including first-stage bootloader
 	* maximum filesize 512KB
