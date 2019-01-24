@@ -72,7 +72,7 @@ It will destroy your ability to undo and go back to the original firmware
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
 1. Place or link your binary file to ./files/thirdparty.bin.
 
-	Currently a Sonoff-Tasmota [v6.4.1](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.4.1) classic build is already included. It will connect back to the vtrust-access-point after flashing, use a scan tool like Fing to find it in the network. If you want a different Tasmota image, flash the minimal version first, then proceed with the actual image. It won't work otherwise, due to flash size limitations.
+	Currently a Sonoff-Tasmota [v6.4.1](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.4.1) classic build is already included. It will connect back to the vtrust-access-point after flashing, use a scan tool like Fing to find it on the network. If you want a different Tasmota image, flash the minimal version first, then proceed with the actual image. It won't work otherwise, due to flash size limitations.
 	
 	Binary requirements:
 	* full binary including first-stage bootloader
