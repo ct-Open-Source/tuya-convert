@@ -43,14 +43,14 @@ echo "IMPORTANT"
 echo "1. Connect any another device (a smartphone or something) to the WIFI $AP"
 echo "   The wpa-password is ${bold}$PASS${normal}"
 echo "   This step is IMPORTANT otherwise the smartconfig will not work!"
-echo "2. Put your IoT device in autoconfig/smartconfig/paring mode (LED will blink fast). This is usually done by pressing and holding the primary button of the device"
+echo "2. Put your IoT device in autoconfig/smartconfig/pairing mode (LED will blink fast). This is usually done by pressing and holding the primary button of the device"
 echo "3. Press ${bold}ENTER${normal} to continue"
 read x
 echo ""
 echo "======================================================"
 echo "Starting pairing procedure in screen"
 sudo ip route add 255.255.255.255 dev $WLAN
-sudo screen -L smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/smartconfig.js
+sudo screen -L smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/main.py
 echo "Waiting for the upgraded device to appear"
 echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
