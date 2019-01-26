@@ -52,7 +52,7 @@ echo "Starting pairing procedure in screen"
 sudo ip route add 255.255.255.255 dev $WLAN
 sudo screen -L smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/smartconfig.js
 echo "Waiting for the upgraded device to appear"
-echo "If this does not work have a look at the `*.log`-files in the `scripts` subfolder!"
+echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
 while ! timeout 0.2 ping -c 1 -n 10.42.42.42 &> /dev/null
 do
