@@ -28,14 +28,14 @@ if [ "$REPLY" != "yes" ]; then
 fi
 echo "======================================================"
 echo "  Starting AP in a screen"
-sudo screen -L smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
+sudo screen -L -Logfile smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
 echo "  Stopping any Webserver"
 sudo service apache2 stop >/dev/null 2>&1
 echo "  Starting Websever in a screen"
-sudo screen -L smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
+sudo screen -L -Logfile smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
 sudo service mosquitto stop >/dev/null 2>&1
-sudo screen -L smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
+sudo screen -L -Logfile smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
 echo
 echo "======================================================"
 echo
@@ -50,7 +50,7 @@ echo ""
 echo "======================================================"
 echo "Starting pairing procedure in screen"
 sudo ip route add 255.255.255.255 dev $WLAN
-sudo screen -L smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/smartconfig.js
+sudo screen -L -Logfile smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/smartconfig.js
 echo "Waiting for the upgraded device to appear"
 echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
