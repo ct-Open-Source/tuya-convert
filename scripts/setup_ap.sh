@@ -3,19 +3,21 @@
 # Source config
 . ../config.txt
 
-echo "Backing up NetworkManager.cfg..."
-sudo cp /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.backup
+if test -d /etc/NetworkManager; then
+	echo "Backing up NetworkManager.cfg..."
+	sudo cp /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.backup
 
-cat <<- EOF > /etc/NetworkManager/NetworkManager.conf
-	[main]
-	plugins=keyfile
-	
-	[keyfile]
-	unmanaged-devices=interface-name:$WLAN
-EOF
+	cat <<- EOF > /etc/NetworkManager/NetworkManager.conf
+		[main]
+		plugins=keyfile
 
-echo "Restarting NetworkManager..."
-sudo service network-manager restart
+		[keyfile]
+		unmanaged-devices=interface-name:$WLAN
+	EOF
+
+	echo "Restarting NetworkManager..."
+	sudo service network-manager restart
+fi
 sudo ifconfig $WLAN up
 
 echo "Backing up /etc/dnsmasq.conf..."
@@ -80,9 +82,11 @@ sudo ip route add 255.255.255.255 dev $WLAN
 echo "Starting AP on $WLAN in screen terminal..."
 sudo hostapd /etc/hostapd/hostapd.conf
 
-sudo rm /etc/NetworkManager/NetworkManager.conf > /dev/null 2>&1
-sudo mv /etc/NetworkManager/NetworkManager.conf.backup /etc/NetworkManager/NetworkManager.conf
-sudo service network-manager restart
+if test -d /etc/NetworkManager; then
+	sudo rm /etc/NetworkManager/NetworkManager.conf > /dev/null 2>&1
+	sudo mv /etc/NetworkManager/NetworkManager.conf.backup /etc/NetworkManager/NetworkManager.conf
+	sudo service network-manager restart
+fi
 sudo /etc/init.d/dnsmasq stop > /dev/null 2>&1
 sudo pkill dnsmasq
 sudo rm /etc/dnsmasq.conf > /dev/null 2>&1
