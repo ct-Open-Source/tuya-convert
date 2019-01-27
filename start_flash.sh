@@ -1,10 +1,13 @@
 #!/bin/bash
 bold=$(tput bold)
 normal=$(tput sgr0)
-if screen -Logfile /dev/null ls &> /dev/null; then
+screen_minor=`screen --version | cut -d . -f 2`
+if [ $screen_minor -gt 5 ]; then
     screen_with_log="sudo screen -L -Logfile"
-else
+elif [ $screen_minor -eq 5 ]; then
     screen_with_log="sudo screen -L"
+else
+    screen_with_log="sudo screen -L -t"
 fi
 . ./config.txt
 
