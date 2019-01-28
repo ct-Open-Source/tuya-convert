@@ -1,6 +1,14 @@
 #!/bin/bash
 bold=$(tput bold)
 normal=$(tput sgr0)
+screen_minor=`screen --version | cut -d . -f 2`
+if [ $screen_minor -gt 5 ]; then
+    screen_with_log="sudo screen -L -Logfile"
+elif [ $screen_minor -eq 5 ]; then
+    screen_with_log="sudo screen -L"
+else
+    screen_with_log="sudo screen -L -t"
+fi
 . ./config.txt
 
 ./stop_flash.sh >/dev/null
@@ -10,7 +18,7 @@ pushd scripts
 echo "======================================================"
 echo "${bold}TUYA-CONVERT${normal}"
 echo
-echo "https://github.com/vtrust-de/smarthome-smarthack"
+echo "https://github.com/ct-Open-Source/tuya-convert"
 echo "TUYA-CONVERT was developed by Michael Steigerwald from the IT security company VTRUST (https://www.vtrust.de/) in collaboration with the techjournalists Merlin Schumacher, Pina Merkert, Andrijan Moecker and Jan Mahn at c't Magazine. (https://www.ct.de/)"
 echo 
 echo 
@@ -28,19 +36,19 @@ if [ "$REPLY" != "yes" ]; then
 fi
 echo "======================================================"
 echo "  Starting AP in a screen"
-sudo screen -L -Logfile smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
-echo "  Stopping any Webserver"
+$screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
+echo "  Stopping any apache web server"
 sudo service apache2 stop >/dev/null 2>&1
-echo "  Starting Websever in a screen"
-sudo screen -L -Logfile smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
+echo "  Starting web server in a screen"
+$screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
 sudo service mosquitto stop >/dev/null 2>&1
-sudo screen -L -Logfile smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
+$screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
 echo
 echo "======================================================"
 echo
 echo "IMPORTANT"
-echo "1. Connect any another device (a smartphone or something) to the WIFI $AP"
+echo "1. Connect any other device (a smartphone or something) to the WIFI $AP"
 echo "   The wpa-password is ${bold}$PASS${normal}"
 echo "   This step is IMPORTANT otherwise the smartconfig will not work!"
 echo "2. Put your IoT device in autoconfig/smartconfig/pairing mode (LED will blink fast). This is usually done by pressing and holding the primary button of the device"
@@ -50,7 +58,7 @@ echo ""
 echo "======================================================"
 echo "Starting pairing procedure in screen"
 sudo ip route add 255.255.255.255 dev $WLAN
-sudo screen -L -Logfile smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/main.py
+$screen_with_log smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/main.py
 echo "Waiting for the upgraded device to appear"
 echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
