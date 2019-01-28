@@ -1,6 +1,14 @@
 #!/bin/bash
 bold=$(tput bold)
 normal=$(tput sgr0)
+screen_minor=`screen --version | cut -d . -f 2`
+if [ $screen_minor -gt 5 ]; then
+    screen_with_log="sudo screen -L -Logfile"
+elif [ $screen_minor -eq 5 ]; then
+    screen_with_log="sudo screen -L"
+else
+    screen_with_log="sudo screen -L -t"
+fi
 . ./config.txt
 
 ./stop_flash.sh >/dev/null
@@ -28,14 +36,14 @@ if [ "$REPLY" != "yes" ]; then
 fi
 echo "======================================================"
 echo "  Starting AP in a screen"
-sudo screen -L -Logfile smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
+$screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
 echo "  Stopping any apache web server"
 sudo service apache2 stop >/dev/null 2>&1
 echo "  Starting web server in a screen"
-sudo screen -L -Logfile smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
+$screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
 sudo service mosquitto stop >/dev/null 2>&1
-sudo screen -L -Logfile smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
+$screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
 echo
 echo "======================================================"
 echo
@@ -50,7 +58,7 @@ echo ""
 echo "======================================================"
 echo "Starting pairing procedure in screen"
 sudo ip route add 255.255.255.255 dev $WLAN
-sudo screen -L -Logfile smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/smartconfig.js
+$screen_with_log smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/smartconfig.js
 echo "Waiting for the upgraded device to appear"
 echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
