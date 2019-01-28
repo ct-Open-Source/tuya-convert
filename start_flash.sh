@@ -37,9 +37,9 @@ fi
 echo "======================================================"
 echo "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
-echo "  Stopping any Webserver"
+echo "  Stopping any apache web server"
 sudo service apache2 stop >/dev/null 2>&1
-echo "  Starting Websever in a screen"
+echo "  Starting web server in a screen"
 $screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
 sudo service mosquitto stop >/dev/null 2>&1
@@ -48,10 +48,10 @@ echo
 echo "======================================================"
 echo
 echo "IMPORTANT"
-echo "1. Connect any another device (a smartphone or something) to the WIFI $AP"
+echo "1. Connect any other device (a smartphone or something) to the WIFI $AP"
 echo "   The wpa-password is ${bold}$PASS${normal}"
 echo "   This step is IMPORTANT otherwise the smartconfig will not work!"
-echo "2. Put your IoT device in autoconfig/smartconfig/paring mode (LED will blink fast). This is usually done by pressing and holding the primary button of the device"
+echo "2. Put your IoT device in autoconfig/smartconfig/pairing mode (LED will blink fast). This is usually done by pressing and holding the primary button of the device"
 echo "3. Press ${bold}ENTER${normal} to continue"
 read x
 echo ""
