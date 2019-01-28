@@ -18,7 +18,7 @@ pushd scripts
 echo "======================================================"
 echo "${bold}TUYA-CONVERT${normal}"
 echo
-echo "https://github.com/vtrust-de/smarthome-smarthack"
+echo "https://github.com/ct-Open-Source/tuya-convert"
 echo "TUYA-CONVERT was developed by Michael Steigerwald from the IT security company VTRUST (https://www.vtrust.de/) in collaboration with the techjournalists Merlin Schumacher, Pina Merkert, Andrijan Moecker and Jan Mahn at c't Magazine. (https://www.ct.de/)"
 echo 
 echo 
