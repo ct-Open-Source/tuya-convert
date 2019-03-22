@@ -13,7 +13,7 @@ multicast strategy reverse engineered by kueblc
 # time to sleep inbetween packets, 5ms
 GAP = 5 / 1000.
 
-BIND_ADDRESS = ''
+BIND_ADDRESS = '10.42.42.1'
 
 MULTICAST_TTL = 1
 

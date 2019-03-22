@@ -8,7 +8,7 @@ Configure Tuya devices via smartconfig for tuya-convert
 
 ssid = "vtrust-flash"
 passwd = "flashmeifyoucan"
-region = "EU"
+region = "US"
 token = "00000000"
 secret = "0101"
 
