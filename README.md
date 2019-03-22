@@ -72,7 +72,7 @@ It will destroy your ability to undo and go back to the original firmware
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
 1. Place or link your binary file to ./files/thirdparty.bin.
 
-	Currently a Sonoff-Tasmota [v6.4.1](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.4.1) basic build is already included. It will open an WiFi access point named `sonoff-XXX`. 
+	Currently a Sonoff-Tasmota [v6.5.0](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.5.0) basic build is already included. It will open an WiFi access point named `sonoff-XXX`. 
 	
 	Binary requirements:
 	* full binary including first-stage bootloader
