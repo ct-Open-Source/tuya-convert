@@ -59,6 +59,9 @@ echo "======================================================"
 echo "Starting pairing procedure in screen"
 sudo ip route add 255.255.255.255 dev $WLAN
 $screen_with_log smarthack-smartconfig.log -S smarthack-smartconfig -m -d ./smartconfig/main.py
+
+popd
+
 echo "Waiting for the upgraded device to appear"
 echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
@@ -72,9 +75,7 @@ echo
 echo "IoT-device is online with ip 10.42.42.42"
 echo "Fetching firmware backup"
 sleep 2
-./backup.py
-
-popd
+curl -JO http://10.42.42.42/backup
 
 echo "======================================================"
 echo "Getting Info from IoT-device"
