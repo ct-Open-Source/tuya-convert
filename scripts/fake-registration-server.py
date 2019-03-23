@@ -60,10 +60,7 @@ class JSONHandler(tornado.web.RequestHandler):
                      b'{'
                        b'"schema":"[{'
                                     b'\\"mode\\":\\"rw\\",'
-                                    b'\\"property\\":{\\"type\\":\\"bool\\"},\\"id\\":1,\\"type\\":\\"obj\\"},'
-                                    b'{\\"mode\\":\\"rw\\",'
-                                    b'\\"property\\":{\\"min\\":0,\\"max\\":86400,\\"scale\\":0,\\"step\\":1,\\"type\\":\\"value\\"},'
-                                    b'\\"id\\":9,\\"type\\":\\"obj\\"'
+                                    b'\\"property\\":{\\"type\\":\\"bool\\"},\\"id\\":1,\\"type\\":\\"obj\\"'
                        b'}]",'
                        b'"uid":"00000000000000000000","devEtag":"0000000000","secKey":"0000000000000000","schemaId":"0000000000","localKey":"0000000000000000"'
                      b'},'
@@ -81,9 +78,9 @@ class JSONHandler(tornado.web.RequestHandler):
             print("Answer s.gw.upgrade")
             #Fixme
             #Calculate MD5 and Filesize
-            file_md5 = hashlib.md5(file_as_bytes(open('../files/1.bin', 'rb'))).hexdigest()
-            file_len = os.path.getsize('../files/1.bin')
-            answer = b'{"result":{"auto":3,"fileSize":"%d","etag":"0000000000","version":"9.0.0","url":"http://10.42.42.1/files/1.bin","md5":"%s"},"t":100,"e":false,"success":true}' % (file_len,file_md5.encode('utf-8'))
+            file_md5 = hashlib.md5(file_as_bytes(open('../files/upgrade.bin', 'rb'))).hexdigest()
+            file_len = os.path.getsize('../files/upgrade.bin')
+            answer = b'{"result":{"auto":3,"fileSize":"%d","etag":"0000000000","version":"9.0.0","url":"http://10.42.42.1/files/upgrade.bin","md5":"%s"},"t":100,"e":false,"success":true}' % (file_len,file_md5.encode('utf-8'))
             print(answer)
             self.set_header("Content-Type", "application/json;charset=UTF-8")
             self.set_header('Content-Length', str(len(answer)))
