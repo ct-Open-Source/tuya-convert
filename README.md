@@ -85,3 +85,9 @@ BE SURE THE FIRMWARE FITS YOUR DEVICE!
 Alternatively you can request a certain file to be requested and flashed by the device:
 
 	# curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/thirdparty.bin
+
+## RELATED WORKS
+- [TuyAPI](https://github.com/codetheweb/tuyapi) NPM library for LAN control of Tuya devices with stock firmware
+- [TuyOTA](https://github.com/SynAckFin/TuyOTA) Perl based Tuya flashing script using a similar strategy
+- [MockTuyaCloud](https://github.com/kueblc/mocktuyacloud) Framework replicating much of the Tuya cloud functionality
+
