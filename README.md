@@ -37,7 +37,7 @@ Any Linux with a Wifi adapter which can act as an Access Point should also work.
 
 ## PROCEDURE
 
-It is known that the manufacturer's firmware updates can remove the possibility to successfully flash the devices with tuya-convert. Hence, it is best to disable all Internet connectivity (e.g., disconnect the DSL or cable line from your router) when connecting the device until the alternative firmware has successfully been flashed.
+It is known that the manufacturer's firmware updates can remove the possibility to successfully flash the devices with tuya-convert. Hence, it is best to disable all Internet connectivity (e.g., disconnect the DSL or cable line from your router) when powering the device until the alternative firmware has successfully been flashed.
 
 ### INSTALLATION
     # git clone https://github.com/ct-Open-Source/tuya-convert
