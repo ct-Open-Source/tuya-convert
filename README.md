@@ -36,6 +36,9 @@ These scripts were tested in
 Any Linux with a Wifi adapter which can act as an Access Point should also work. Please note that we have tested the Raspberry Pi with clean installations only. If you use your Raspberry Pi for anything else, we recommend using another SD card with a clean installation.
 
 ## PROCEDURE
+
+It is known that the manufacturer's firmware updates can remove the possibility to successfully flash the devices with tuya-convert. Hence, it is best to disable all Internet connectivity (e.g., disconnect the DSL or cable line from your router) when connecting the device until the alternative firmware has successfully been flashed.
+
 ### INSTALLATION
     # git clone https://github.com/ct-Open-Source/tuya-convert
     # cd tuya-convert
