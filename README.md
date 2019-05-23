@@ -37,7 +37,7 @@ Any Linux with a Wifi adapter which can act as an Access Point should also work.
 
 ## PROCEDURE
 
-It is known that the manufacturer's firmware updates can remove the possibility to successfully flash the devices with tuya-convert. Hence, it is best to disable all Internet connectivity (e.g., disconnect the DSL or cable line from your router) when powering the device until the alternative firmware has successfully been flashed.
+As of January 28th, 2019, Tuya has started [distributing a patch](https://www.heise.de/newsticker/meldung/Smart-Home-Hack-Tuya-veroeffentlicht-Sicherheitsupdate-4292028.html) that prevents tuya-convert from completing successfully. It is up to the individual brands to adopt the patch, so some devices may be affected sooner than others. To ensure the best chance of success, **do not connect your device with the official app** as it may automatically update the device, preventing you from flashing with tuya-convert. Some devices are already being shipped with the update, in which case there is unfortunately no work around available at this time.
 
 ### INSTALLATION
     # git clone https://github.com/ct-Open-Source/tuya-convert
