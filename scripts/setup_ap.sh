@@ -31,6 +31,8 @@ cat <<- EOF >/etc/dnsmasq.conf
 	no-resolv
 	# Interface to bind to
 	interface=$WLAN
+	bind-interfaces
+	listen-address=10.42.42.1
 	#Specify starting_range,end_range,lease_time
 	dhcp-range=10.42.42.10,10.42.42.40,12h
 	# dns addresses to send to the clients
