@@ -16,6 +16,7 @@ def file_as_bytes(file):
 from tornado.options import define, options, parse_command_line
 
 define("port", default=80, help="run on the given port", type=int)
+define("addr", default="10.42.42.1", help="run on the given ip", type=str)
 define("debug", default=True, help="run in debug mode")
 
 class FilesHandler(tornado.web.StaticFileHandler):
@@ -120,9 +121,14 @@ def main():
         #static_path=os.path.join(os.path.dirname(__file__), "static"),
         debug=options.debug,
     )
-    app.listen(options.port)
-    print("Listening on port "+str(options.port))
-    tornado.ioloop.IOLoop.current().start()
+    try:
+        app.listen(options.port, options.addr)
+        print("Listening on " + str(options.addr) + ":" + str(options.port))
+        tornado.ioloop.IOLoop.current().start()
+    except OSError as err:
+        print("Could not start server on port " + str(options.port))
+        if err.errno is 98: # EADDRINUSE
+            print("Close the process on this port and try again")
 
 
 if __name__ == "__main__":
