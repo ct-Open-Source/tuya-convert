@@ -100,6 +100,10 @@ class JSONHandler(tornado.web.RequestHandler):
             print("TRIGGER UPGRADE IN 10 SECONDS")
             os.system("./trigger_upgrade.sh %s &" % gwId)
 
+        elif(".updatestatus" in a):
+            print("Answer s.gw.upgrade.updatestatus")
+            self.reply()
+
         elif(".device.upgrade" in a):
             print("Answer tuya.device.upgrade.get")
             answer = {
