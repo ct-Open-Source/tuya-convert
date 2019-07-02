@@ -100,6 +100,17 @@ class JSONHandler(tornado.web.RequestHandler):
             print("TRIGGER UPGRADE IN 10 SECONDS")
             os.system("./trigger_upgrade.sh %s &" % gwId)
 
+        elif(".device.upgrade" in a):
+            print("Answer tuya.device.upgrade.get")
+            answer = {
+                "auto": true,
+                "type": 0,
+                "size": file_len,
+                "version": "9.0.0",
+                "url": "http://10.42.42.1/files/upgrade.bin",
+                "md5": file_md5 }
+            self.reply(answer)
+
         elif(".upgrade" in a):
             print("Answer s.gw.upgrade")
             answer = {
@@ -119,6 +130,22 @@ class JSONHandler(tornado.web.RequestHandler):
         elif(".update" in a):
             print("Answer s.gw.update")
             self.reply()
+
+        elif(".timer" in a):
+            print("Answer s.gw.dev.timer.count")
+            answer = {
+                "devId": gwId,
+                "count": 0,
+                "lastFetchTime": 0 }
+            self.reply(answer)
+
+        elif(".config" in a):
+            print("Answer tuya.device.dynamic.config.get")
+            answer = {
+                "validTime": 1800,
+                "time": timestamp(),
+                "config": {} }
+            self.reply(answer)
 
         else:
             print("WARN: unknown request: {} ({})".format(a,uri))
