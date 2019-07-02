@@ -3,6 +3,16 @@
 # Source config
 . ../config.txt
 
+echo -n "Checking for network interface $WLAN... "
+if [ -e /sys/class/net/$WLAN ]; then
+	echo "Found."
+else
+	echo "Not found!"
+	echo -n "Please edit WLAN in config.txt to one of: "
+	ls -m /sys/class/net
+	exit 1
+fi
+
 if test -d /etc/NetworkManager; then
 	echo "Backing up NetworkManager.cfg..."
 	sudo cp /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.backup
