@@ -37,13 +37,10 @@ fi
 echo "======================================================"
 echo "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
-echo "  Stopping any apache web server"
-sudo service apache2 stop >/dev/null 2>&1
 echo "  Starting web server in a screen"
 $screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
-sudo service mosquitto stop >/dev/null 2>&1
-$screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
+$screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v -c mosquitto.conf
 echo
 echo "======================================================"
 echo
