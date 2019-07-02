@@ -13,6 +13,12 @@ else
 	exit 1
 fi
 
+wpa_supplicant_pid=$(pidof wpa_supplicant)
+if [ -n "$wpa_supplicant_pid" ]; then
+	echo "Attempting to stop wpa_supplicant"
+	sudo kill $wpa_supplicant_pid
+fi
+
 if test -d /etc/NetworkManager; then
 	echo "Backing up NetworkManager.cfg..."
 	sudo cp -n /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.backup
