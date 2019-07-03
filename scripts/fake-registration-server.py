@@ -10,6 +10,7 @@ import tornado.web
 import os
 import hashlib
 import json
+jsonstr = lambda j : json.dumps(j, separators=(',', ':'))
 
 def file_as_bytes(file_name):
     with open(file_name, 'rb') as file:
@@ -23,7 +24,7 @@ def get_file_stats(file_name):
     global file_md5
     global file_len
     file = file_as_bytes(file_name)
-    file_md5 = hashlib.md5(file).hexdigest().encode('utf-8')
+    file_md5 = hashlib.md5(file).hexdigest()
     file_len = str(os.path.getsize(file_name))
 
 from time import time
@@ -49,14 +50,14 @@ class JSONHandler(tornado.web.RequestHandler):
         print('\n')
         print('URI:'+str(self.request.uri))
         self.write('Hello Human, Do you have IOT?')
-    def reply(self, result):
+    def reply(self, result=None):
         answer = {
             't': timestamp(),
             'e': False,
             'success': True }
         if result:
             answer['result'] = result
-        answer = json.dumps(answer, separators=(',', ':'))
+        answer = jsonstr(answer)
         self.set_header("Content-Type", "application/json;charset=UTF-8")
         self.set_header('Content-Length', str(len(answer)))
         self.set_header('Content-Language', 'zh-CN')
@@ -64,8 +65,8 @@ class JSONHandler(tornado.web.RequestHandler):
     def post(self):
         print('\n')
         uri = str(self.request.uri)
-        a = str(self.request.arguments['a'])
-        gwId = str(self.request.arguments['gwId'])
+        a = str(self.get_argument('a'))
+        gwId = str(self.get_argument('gwId'))
         print('URI:'+uri)
 
         if(a == "s.gw.token.get"):
@@ -85,12 +86,12 @@ class JSONHandler(tornado.web.RequestHandler):
         elif(".active" in a):
             print("Answer s.gw.dev.pk.active")
             answer = {
-                "schema": [{
+                "schema": jsonstr([{
                     "mode": "rw",
                     "property": {
                         "type": "bool" },
                     "id": 1,
-                    "type": "obj" }],
+                    "type": "obj" }]),
                 "uid": "00000000000000000000",
                 "devEtag": "0000000000",
                 "secKey": "0000000000000000",
@@ -107,7 +108,7 @@ class JSONHandler(tornado.web.RequestHandler):
         elif(".device.upgrade" in a):
             print("Answer tuya.device.upgrade.get")
             answer = {
-                "auto": true,
+                "auto": True,
                 "type": 0,
                 "size": file_len,
                 "version": "9.0.0",
