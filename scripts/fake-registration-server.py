@@ -9,6 +9,14 @@ Copyright (c) 2018 VTRUST. All rights reserved.
 import tornado.web
 import os
 import hashlib
+import signal
+
+def exit_cleanly(signal, frame):
+    print("Received SIGINT, exiting...")
+    exit(0)
+
+signal.signal(signal.SIGINT, exit_cleanly)
+
 def file_as_bytes(file):
     with file:
         return file.read()
@@ -129,6 +137,8 @@ def main():
         print("Could not start server on port " + str(options.port))
         if err.errno is 98: # EADDRINUSE
             print("Close the process on this port and try again")
+        else:
+            print(err)
 
 
 if __name__ == "__main__":
