@@ -78,7 +78,11 @@ do
 	if (( --i == 0 )); then
 		echo
 		echo "Device did not appear with the intermediate firmware"
-		echo "Retry..."
+		echo "Stopping smart config"
+		kill $smartconfig_pid &>/dev/null
+		wait $! 2>/dev/null
+		read -p "Do you want to flash another device? [y/N] " -n 1 -r
+		echo
 		continue 2
 	fi
 done
