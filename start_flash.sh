@@ -40,6 +40,7 @@ fi
 echo "======================================================"
 echo "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
+sleep 5
 echo "  Stopping any apache web server"
 sudo service apache2 stop >/dev/null 2>&1
 echo "  Starting web server in a screen"
