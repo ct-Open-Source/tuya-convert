@@ -70,7 +70,7 @@ smartconfig_pid=$!
 echo "Waiting for the upgraded device to appear"
 echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
-i=30
+i=60
 while ! timeout 0.2 ping -c 1 -n 10.42.42.42 &> /dev/null
 do
     printf "."
