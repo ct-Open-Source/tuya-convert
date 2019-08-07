@@ -96,11 +96,16 @@ wait $! 2>/dev/null
 
 echo "Fetching firmware backup"
 sleep 2
+timestamp=`date +%Y%m%d_%H%M%S`
+mkdir -p "../backups/$timestamp"
+pushd "../backups/$timestamp" >/dev/null
 curl -JO http://10.42.42.42/backup
 
 echo "======================================================"
 echo "Getting Info from IoT-device"
 curl http://10.42.42.42 2> /dev/null | tee device-info.txt
+popd >/dev/null
+
 echo 
 echo "======================================================"
 echo "Please make sure to note the correct SPI flash mode!"
