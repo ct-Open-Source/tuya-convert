@@ -13,7 +13,7 @@ fi
 
 ./stop_flash.sh >/dev/null
 
-pushd scripts
+pushd scripts >/dev/null
 
 if [ ! -f eula_accepted ]; then
 	echo "======================================================"
@@ -48,6 +48,8 @@ echo "  Starting Mosquitto in a screen"
 sudo service mosquitto stop >/dev/null 2>&1
 $screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
 echo
+REPLY=y
+while [[ $REPLY =~ ^[Yy]$ ]]; do
 echo "======================================================"
 echo
 echo "IMPORTANT"
@@ -68,10 +70,17 @@ popd
 echo "Waiting for the upgraded device to appear"
 echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
+i=30
 while ! timeout 0.2 ping -c 1 -n 10.42.42.42 &> /dev/null
 do
     printf "."
 	sleep 1
+	if (( --i == 0 )); then
+		echo
+		echo "Device did not appear with the intermediate firmware"
+		echo "Retry..."
+		continue 2
+	fi
 done
 
 echo
@@ -105,5 +114,12 @@ echo "Alternatively let the device download and flash a file via HTTP:"
 echo "   # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/thirdparty.bin"
 echo
 echo "HAVE FUN!"
+echo "======================================================"
+read -p "Do you want to flash another device? [y/N] " -n 1 -r
+echo
+done
 
+echo "Exiting..."
+
+popd >/dev/null
 
