@@ -16,12 +16,12 @@ from smartconfig import smartconfig
 from time import sleep
 
 print('Put Device in Learn Mode! Sending SmartConfig Packets now')
+print('Sending SSID                  '+ssid)
+print('Sending wifiPassword          '+passwd)
+print('Sending token                 '+token)
+print('Sending secret                '+secret)
 
 for i in range(10): # Make 10 attempts
-	print('Sending SSID                  '+ssid)
-	print('Sending wifiPassword          '+passwd)
-	print('Sending token                 '+token)
-	print('Sending secret                '+secret)
 
 	smartconfig( passwd, ssid, region, token, secret )
 
