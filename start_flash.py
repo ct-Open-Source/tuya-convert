@@ -6,21 +6,17 @@ start_flash.py
 Created by Merlin Schumacher (merlin.schumacher@gmail.com) for c't Magazin
 """
 
-import configparser, NetworkManager
-##local imports
-import disclaimer
+import disclaimer, network, config
 
-c = NetworkManager.const
-def prepare_network_manager():
-    for dev in NetworkManager.NetworkManager.GetDevices():
-        print("%-10s %-19s %-20s %s" % (dev.Interface, c('device_state', dev.State), dev.Driver, dev.Managed))
-
-def start_ap():
-    prepare_network_manager()
+def prepare_system():
+    wifi_device, eth_device, ap_ssid, ap_password = config.get()
+    network.set_wifi_management(wifi_device, False)
+    network.start_ap(wifi_device, ap_ssid, ap_password)
+    network.configure_iptables(wifi_device, eth_device)
 
 if __name__ == "__main__":
-    #load_config()
-#    disclaimer.show()
- #   disclaimer.acknowledge()
-    start_ap()
+    disclaimer.show()
+    disclaimer.acknowledge()
+    prepare_system()
+
 
