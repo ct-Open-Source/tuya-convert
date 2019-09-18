@@ -8,6 +8,7 @@ Copyright (c) 2018 VTRUST. All rights reserved.
 import sys, getopt, time, pyaes, base64
 import paho.mqtt.client as mqtt  #pip install paho-mqtt
 from hashlib import md5
+import binascii
 
 help_message = '''USAGE:
 	"-i"/"--deviceID"
@@ -25,8 +26,7 @@ class iotAES(object):
         cipher = pyaes.blockfeeder.Encrypter(pyaes.AESModeOfOperationECB(self.key.encode()))
         crypted_text = cipher.feed(raw)
         crypted_text += cipher.feed()
-        crypted_text_b64 = base64.b64encode(crypted_text)
-        return crypted_text_b64
+        return crypted_text
     def decrypt(self, enc):
         enc = base64.b64decode(enc)
         cipher = pyaes.blockfeeder.Decrypter(pyaes.AESModeOfOperationECB(self.key))
@@ -47,15 +47,11 @@ def iot_dec(message, local_key):
 def iot_enc(message, local_key):
 	iot_aes = iotAES(local_key)
 	messge_enc = iot_aes.encrypt(message)
-	m = md5()
-	PROTOCOL_VERSION_BYTES = b'2.1'
-	#	preMd5String = b'data=' + messge_enc + b'||lpv=' + PROTOCOL_VERSION_BYTES + b'||' + local_key
-	preMd5String = b'data=' + messge_enc + b'||pv=' + PROTOCOL_VERSION_BYTES + b'||' + local_key.encode()
-	#	print (preMd5String)
-	m.update(preMd5String)
-	md5sum = m.hexdigest()
-	print (md5sum) #ca2b66d33d3f50a1 #ca2b66d33d3f50a1
-	messge_enc = PROTOCOL_VERSION_BYTES + md5sum[8:][:16].encode('latin1') + messge_enc
+	message = b'%08d'%((int(time.time()*100)%100000000)) + messge_enc
+	c = binascii.crc32(message)
+	PROTOCOL_VERSION_BYTES = b'2.2'
+	messge_enc = PROTOCOL_VERSION_BYTES + (c).to_bytes(4, byteorder='big') +message
+        
 	print (messge_enc)
 	return messge_enc
 
@@ -98,7 +94,8 @@ def main(argv=None):
 		print (help_message)
 		return 2
 	
-	message = '{"data":{"gwId":"%s"},"protocol":15,"s":%d,"t":%d}'  %(deviceID, 1523715, time.time())
+        
+	message = '{"data":{"gwId":"%s"},"protocol":15,"s":"%d","t":"%d"}'  %(deviceID, 1523715, time.time())
 	m1 = iot_enc(message, localKey)
 
 	client = mqtt.Client("P1")
