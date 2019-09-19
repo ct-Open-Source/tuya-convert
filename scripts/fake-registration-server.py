@@ -106,6 +106,9 @@ class JSONHandler(tornado.web.RequestHandler):
 
         elif(".dynamic.config.ack" in a):
             print("Answer tuya.device.dynamic.config.ack")
+            index = uri.find("gwId=")+5
+            gwId = uri[index:index+20]
+            print("READ GW ID",gwId)
             answer =b'{"result":true,"t":7,"e":false,"success":true}'
             self.set_header("Content-Type", "application/json;charset=UTF-8")
             self.set_header('Content-Length', str(len(answer)))
