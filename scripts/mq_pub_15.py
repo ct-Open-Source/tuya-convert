@@ -14,6 +14,7 @@ help_message = '''USAGE:
 	"-i"/"--deviceID"
 	"-l"/"--localKey" [default=0000000000000000]
 	"-b"/"--broker" [default=127.0.0.1]
+	"-p"/"--protocol" [default=2.1]
 iot:	
 %s -i 43511212112233445566 -l a1b2c3d4e5f67788''' % (sys.argv[0].split("/")[-1])
 
@@ -44,14 +45,19 @@ def iot_dec(message, local_key):
 	message_clear = iot_aes.decrypt(message[19:])
 	print (message_clear)
 	return message_clear
-def iot_enc(message, local_key):
+def iot_enc(message, local_key, protocol):
 	iot_aes = iotAES(local_key)
 	messge_enc = iot_aes.encrypt(message)
-	message = b'%08d'%((int(time.time()*100)%100000000)) + messge_enc
-	c = binascii.crc32(message)
-	PROTOCOL_VERSION_BYTES = b'2.2'
-	messge_enc = PROTOCOL_VERSION_BYTES + (c).to_bytes(4, byteorder='big') +message
-        
+	if protocol == "2.1":
+		messge_enc = base64.b64encode(messge_enc)
+		signature = b'data=' + messge_enc + b'||pv=' + protocol.encode() + b'||' + local_key.encode()
+		signature = md5(signature).hexdigest()[8:8+16].encode()
+		messge_enc = protocol.encode() + signature + messge_enc
+	else:
+		timestamp = b'%08d'%((int(time.time()*100)%100000000))
+		messge_enc = timestamp + messge_enc
+		crc = binascii.crc32(messge_enc).to_bytes(4, byteorder='big')
+		messge_enc = protocol.encode() + crc + messge_enc
 	print (messge_enc)
 	return messge_enc
 
@@ -63,11 +69,12 @@ def main(argv=None):
 	broker='127.0.0.1'
 	localKey = "0000000000000000"
 	deviceID = ""
+	protocol = "2.1"
 	if argv is None:
 		argv = sys.argv
 	try: #getopt
 		try:
-			opts, args = getopt.getopt(argv[1:], "hl:i:vb:", ["help", "localKey=", "deviceID=", "broker="])
+			opts, args = getopt.getopt(argv[1:], "hl:i:vb:p:", ["help", "localKey=", "deviceID=", "broker=", "protocol="])
 		except:
 			raise Usage(help_message)
 	
@@ -83,6 +90,8 @@ def main(argv=None):
 				deviceID = value
 			if option in ("-b", "--broker"):
 				broker = value
+			if option in ("-p", "--protocol"):
+				protocol = value
 
 		if (len(localKey)<10):
 			raise Usage(help_message)
@@ -94,9 +103,12 @@ def main(argv=None):
 		print (help_message)
 		return 2
 	
-        
-	message = '{"data":{"gwId":"%s"},"protocol":15,"s":"%d","t":"%d"}'  %(deviceID, 1523715, time.time())
-	m1 = iot_enc(message, localKey)
+	if protocol == "2.1":
+		message = '{"data":{"gwId":"%s"},"protocol":15,"s":%d,"t":%d}'  %(deviceID, 1523715, time.time())
+	else:
+		message = '{"data":{"gwId":"%s"},"protocol":15,"s":"%d","t":"%d"}'  %(deviceID, 1523715, time.time())
+	print("encoding", message, "using protocol", protocol)
+	m1 = iot_enc(message, localKey, protocol)
 
 	client = mqtt.Client("P1")
 	client.connect(broker)
