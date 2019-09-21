@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import socket
 import select
@@ -6,11 +6,8 @@ import ssl
 import sslpsk
 
 from Crypto.Cipher import AES
-import hashlib
+from hashlib import md5
 from binascii import hexlify, unhexlify
-
-server_hint_hex = "316448527363324e6a62486c74624778336557683530303030303030303030303030303030" 
-server_hint = unhexlify(server_hint_hex)
 
 
 def listener(host, port):
@@ -24,25 +21,14 @@ def client(host, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((host, port))
     return sock
-    
 
-def get_psk(identity):
-    id = identity
-    server_hint = unhexlify(server_hint_hex)
-
-    md5_uuid = id[17:(17+16)]
-    source = id[1:50]
-
-    rand = server_hint[21:21+16]
-
-    key = hashlib.md5(rand).digest()
-    to_encode = id[1:33]
-    iv =  hashlib.md5(source).digest()
-    cipher = AES.new(key ,AES.MODE_CBC, iv)
-
-    c = cipher.encrypt(to_encode)
-    print("PSK: %r"%(hexlify(c)))
-    return c
+def gen_psk(identity, hint):
+    key = md5(hint[-16:]).digest()
+    iv = md5(identity[1:]).digest()
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    psk = cipher.encrypt(identity[1:33])
+    print("PSK:", hexlify(psk))
+    return psk
 
 
 class PskFrontend():
@@ -54,7 +40,7 @@ class PskFrontend():
 
         self.server_sock = listener(listening_host, listening_port)
         self.sessions = []
-        self.hint = '1dHRsc2NjbHltbGx3eWh50000000000000000'
+        self.hint = '1dHRsc2NjbHltbGx3eWh5' '0000000000000000'
 
 
 
@@ -71,7 +57,7 @@ class PskFrontend():
                 server_side = True,
                 ssl_version=ssl.PROTOCOL_TLSv1_2,
                 ciphers='PSK-AES128-CBC-SHA256',
-                psk=get_psk,
+                psk=lambda identity: gen_psk(identity, self.hint),
                 hint=self.hint)
 
             s2 = client(self.host, self.port)
