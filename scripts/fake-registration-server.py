@@ -192,6 +192,7 @@ def main():
         [
             (r"/", MainHandler),
             (r"/gw.json", JSONHandler),
+            (r"/d.json", JSONHandler),
             ('/files/(.*)', FilesHandler, {'path': str('../files/')}),
         ],
         #template_path=os.path.join(os.path.dirname(__file__), "templates"),
