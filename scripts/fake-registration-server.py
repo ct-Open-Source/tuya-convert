@@ -9,9 +9,26 @@ Copyright (c) 2018 VTRUST. All rights reserved.
 import tornado.web
 import os
 import hashlib
-def file_as_bytes(file):
-    with file:
+import json
+jsonstr = lambda j : json.dumps(j, separators=(',', ':'))
+
+def file_as_bytes(file_name):
+    with open(file_name, 'rb') as file:
         return file.read()
+
+file_md5 = ""
+file_len = ""
+
+def get_file_stats(file_name):
+    #Calculate MD5 and Filesize
+    global file_md5
+    global file_len
+    file = file_as_bytes(file_name)
+    file_md5 = hashlib.md5(file).hexdigest()
+    file_len = str(os.path.getsize(file_name))
+
+from time import time
+timestamp = lambda : int(time())
 
 from tornado.options import define, options, parse_command_line
 
@@ -33,83 +50,116 @@ class JSONHandler(tornado.web.RequestHandler):
         print('\n')
         print('URI:'+str(self.request.uri))
         self.write('Hello Human, Do you have IOT?')
+    def reply(self, result=None):
+        answer = {
+            't': timestamp(),
+            'e': False,
+            'success': True }
+        if result:
+            answer['result'] = result
+        answer = jsonstr(answer)
+        self.set_header("Content-Type", "application/json;charset=UTF-8")
+        self.set_header('Content-Length', str(len(answer)))
+        self.set_header('Content-Language', 'zh-CN')
+        self.write(answer)
     def post(self):
         print('\n')
         uri = str(self.request.uri)
         a = str(self.get_argument('a'))
+        gwId = str(self.get_argument('gwId'))
         print('URI:'+uri)
-        
+
         if(a == "s.gw.token.get"):
             print("Answer s.gw.token.get")
-            answer =(b'{"result":{"gwApiUrl":"http://10.42.42.1/gw.json","stdTimeZone":"-05:00","mqttRanges":"","timeZone":"-05:00",'
-                     b'"httpsPSKUrl":"https://10.42.42.1/gw.json","mediaMqttUrl":"10.42.42.1","gwMqttUrl":"10.42.42.1","dstIntervals":[]},"t":7,"e":false,"success":true}\n'
-                    )
-            
-            self.set_header("Content-Type", "application/json;charset=UTF-8")
-            self.set_header('Content-Length', str(len(answer)))
-            self.set_header('Content-Language', 'zh-CN')
-            self.write(answer)
+            answer = {
+                "gwApiUrl": "http://10.42.42.1/gw.json",
+                "stdTimeZone": "-05:00",
+                "mqttRanges": "",
+                "timeZone": "-05:00",
+                "httpsPSKUrl": "https://10.42.42.1/gw.json",
+                "mediaMqttUrl": "10.42.42.1",
+                "gwMqttUrl": "10.42.42.1",
+                "dstIntervals": [] }
+            self.reply(answer)
             #os.system("killall smartconfig.js")
 
         elif(".active" in a):
             print("Answer s.gw.dev.pk.active")
-            index = uri.find("gwId=")+5
-            gwId = uri[index:index+20]
-            print("READ GW ID",gwId)
-            answer =(b'{"result":'
-                     b'{'
-                       b'"schema":"[{'
-                                    b'\\"mode\\":\\"rw\\",'
-                                    b'\\"property\\":{\\"type\\":\\"bool\\"},\\"id\\":1,\\"type\\":\\"obj\\"'
-                       b'}]",'
-                       b'"uid":"00000000000000000000","devEtag":"0000000000","secKey":"0000000000000000","schemaId":"0000000000","localKey":"0000000000000000"'
-                     b'},'
-                     b'"t":7,"e":false,"success":true}\n'
-                    )
-            
-            self.set_header("Content-Type", "application/json;charset=UTF-8")
-            self.set_header('Content-Length', str(len(answer)))
-            self.set_header('Content-Language', 'zh-CN')
-            self.write(answer)
+            answer = {
+                "schema": jsonstr([{
+                    "mode": "rw",
+                    "property": {
+                        "type": "bool" },
+                    "id": 1,
+                    "type": "obj" }]),
+                "uid": "00000000000000000000",
+                "devEtag": "0000000000",
+                "secKey": "0000000000000000",
+                "schemaId": "0000000000",
+                "localKey": "0000000000000000" }
+            self.reply(answer)
             print("TRIGGER UPGRADE IN 10 SECONDS")
-            os.system("./trigger_upgrade.sh %s &" % str(gwId))
+            os.system("./trigger_upgrade.sh %s &" % gwId)
+
+        elif(".updatestatus" in a):
+            print("Answer s.gw.upgrade.updatestatus")
+            self.reply()
+
+        elif(".device.upgrade" in a):
+            print("Answer tuya.device.upgrade.get")
+            answer = {
+                "auto": True,
+                "type": 0,
+                "size": file_len,
+                "version": "9.0.0",
+                "url": "http://10.42.42.1/files/upgrade.bin",
+                "md5": file_md5 }
+            self.reply(answer)
 
         elif(".upgrade" in a):
             print("Answer s.gw.upgrade")
-            #Fixme
-            #Calculate MD5 and Filesize
-            file_md5 = hashlib.md5(file_as_bytes(open('../files/upgrade.bin', 'rb'))).hexdigest()
-            file_len = os.path.getsize('../files/upgrade.bin')
-            answer = b'{"result":{"auto":3,"fileSize":"%d","etag":"0000000000","version":"9.0.0","url":"http://10.42.42.1/files/upgrade.bin","md5":"%s"},"t":100,"e":false,"success":true}' % (file_len,file_md5.encode('utf-8'))
-            print(answer)
-            self.set_header("Content-Type", "application/json;charset=UTF-8")
-            self.set_header('Content-Length', str(len(answer)))
-            self.set_header('Content-Language', 'zh-CN')
-            self.write(answer)
+            answer = {
+                "auto": 3,
+                "fileSize": file_len,
+                "etag": "0000000000",
+                "version": "9.0.0",
+                "url": "http://10.42.42.1/files/upgrade.bin",
+                "md5": file_md5 }
+            self.reply(answer)
 
-        elif(".debug.log" in a):
+        elif(".log" in a):
             print("Answer atop.online.debug.log")
-            answer =b'{"result":true,"t":7,"e":false,"success":true}'
-            self.set_header("Content-Type", "application/json;charset=UTF-8")
-            self.set_header('Content-Length', str(len(answer)))
-            self.set_header('Content-Language', 'zh-CN')
-            self.write(answer)
+            answer = True
+            self.reply(answer)
 
         elif(".update" in a):
             print("Answer s.gw.update")
-            answer =b'{"t":7,"e":false,"success":true}'
-            self.set_header("Content-Type", "application/json;charset=UTF-8")
-            self.set_header('Content-Length', str(len(answer)))
-            self.set_header('Content-Language', 'zh-CN')
-            self.write(answer)
+            self.reply()
+
+        elif(".timer" in a):
+            print("Answer s.gw.dev.timer.count")
+            answer = {
+                "devId": gwId,
+                "count": 0,
+                "lastFetchTime": 0 }
+            self.reply(answer)
+
+        elif(".config" in a):
+            print("Answer tuya.device.dynamic.config.get")
+            answer = {
+                "validTime": 1800,
+                "time": timestamp(),
+                "config": {} }
+            self.reply(answer)
 
         else:
             print("WARN: unknown request: {} ({})".format(a,uri))
-            self.write("WARN: unknown request: "+uri)
+            self.reply()
 
 
 def main():
     parse_command_line()
+    get_file_stats('../files/upgrade.bin')
     app = tornado.web.Application(
         [
             (r"/", MainHandler),
