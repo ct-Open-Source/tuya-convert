@@ -59,9 +59,7 @@ class MainHandler(tornado.web.RequestHandler):
 
 class JSONHandler(tornado.web.RequestHandler):
     def get(self):
-        print('\n')
-        print('URI:'+str(self.request.uri))
-        self.write('Hello Human, Do you have IOT?')
+        self.post()
     def reply(self, result=None):
         answer = {
             't': timestamp(),
