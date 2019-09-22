@@ -95,9 +95,9 @@ class JSONHandler(tornado.web.RequestHandler):
         print("encrypted reply", answer)
     def post(self):
         uri = str(self.request.uri)
-        a = str(self.get_argument('a'))
-        et = str(self.get_argument('et'))
-        gwId = str(self.get_argument('gwId'))
+        a = str(self.get_argument('a', 0))
+        et = str(self.get_argument('et', 0))
+        gwId = str(self.get_argument('gwId', 0))
         payload = self.request.body[5:]
         print()
         print(self.request.method, uri)
