@@ -7,14 +7,23 @@ Copyright (c) 2018 VTRUST. All rights reserved.
 """
 
 import tornado.web
+from tornado.options import define, options, parse_command_line
+
+define("port", default=80, help="run on the given port", type=int)
+define("debug", default=True, help="run in debug mode")
+define("secKey", default="0000000000000000", help="key used for encrypted communication")
+
 import os
+
 from Crypto.Cipher import AES
 pad = lambda s: s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
 unpad = lambda s: s[:-ord(s[len(s) - 1:])]
+
 from base64 import b64encode
 import hashlib
 import hmac
 import binascii
+
 import json
 jsonstr = lambda j : json.dumps(j, separators=(',', ':'))
 
@@ -36,16 +45,11 @@ def get_file_stats(file_name):
     file = file_as_bytes(file_name)
     file_md5 = hashlib.md5(file).hexdigest()
     file_sha256 = hashlib.sha256(file).hexdigest().upper()
-    file_hmac = hmac.HMAC(b'0000000000000000', file_sha256.encode(), 'sha256').hexdigest().upper()
+    file_hmac = hmac.HMAC(options.secKey.encode(), file_sha256.encode(), 'sha256').hexdigest().upper()
     file_len = str(os.path.getsize(file_name))
 
 from time import time
 timestamp = lambda : int(time())
-
-from tornado.options import define, options, parse_command_line
-
-define("port", default=80, help="run on the given port", type=int)
-define("debug", default=True, help="run in debug mode")
 
 class FilesHandler(tornado.web.StaticFileHandler):
     def parse_url_path(self, url_path):
@@ -80,8 +84,8 @@ class JSONHandler(tornado.web.RequestHandler):
             't': ts,
             'success': True }
         answer = jsonstr(answer)
-        encrypted = b64encode(AES.new("0000000000000000", AES.MODE_ECB).encrypt(pad(answer))).decode()
-        signature = "result=%s||t=%d||%s" % (encrypted, ts, "0000000000000000")
+        encrypted = b64encode(AES.new(options.secKey, AES.MODE_ECB).encrypt(pad(answer))).decode()
+        signature = "result=%s||t=%d||%s" % (encrypted, ts, options.secKey)
         signature = hashlib.md5(signature.encode()).hexdigest()[8:24]
         answer = '{"result":"%s","t":%d,"sign":"%s"}' % (encrypted, ts, signature)
         self.set_header("Content-Type", "application/json;charset=UTF-8")
@@ -100,7 +104,7 @@ class JSONHandler(tornado.web.RequestHandler):
         print(self.request.headers)
         if payload:
             try:
-                decrypted_payload = unpad(AES.new("0000000000000000", AES.MODE_ECB).decrypt(binascii.unhexlify(payload)))
+                decrypted_payload = unpad(AES.new(options.secKey, AES.MODE_ECB).decrypt(binascii.unhexlify(payload)))
                 print("payload", decrypted_payload)
             except:
                 print("could not decrypt payload", payload)
@@ -132,7 +136,7 @@ class JSONHandler(tornado.web.RequestHandler):
                     "type": "obj" }]),
                 "uid": "00000000000000000000",
                 "devEtag": "0000000000",
-                "secKey": "0000000000000000",
+                "secKey": options.secKey,
                 "schemaId": "0000000000",
                 "localKey": "0000000000000000" }
             self.reply(answer)
