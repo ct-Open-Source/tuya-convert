@@ -75,6 +75,22 @@ class JSONHandler(tornado.web.RequestHandler):
         self.set_header('Content-Language', 'zh-CN')
         self.write(answer)
         print("reply", answer)
+    def reply_encrypted(self, result=None):
+        ts = timestamp()
+        answer = {
+            'result': result,
+            't': ts,
+            'success': True }
+        answer = jsonstr(answer)
+        encrypted = b64encode(AES.new("0000000000000000", AES.MODE_ECB).encrypt(pad(answer))).decode()
+        signature = "result=%s||t=%d||%s" % (encrypted, ts, "0000000000000000")
+        signature = hashlib.md5(signature.encode()).hexdigest()[8:24]
+        answer = '{"result":"%s","t":%d,"sign":"%s"}' % (encrypted, ts, signature)
+        self.set_header("Content-Type", "application/json;charset=UTF-8")
+        self.set_header('Content-Length', str(len(answer)))
+        self.set_header('Content-Language', 'zh-CN')
+        self.write(answer)
+        print("encrypted reply", answer)
     def post(self):
         uri = str(self.request.uri)
         a = str(self.get_argument('a'))
@@ -135,8 +151,8 @@ class JSONHandler(tornado.web.RequestHandler):
             answer = {
                 "auto": 3,
                 "size": file_len,
-                "type": 9,
-                "pskUrl": "https://10.42.42.1/files/upgrade.bin",
+                "type": 0,
+                "pskUrl": "http://10.42.42.1/files/upgrade.bin",
                 "hmac": file_hmac,
                 "version": "9.0.0" }
             self.reply(answer)
@@ -187,11 +203,9 @@ class JSONHandler(tornado.web.RequestHandler):
                 "time": timestamp(),
                 "config": {} }
             if et == "1":
-                answer["ackId"] = "1234567"
-                answer["config"] = {
-                    "stdTimeZone": "UTC",
-                    "dstIntervals": "0" }
-            self.reply(answer)
+                self.reply_encrypted(answer)
+            else:
+                self.reply(answer)
 
         else:
             print("Answer generic ({})".format(a))
