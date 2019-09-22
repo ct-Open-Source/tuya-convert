@@ -8,6 +8,10 @@ Copyright (c) 2018 VTRUST. All rights reserved.
 
 import tornado.web
 import os
+from Crypto.Cipher import AES
+pad = lambda s: s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
+unpad = lambda s: s[:-ord(s[len(s) - 1:])]
+from base64 import b64encode
 import hashlib
 import hmac
 import binascii
@@ -70,13 +74,22 @@ class JSONHandler(tornado.web.RequestHandler):
         self.set_header('Content-Length', str(len(answer)))
         self.set_header('Content-Language', 'zh-CN')
         self.write(answer)
+        print("reply", answer)
     def post(self):
-        print('\n')
         uri = str(self.request.uri)
         a = str(self.get_argument('a'))
         et = str(self.get_argument('et'))
         gwId = str(self.get_argument('gwId'))
-        print('URI:'+uri)
+        payload = self.request.body[5:]
+        print()
+        print(self.request.method, uri)
+        print(self.request.headers)
+        if payload:
+            try:
+                decrypted_payload = unpad(AES.new("0000000000000000", AES.MODE_ECB).decrypt(binascii.unhexlify(payload)))
+                print("payload", decrypted_payload)
+            except:
+                print("could not decrypt payload", payload)
 
         if(a == "s.gw.token.get"):
             print("Answer s.gw.token.get")
@@ -181,7 +194,7 @@ class JSONHandler(tornado.web.RequestHandler):
             self.reply(answer)
 
         else:
-            print("WARN: unknown request: {} ({})".format(a,uri))
+            print("Answer generic ({})".format(a))
             self.reply()
 
 
