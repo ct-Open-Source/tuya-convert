@@ -64,39 +64,38 @@ class MainHandler(tornado.web.RequestHandler):
 class JSONHandler(tornado.web.RequestHandler):
     def get(self):
         self.post()
-    def reply(self, result=None):
-        answer = {
-            't': timestamp(),
-            'e': False,
-            'success': True }
-        if result:
-            answer['result'] = result
+    def reply(self, result=None, encrypted=False):
+        ts = timestamp()
+        if encrypted:
+            answer = {
+                'result': result,
+                't': ts,
+                'success': True }
+            answer = jsonstr(answer)
+            payload = b64encode(AES.new(options.secKey, AES.MODE_ECB).encrypt(pad(answer))).decode()
+            signature = "result=%s||t=%d||%s" % (payload, ts, options.secKey)
+            signature = hashlib.md5(signature.encode()).hexdigest()[8:24]
+            answer = {
+                'result': payload,
+                't': ts,
+                'sign': signature }
+        else:
+            answer = {
+                't': ts,
+                'e': False,
+                'success': True }
+            if result:
+                answer['result'] = result
         answer = jsonstr(answer)
         self.set_header("Content-Type", "application/json;charset=UTF-8")
         self.set_header('Content-Length', str(len(answer)))
         self.set_header('Content-Language', 'zh-CN')
         self.write(answer)
         print("reply", answer)
-    def reply_encrypted(self, result=None):
-        ts = timestamp()
-        answer = {
-            'result': result,
-            't': ts,
-            'success': True }
-        answer = jsonstr(answer)
-        encrypted = b64encode(AES.new(options.secKey, AES.MODE_ECB).encrypt(pad(answer))).decode()
-        signature = "result=%s||t=%d||%s" % (encrypted, ts, options.secKey)
-        signature = hashlib.md5(signature.encode()).hexdigest()[8:24]
-        answer = '{"result":"%s","t":%d,"sign":"%s"}' % (encrypted, ts, signature)
-        self.set_header("Content-Type", "application/json;charset=UTF-8")
-        self.set_header('Content-Length', str(len(answer)))
-        self.set_header('Content-Language', 'zh-CN')
-        self.write(answer)
-        print("encrypted reply", answer)
     def post(self):
         uri = str(self.request.uri)
         a = str(self.get_argument('a', 0))
-        et = str(self.get_argument('et', 0))
+        encrypted = str(self.get_argument('et', 0)) == '1'
         gwId = str(self.get_argument('gwId', 0))
         payload = self.request.body[5:]
         print()
@@ -109,6 +108,7 @@ class JSONHandler(tornado.web.RequestHandler):
             except:
                 print("could not decrypt payload", payload)
 
+        # Activation endpoints
         if(a == "s.gw.token.get"):
             print("Answer s.gw.token.get")
             answer = {
@@ -120,7 +120,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "mediaMqttUrl": "10.42.42.1",
                 "gwMqttUrl": "10.42.42.1",
                 "dstIntervals": [] }
-            if et == "1":
+            if encrypted:
                 answer["mqttsUrl"] = "10.42.42.1"
             self.reply(answer)
             #os.system("killall smartconfig.js")
@@ -144,11 +144,8 @@ class JSONHandler(tornado.web.RequestHandler):
             protocol = "2.2" if et == "1" else "2.1"
             os.system("./trigger_upgrade.sh %s %s &" % (gwId, protocol))
 
-        elif(".updatestatus" in a):
-            print("Answer s.gw.upgrade.updatestatus")
-            self.reply()
-
-        elif(".upgrade" in a) and (et == "1"):
+        # Upgrade endpoints
+        elif(".upgrade" in a) and encrypted:
             print("Answer s.gw.upgrade.get")
             answer = {
                 "auto": 3,
@@ -157,7 +154,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "pskUrl": "http://10.42.42.1/files/upgrade.bin",
                 "hmac": file_hmac,
                 "version": "9.0.0" }
-            self.reply(answer)
+            self.reply(answer, encrypted)
 
         elif(".device.upgrade" in a):
             print("Answer tuya.device.upgrade.get")
@@ -168,7 +165,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "version": "9.0.0",
                 "url": "http://10.42.42.1/files/upgrade.bin",
                 "md5": file_md5 }
-            self.reply(answer)
+            self.reply(answer, encrypted)
 
         elif(".upgrade" in a):
             print("Answer s.gw.upgrade")
@@ -179,16 +176,13 @@ class JSONHandler(tornado.web.RequestHandler):
                 "version": "9.0.0",
                 "url": "http://10.42.42.1/files/upgrade.bin",
                 "md5": file_md5 }
-            self.reply(answer)
+            self.reply(answer, encrypted)
 
+        # Misc endpoints
         elif(".log" in a):
             print("Answer atop.online.debug.log")
             answer = True
-            self.reply(answer)
-
-        elif(".update" in a):
-            print("Answer s.gw.update")
-            self.reply()
+            self.reply(answer, encrypted)
 
         elif(".timer" in a):
             print("Answer s.gw.dev.timer.count")
@@ -196,7 +190,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "devId": gwId,
                 "count": 0,
                 "lastFetchTime": 0 }
-            self.reply(answer)
+            self.reply(answer, encrypted)
 
         elif(".config.get" in a):
             print("Answer tuya.device.dynamic.config.get")
@@ -204,14 +198,12 @@ class JSONHandler(tornado.web.RequestHandler):
                 "validTime": 1800,
                 "time": timestamp(),
                 "config": {} }
-            if et == "1":
-                self.reply_encrypted(answer)
-            else:
-                self.reply(answer)
+            self.reply(answer, encrypted)
 
+        # Catchall
         else:
             print("Answer generic ({})".format(a))
-            self.reply()
+            self.reply(None, encrypted)
 
 
 def main():
