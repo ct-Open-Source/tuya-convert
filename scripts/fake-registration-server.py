@@ -141,7 +141,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "localKey": "0000000000000000" }
             self.reply(answer)
             print("TRIGGER UPGRADE IN 10 SECONDS")
-            protocol = "2.2" if et == "1" else "2.1"
+            protocol = "2.2" if encrypted else "2.1"
             os.system("./trigger_upgrade.sh %s %s &" % (gwId, protocol))
 
         # Upgrade endpoints
