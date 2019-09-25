@@ -62,8 +62,8 @@ class PskFrontend():
 
             s2 = client(self.host, self.port)
             self.sessions.append((ssl_sock, s2))
-        except:
-            pass
+        except Exception as e:
+            print("could not establish sslpsk socket:", e)
     def data_ready_cb(self, s):
         if s == self.server_sock:
             _s, frm = s.accept()
