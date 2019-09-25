@@ -103,10 +103,12 @@ class JSONHandler(tornado.web.RequestHandler):
         print(self.request.headers)
         if payload:
             try:
-                decrypted_payload = unpad(AES.new(options.secKey, AES.MODE_ECB).decrypt(binascii.unhexlify(payload)))
+                decrypted_payload = unpad(AES.new(options.secKey, AES.MODE_ECB).decrypt(binascii.unhexlify(payload))).decode()
+                if decrypted_payload[0] != "{":
+                    raise ValueError("payload is not JSON")
                 print("payload", decrypted_payload)
             except:
-                print("could not decrypt payload", payload)
+                print("could not decrypt payload", payload.decode())
 
         # Activation endpoints
         if(a == "s.gw.token.get"):
@@ -122,18 +124,26 @@ class JSONHandler(tornado.web.RequestHandler):
                 "dstIntervals": [] }
             if encrypted:
                 answer["mqttsUrl"] = "10.42.42.1"
+                answer["mqttsPSKUrl"] = "10.42.42.1"
+                answer["mediaMqttsUrl"] = "10.42.42.1"
+                answer["aispeech"] = "10.42.42.1"
             self.reply(answer)
             #os.system("killall smartconfig.js")
 
         elif(".active" in a):
             print("Answer s.gw.dev.pk.active")
             answer = {
-                "schema": jsonstr([{
-                    "mode": "rw",
-                    "property": {
-                        "type": "bool" },
-                    "id": 1,
-                    "type": "obj" }]),
+                "schema": jsonstr([
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"}]),
                 "uid": "00000000000000000000",
                 "devEtag": "0000000000",
                 "secKey": options.secKey,
@@ -145,6 +155,10 @@ class JSONHandler(tornado.web.RequestHandler):
             os.system("./trigger_upgrade.sh %s %s &" % (gwId, protocol))
 
         # Upgrade endpoints
+        elif(".updatestatus" in a):
+            print("Answer s.gw.upgrade.updatestatus")
+            self.reply(None, encrypted)
+
         elif(".upgrade" in a) and encrypted:
             print("Answer s.gw.upgrade.get")
             answer = {
