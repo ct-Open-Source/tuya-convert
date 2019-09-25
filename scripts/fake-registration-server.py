@@ -108,7 +108,7 @@ class JSONHandler(tornado.web.RequestHandler):
                     raise ValueError("payload is not JSON")
                 print("payload", decrypted_payload)
             except:
-                print("could not decrypt payload", payload.decode())
+                print("payload", payload.decode())
 
         # Activation endpoints
         if(a == "s.gw.token.get"):
