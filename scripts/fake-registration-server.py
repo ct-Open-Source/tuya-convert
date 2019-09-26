@@ -134,16 +134,7 @@ class JSONHandler(tornado.web.RequestHandler):
             print("Answer s.gw.dev.pk.active")
             answer = {
                 "schema": jsonstr([
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"},
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"}]),
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"}] * 10),
                 "uid": "00000000000000000000",
                 "devEtag": "0000000000",
                 "secKey": options.secKey,
