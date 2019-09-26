@@ -27,7 +27,7 @@ def gen_psk(identity, hint):
     iv = md5(identity[1:]).digest()
     cipher = AES.new(key, AES.MODE_CBC, iv)
     psk = cipher.encrypt(identity[1:33])
-    print("PSK:", hexlify(psk), "ID:", identity)
+    print("PSK: %s ID: %s" % (hexlify(psk), identity))
     return psk
 
 
