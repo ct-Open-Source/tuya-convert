@@ -67,7 +67,7 @@ class PskFrontend():
     def data_ready_cb(self, s):
         if s == self.server_sock:
             _s, frm = s.accept()
-            print("new client on port %d from %r"%(self.listening_port, frm))
+            print("new client on port %d from %s:%d"%(self.listening_port, frm[0], frm[1]))
             self.new_client(_s)
 
         for (s1, s2) in self.sessions:
