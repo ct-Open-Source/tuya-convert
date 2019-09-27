@@ -23,11 +23,12 @@ def client(host, port):
     return sock
 
 def gen_psk(identity, hint):
+    print("ID: %s" % hexlify(identity))
     key = md5(hint[-16:]).digest()
     iv = md5(identity[1:]).digest()
     cipher = AES.new(key, AES.MODE_CBC, iv)
     psk = cipher.encrypt(identity[1:33])
-    print("PSK: %s ID: %s" % (hexlify(psk), identity))
+    print("PSK: %s" % hexlify(psk))
     return psk
 
 
