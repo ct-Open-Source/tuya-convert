@@ -111,7 +111,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 print("payload", payload.decode())
 
         if gwId == "0":
-            print("WARNING: it appears this device does not use an ESP86xx and therefore cannot install ESP based firmware")
+            print("WARNING: it appears this device does not use an ESP82xx and therefore cannot install ESP based firmware")
 
         # Activation endpoints
         if(a == "s.gw.token.get"):
