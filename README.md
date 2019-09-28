@@ -12,7 +12,7 @@ Please make sure to visit VTRUST (https://www.vtrust.de/), since the hack is the
 ## 🚨WARNING🚨
 Please be sure that you understand what you're doing before using this software. Flashing an alternative firmware can lead to unexpected behavior and/or render the device unusable, so that it might be permanently damaged (highly unlikely) or require soldering a serial connection to the processor in order to reflash it (likely). 
 
-### ⚠️Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality⚠️. 
+### ⚠️ Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality. ⚠️ 
 
 TUYA-CONVERT only provides with the means to backup the original and flash an alternative firmware. Please do not ask for hardware support for your favorite alternative firmware in this repository, rather open an issue in the corresponding repository.
 
@@ -75,7 +75,7 @@ It will destroy your ability to undo and go back to the original firmware
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
 1. Place or link your binary file to ./files/thirdparty.bin.
 
-	Currently a Sonoff-Tasmota [v6.5.0](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.5.0) basic build is already included. It will open an WiFi access point named `sonoff-XXX`. Please note that while we include this for your convenience, we are not affliated with the Sonoff-Tasmota project and cannot provide support for post installation issues. Please refer to the respective project for support.
+	Currently a Tasmota [v6.5.0](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.5.0) `sonoff-basic.bin` build is included. In this Tasmota firmware variant, many features and most sensors are disabled. Tasmota strongly recommendeds to update to a [current version](http://thehackbox.org/tasmota) of a "full featured" variant (e.g., `sonoff.bin`). This can be accomplished via OTA after the Tuya-Convert process completes successfully. Please note that while we include this for your convenience, we are not affliated with the Tasmota project and cannot provide support for post installation issues. Please refer to [the respective project](https://github.com/arendst/Sonoff-Tasmota) for configuration and support.  
 	
 	Binary requirements:
 	* full binary including first-stage bootloader
@@ -88,6 +88,10 @@ BE SURE THE FIRMWARE FITS YOUR DEVICE!
 Alternatively you can request a certain file to be requested and flashed by the device:
 
 	# curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/thirdparty.bin
+
+4. Initial Configuration
+
+	If you flashed the included Tasmota firmware file, it will broadcast a `sonoff-xxxx` access point (AP) when the device boots. Connect to this AP and open the browser to 192.168.4.1 to configure the device's Wi-Fi credentials. When entering the Wi-Fi password, click the checkbox to view the password you enter to ensure that it is correct and that your mobile device has not inadvertently capitalized the first letter if it is supposed to be lower case nor autocorrected what you entered. ~~Double~~ **Triple check the Wi-Fi credentials** before clicking **Save** to apply the settings.  
 
 ## RELATED WORKS
 - [TuyAPI](https://github.com/codetheweb/tuyapi) NPM library for LAN control of Tuya devices with stock firmware
