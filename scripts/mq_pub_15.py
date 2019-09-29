@@ -6,7 +6,7 @@ Created by nano on 2018-11-22.
 Copyright (c) 2018 VTRUST. All rights reserved.
 """
 import sys, getopt, time, base64
-import paho.mqtt.client as mqtt  #pip install paho-mqtt
+import paho.mqtt.publish as publish
 from hashlib import md5
 import binascii
 
@@ -92,10 +92,7 @@ def main(argv=None):
 	print("encoding", message, "using protocol", protocol)
 	m1 = iot_enc(message, localKey, protocol)
 
-	client = mqtt.Client("P1")
-	client.connect(broker)
-	client.publish("smart/device/in/%s" % (deviceID), m1)
-	client.disconnect()
+	publish.single("smart/device/in/%s" % (deviceID), m1, hostname=broker)
 
 if __name__ == "__main__":
 	sys.exit(main())
