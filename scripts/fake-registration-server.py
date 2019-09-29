@@ -146,7 +146,7 @@ class JSONHandler(tornado.web.RequestHandler):
             self.reply(answer)
             print("TRIGGER UPGRADE IN 10 SECONDS")
             protocol = "2.2" if encrypted else "2.1"
-            os.system("./trigger_upgrade.sh %s %s &" % (gwId, protocol))
+            os.system("sleep 10 && ./mq_pub_15.py -i %s -p %s &" % (gwId, protocol))
 
         # Upgrade endpoints
         elif(".updatestatus" in a):
