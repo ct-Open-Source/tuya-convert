@@ -25,7 +25,7 @@ Since Tuya devices are spread around the world with likely a vast amount of diff
 ## REQUIREMENTS
 * Linux computer with a wifi adapter
 * Secondary wifi device (e.g. smartphone)
-* Dependencies (will be installed by install_prereq): python3, dnsmasq, hostapd, screen, curl, python3-pip, python3-setuptools, python3-wheel, mosquitto, paho-mqtt, pyaes, tornado
+* Dependencies will be installed by `install_prereq.sh`
 
 These scripts were tested in 
 * Kali-Linux 2018.4 in VMWARE
