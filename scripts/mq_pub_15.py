@@ -5,7 +5,7 @@ mq_pub_15.py
 Created by nano on 2018-11-22.
 Copyright (c) 2018 VTRUST. All rights reserved.
 """
-import sys, getopt, time, pyaes, base64
+import sys, getopt, time, base64
 import paho.mqtt.client as mqtt  #pip install paho-mqtt
 from hashlib import md5
 import binascii
@@ -18,36 +18,18 @@ help_message = '''USAGE:
 iot:	
 %s -i 43511212112233445566 -l a1b2c3d4e5f67788''' % (sys.argv[0].split("/")[-1])
 
-class iotAES(object):
-    def __init__(self, key):
-        self.bs = 16
-        self.key = key
-    def encrypt(self, raw):
-        _ = self._pad(raw)
-        cipher = pyaes.blockfeeder.Encrypter(pyaes.AESModeOfOperationECB(self.key.encode()))
-        crypted_text = cipher.feed(raw)
-        crypted_text += cipher.feed()
-        return crypted_text
-    def decrypt(self, enc):
-        enc = base64.b64decode(enc)
-        cipher = pyaes.blockfeeder.Decrypter(pyaes.AESModeOfOperationECB(self.key))
-        plain_text = cipher.feed(enc)
-        plain_text += cipher.feed()
-        return plain_text
-    def _pad(self, s):
-        padnum = self.bs - len(s) % self.bs
-        return s + padnum * chr(padnum)
-    @staticmethod
-    def _unpad(s):
-        return s[:-ord(s[len(s)-1:])]
+from Crypto.Cipher import AES
+pad = lambda s: s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
+unpad = lambda s: s[:-ord(s[len(s) - 1:])]
+encrypt = lambda msg, key: AES.new(key, AES.MODE_ECB).encrypt(pad(msg))
+decrypt = lambda msg, key: AES.new(key, AES.MODE_ECB).decrypt(unpad(msg))
+
 def iot_dec(message, local_key):
-	iot_aes = iotAES(local_key)
-	message_clear = iot_aes.decrypt(message[19:])
+	message_clear = decrypt(base64.b64decode(message[19:]), local_key)
 	print (message_clear)
 	return message_clear
 def iot_enc(message, local_key, protocol):
-	iot_aes = iotAES(local_key)
-	messge_enc = iot_aes.encrypt(message)
+	messge_enc = encrypt(message, local_key)
 	if protocol == "2.1":
 		messge_enc = base64.b64encode(messge_enc)
 		signature = b'data=' + messge_enc + b'||pv=' + protocol.encode() + b'||' + local_key.encode()
