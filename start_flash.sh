@@ -38,9 +38,11 @@ if [ ! -f eula_accepted ]; then
 	touch eula_accepted
 fi
 echo "======================================================"
-echo "  Starting AP in a screen"
+echo -n "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
-sleep 5
+while ! ping -c 1 -W 1 -n 10.42.42.1 &> /dev/null; do
+	printf .
+done
 echo "  Stopping any apache web server"
 sudo service apache2 stop >/dev/null 2>&1
 echo "  Starting web server in a screen"
@@ -67,14 +69,12 @@ echo "Starting smart config pairing procedure"
 ./smartconfig/main.py &
 smartconfig_pid=$!
 
-echo "Waiting for the upgraded device to appear"
+echo "Waiting for the device to install the intermediate firmware"
 echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
 i=60
-while ! timeout 0.2 ping -c 1 -n 10.42.42.42 &> /dev/null
-do
-    printf "."
-	sleep 1
+while ! ping -c 1 -W 1 -n 10.42.42.42 &> /dev/null; do
+	printf .
 	if (( --i == 0 )); then
 		echo
 		echo "Device did not appear with the intermediate firmware"
