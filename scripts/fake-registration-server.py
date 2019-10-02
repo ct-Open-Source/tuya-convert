@@ -62,6 +62,8 @@ class MainHandler(tornado.web.RequestHandler):
         self.write("Hello, world")
 
 class JSONHandler(tornado.web.RequestHandler):
+    def __init__(self):
+        self.activated_ids = {}
     def get(self):
         self.post()
     def reply(self, result=None, encrypted=False):
@@ -135,9 +137,11 @@ class JSONHandler(tornado.web.RequestHandler):
 
         elif(".active" in a):
             print("Answer s.gw.dev.pk.active")
+            schema_key_count = 1 if gwId in self.activated_ids else 10
+            self.activated_ids[gwId] = True
             answer = {
                 "schema": jsonstr([
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"}] * 10),
+                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"}] * schema_key_count),
                 "uid": "00000000000000000000",
                 "devEtag": "0000000000",
                 "secKey": options.secKey,
