@@ -62,7 +62,8 @@ class MainHandler(tornado.web.RequestHandler):
         self.write("Hello, world")
 
 class JSONHandler(tornado.web.RequestHandler):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(JSONHandler, self).__init__(*args, **kwargs)
         self.activated_ids = {}
     def get(self):
         self.post()
