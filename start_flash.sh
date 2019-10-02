@@ -43,6 +43,7 @@ $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
 while ! ping -c 1 -W 1 -n 10.42.42.1 &> /dev/null; do
 	printf .
 done
+echo
 echo "  Stopping any apache web server"
 sudo service apache2 stop >/dev/null 2>&1
 echo "  Starting web server in a screen"
