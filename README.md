@@ -25,7 +25,7 @@ Since Tuya devices are spread around the world with likely a vast amount of diff
 ## REQUIREMENTS
 * Linux computer with a wifi adapter
 * Secondary wifi device (e.g. smartphone)
-* Dependencies (will be installed by install_prereq): python3, dnsmasq, hostapd, screen, curl, python3-pip, python3-setuptools, python3-wheel, mosquitto, paho-mqtt, pyaes, tornado
+* Dependencies will be installed by `install_prereq.sh`
 
 These scripts were tested in 
 * Kali-Linux 2018.4 in VMWARE
@@ -37,7 +37,7 @@ Any Linux with a Wifi adapter which can act as an Access Point should also work.
 
 ## PROCEDURE
 
-As of January 28th, 2019, Tuya has started [distributing a patch](https://www.heise.de/newsticker/meldung/Smart-Home-Hack-Tuya-veroeffentlicht-Sicherheitsupdate-4292028.html) that prevents tuya-convert from completing successfully. It is up to the individual brands to adopt the patch, so some devices may be affected sooner than others. To ensure the best chance of success, **do not connect your device with the official app** as it may automatically update the device, preventing you from flashing with tuya-convert. Some devices are already being shipped with the update, in which case there is unfortunately no work around available at this time.
+On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/newsticker/meldung/Smart-Home-Hack-Tuya-veroeffentlicht-Sicherheitsupdate-4292028.html) that prevented older versions of tuya-convert from completing successfully. We have since developed a work around to enable OTA flashing once again, but there is always the possibility that Tuya will respond with yet another patch. To ensure the best chance of success, **do not connect your device with the official app** as it may automatically update the device, preventing you from flashing with tuya-convert. It is up to the individual brands to update their firmware, so some devices may be affected sooner than others.
 
 ### INSTALLATION
     # git clone https://github.com/ct-Open-Source/tuya-convert
