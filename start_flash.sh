@@ -67,7 +67,6 @@ echo "======================================================"
 
 echo "Starting smart config pairing procedure"
 ./smartconfig/main.py &
-smartconfig_pid=$!
 
 echo "Waiting for the device to install the intermediate firmware"
 echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
@@ -78,9 +77,7 @@ while ! ping -c 1 -W 1 -n 10.42.42.42 &> /dev/null; do
 	if (( --i == 0 )); then
 		echo
 		echo "Device did not appear with the intermediate firmware"
-		echo "Stopping smart config"
-		kill $smartconfig_pid &>/dev/null
-		wait $! 2>/dev/null
+		pkill -f smartconfig/main.py && echo "Stopping smart config"
 		read -p "Do you want to flash another device? [y/N] " -n 1 -r
 		echo
 		continue 2
@@ -90,9 +87,7 @@ done
 echo
 echo "IoT-device is online with ip 10.42.42.42"
 
-echo "Stopping smart config"
-kill $smartconfig_pid &>/dev/null
-wait $! 2>/dev/null
+pkill -f smartconfig/main.py && echo "Stopping smart config"
 
 echo "Fetching firmware backup"
 sleep 2

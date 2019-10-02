@@ -49,7 +49,7 @@ class JSONHandler(tornado.web.RequestHandler):
             self.set_header('Content-Length', str(len(answer)))
             self.set_header('Content-Language', 'zh-CN')
             self.write(answer)
-            #os.system("killall smartconfig.js")
+            os.system("pkill -f smartconfig/main.py")
 
         elif(".active" in a):
             print("Answer s.gw.dev.pk.active")
