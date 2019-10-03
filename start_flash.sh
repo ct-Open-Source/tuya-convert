@@ -43,6 +43,8 @@ echo "  Starting Mosquitto in a screen"
 sudo service mosquitto stop >/dev/null 2>&1
 sudo pkill mosquitto
 $screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
+echo "  Starting PSK frontend in a screen"
+$screen_with_log smarthack-psk.log -S smarthack-psk -m -d ./psk-frontend.py -v
 echo
 echo "======================================================"
 echo
