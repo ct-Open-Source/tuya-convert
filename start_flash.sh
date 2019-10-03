@@ -101,10 +101,9 @@ curl -JO http://10.42.42.42/backup
 
 echo "======================================================"
 echo "Getting Info from IoT-device"
-curl http://10.42.42.42 2> /dev/null | tee device-info.txt
+curl -s http://10.42.42.42 | tee device-info.txt
 popd >/dev/null
 
-echo 
 echo "======================================================"
 echo "Please make sure to note the correct SPI flash mode!"
 echo "Installing an alternative firmware with the wrong flash mode will leave the ESP unable to boot!"
