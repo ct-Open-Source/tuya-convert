@@ -40,7 +40,9 @@ $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
 echo "  Starting web server in a screen"
 $screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
-$screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v -c mosquitto.conf
+sudo service mosquitto stop >/dev/null 2>&1
+sudo pkill mosquitto
+$screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
 echo
 echo "======================================================"
 echo
