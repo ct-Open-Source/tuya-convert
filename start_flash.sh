@@ -72,7 +72,6 @@ echo "Starting smart config pairing procedure"
 ./smartconfig/main.py &
 
 echo "Waiting for the device to install the intermediate firmware"
-echo "If this does not work have a look at the '*.log'-files in the 'scripts' subfolder!"
 
 i=60
 while ! ping -c 1 -W 1 -n 10.42.42.42 &> /dev/null; do
@@ -80,6 +79,7 @@ while ! ping -c 1 -W 1 -n 10.42.42.42 &> /dev/null; do
 	if (( --i == 0 )); then
 		echo
 		echo "Device did not appear with the intermediate firmware"
+		echo "Check the *.log files in the scripts folder"
 		pkill -f smartconfig/main.py && echo "Stopping smart config"
 		read -p "Do you want to flash another device? [y/N] " -n 1 -r
 		echo
