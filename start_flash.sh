@@ -35,8 +35,11 @@ if [ "$REPLY" != "yes" ]; then
    exit
 fi
 echo "======================================================"
-echo "  Starting AP in a screen"
+echo -n "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
+while ! ping -c 1 -W 1 -n $GATEWAY &> /dev/null; do
+	printf .
+done
 echo "  Starting web server in a screen"
 $screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
