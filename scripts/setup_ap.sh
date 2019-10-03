@@ -43,7 +43,7 @@ EOF
 
 echo "Configuring AP interface..."
 sudo ifconfig $WLAN down
-sudo ifconfig $WLAN up 10.42.42.1 netmask 255.255.255.0
+sudo ifconfig $WLAN up $GATEWAY netmask 255.255.255.0
 sudo ip route add 255.255.255.255 dev $WLAN
 
 echo "Starting DNSMASQ server..."
@@ -51,9 +51,9 @@ sudo dnsmasq \
 	--no-resolv \
 	--interface=$WLAN \
 	--bind-interfaces \
-	--listen-address=10.42.42.1 \
+	--listen-address=$GATEWAY \
 	--dhcp-range=10.42.42.10,10.42.42.40,12h \
-	--address=/#/10.42.42.1
+	--address=/#/$GATEWAY
 
 echo "Starting AP on $WLAN..."
 sudo hostapd hostapd.conf
