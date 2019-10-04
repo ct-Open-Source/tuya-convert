@@ -7,6 +7,7 @@ Copyright (c) 2018 VTRUST. All rights reserved.
 """
 
 import tornado.web
+import tornado.locks
 from tornado.options import define, options, parse_command_line
 
 define("port", default=80, help="run on the given port", type=int)
@@ -61,10 +62,23 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.write("Hello, world")
 
-class JSONHandler(tornado.web.RequestHandler):
-    def __init__(self, *args, **kwargs):
-        super(JSONHandler, self).__init__(*args, **kwargs)
+class SchemaHandler(object):
+    def __init__(self):
+        self.notifier = tornado.locks.Condition()
         self.activated_ids = {}
+
+    def get(self, gwId):
+        # first try extended schema, otherwise minimal schema
+        schema_key_count = 1 if gwId in self.activated_ids else 10
+        # record that this gwId has been seen
+        self.activated_ids[gwId] = True
+        self.notifier.notify_all()
+        return jsonstr([
+            {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"}] * schema_key_count)
+
+schema = SchemaHandler()
+
+class JSONHandler(tornado.web.RequestHandler):
     def get(self):
         self.post()
     def reply(self, result=None, encrypted=False):
@@ -138,11 +152,8 @@ class JSONHandler(tornado.web.RequestHandler):
 
         elif(".active" in a):
             print("Answer s.gw.dev.pk.active")
-            schema_key_count = 1 if gwId in self.activated_ids else 10
-            self.activated_ids[gwId] = True
             answer = {
-                "schema": jsonstr([
-                    {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"}] * schema_key_count),
+                "schema": schema.get(gwId),
                 "uid": "00000000000000000000",
                 "devEtag": "0000000000",
                 "secKey": options.secKey,
