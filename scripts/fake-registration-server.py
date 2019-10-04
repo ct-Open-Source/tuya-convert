@@ -239,6 +239,7 @@ def main():
             (r"/gw.json", JSONHandler),
             (r"/d.json", JSONHandler),
             ('/files/(.*)', FilesHandler, {'path': str('../files/')}),
+            (r".*", tornado.web.RedirectHandler, {"url": "http://10.42.42.1/", "permanent": False}),
         ],
         #template_path=os.path.join(os.path.dirname(__file__), "templates"),
         #static_path=os.path.join(os.path.dirname(__file__), "static"),
