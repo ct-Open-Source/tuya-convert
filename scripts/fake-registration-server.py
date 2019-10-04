@@ -60,7 +60,7 @@ class FilesHandler(tornado.web.StaticFileHandler):
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write("Hello, world")
+        self.write("You are connected to vtrust-flash")
 
 class SchemaHandler(object):
     def __init__(self):
