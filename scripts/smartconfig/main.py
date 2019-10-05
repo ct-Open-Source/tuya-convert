@@ -15,7 +15,7 @@ secret = "0101"
 from smartconfig import smartconfig
 from time import sleep
 
-print('Put Device in Learn Mode! Sending SmartConfig Packets now')
+print('Put device in EZ config mode (blinking fast)')
 print('Sending SSID                  '+ssid)
 print('Sending wifiPassword          '+passwd)
 print('Sending token                 '+token)
