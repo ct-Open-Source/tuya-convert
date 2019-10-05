@@ -4,29 +4,19 @@
 . ../config.txt
 
 if test -d /etc/NetworkManager; then
-	echo "Backing up NetworkManager.cfg..."
-	sudo cp /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.backup
+    STATE_DEV_WLAN=$( nmcli device show $WLAN | sed 's/^GENERAL.STATE: *\(.*\)$/\1/p;d' )
 
-	cat <<- EOF > /etc/NetworkManager/NetworkManager.conf
-		[main]
-		plugins=keyfile
-
-		[keyfile]
-		unmanaged-devices=interface-name:$WLAN
-	EOF
-
-	echo "Restarting NetworkManager..."
-	sudo service network-manager restart
+    if [ "$STATE_DEV_WLAN" != "10 (unmanaged)" ]; then
+	nmcli set $WLAN managed no
+    fi
 fi
 sudo ifconfig $WLAN up
 
-echo "Backing up /etc/dnsmasq.conf..."
-sudo cp /etc/dnsmasq.conf /etc/dnsmasq.conf.backup
-
+DIR_DNSMASQ_CONF=$(mktemp -d )
 
 echo "Writing dnsmasq config file..."
-echo "Creating new /etc/dnsmasq.conf..."
-cat <<- EOF >/etc/dnsmasq.conf
+echo "Creating new ${DIR_DNSMASQ_CONF}/dnsmasq.conf..."
+cat <<- EOF > ${DIR_DNSMASQ_CONF}/dnsmasq.conf
 	# disables dnsmasq reading any other files like /etc/resolv.conf for nameservers
 	no-resolv
 	# Interface to bind to
@@ -72,7 +62,7 @@ sudo iptables --append FORWARD --in-interface $WLAN -j ACCEPT
 echo "Starting DNSMASQ server..."
 sudo /etc/init.d/dnsmasq stop > /dev/null 2>&1
 sudo pkill dnsmasq
-sudo dnsmasq
+sudo dnsmasq --conf-dir ${DIR_DNSMASQ_CONF}
 
 sudo sysctl -w net.ipv4.ip_forward=1 > /dev/null 2>&1
 
@@ -83,14 +73,10 @@ echo "Starting AP on $WLAN in screen terminal..."
 sudo hostapd /etc/hostapd/hostapd.conf
 
 if test -d /etc/NetworkManager; then
-	sudo rm /etc/NetworkManager/NetworkManager.conf > /dev/null 2>&1
-	sudo mv /etc/NetworkManager/NetworkManager.conf.backup /etc/NetworkManager/NetworkManager.conf
 	sudo service network-manager restart
 fi
 sudo /etc/init.d/dnsmasq stop > /dev/null 2>&1
 sudo pkill dnsmasq
-sudo rm /etc/dnsmasq.conf > /dev/null 2>&1
-sudo mv /etc/dnsmasq.conf.backup /etc/dnsmasq.conf > /dev/null 2>&1
 sudo rm /etc/dnsmasq.hosts > /dev/null 2>&1
 sudo iptables --flush
 sudo iptables --flush -t nat
