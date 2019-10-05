@@ -1,5 +1,8 @@
 #!/bin/bash
 
+pkill hostapd
+pkill dnsmasq
+
 echo "Stopping AP in a screen"
 sudo screen -S smarthack-wifi         -X stuff '^C'
 sudo screen -S smarthack-web          -X stuff '^C'
