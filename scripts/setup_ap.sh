@@ -7,7 +7,7 @@ if test -d /etc/NetworkManager; then
     STATE_DEV_WLAN=$( nmcli device show $WLAN | sed 's/^GENERAL.STATE: *\(.*\)$/\1/p;d' )
 
     if [ "$STATE_DEV_WLAN" != "10 (unmanaged)" ]; then
-	nmcli set $WLAN managed no
+	nmcli device set $WLAN managed no
     fi
 fi
 sudo ifconfig $WLAN up
