@@ -87,7 +87,8 @@ class PskFrontend():
                     
 
 def main():
-    proxies = [PskFrontend('', 443, '127.0.0.1', 80), PskFrontend('', 8886, '127.0.0.1', 1883)]
+    gateway = '10.42.42.1'
+    proxies = [PskFrontend(gateway, 443, gateway, 80), PskFrontend(gateway, 8886, gateway, 1883)]
 
 
     while True:

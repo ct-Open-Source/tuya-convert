@@ -1,10 +1,8 @@
-# Please input the good wlan device (most of the time it is wlan0 or wlan1)
+# Please input the wlan device to be used (most of the time it is wlan0 or wlan1)
 WLAN=wlan0
-
-# The ETH device should be connected to the internet but it should also work if it is a local network only
-ETH=eth0
 
 # Here you could change the WIFI-name and password but most likely most scripts won't work after
 # Because the WIFI-credentials are hardcoded in the esp8266-ota-flash-convert
 AP=vtrust-flash
 PASS=flashmeifyoucan
+GATEWAY=10.42.42.1
