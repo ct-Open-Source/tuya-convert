@@ -13,6 +13,7 @@ fi
 sudo ifconfig $WLAN up
 
 DIR_DNSMASQ_CONF=$(mktemp -d )
+DIR_HOSTAPD_CONF=$(mktemp -d )
 
 echo "Writing dnsmasq config file..."
 echo "Creating new ${DIR_DNSMASQ_CONF}/dnsmasq.conf..."
@@ -33,7 +34,7 @@ cat <<- EOF > ${DIR_DNSMASQ_CONF}/dnsmasq.conf
 EOF
 
 echo "Writing hostapd config file..."
-cat <<- EOF >/etc/hostapd/hostapd.conf
+cat <<- EOF > ${DIR_HOSTAPD_CONF}/hostapd.conf
 	interface=$WLAN
 	driver=nl80211
 	ssid=$AP
@@ -70,7 +71,9 @@ sudo ip route add 255.255.255.255 dev $WLAN
 
 
 echo "Starting AP on $WLAN in screen terminal..."
-sudo hostapd /etc/hostapd/hostapd.conf
+sudo /etc/init.d/hostapd stop > /dev/null 2>&1
+sudo pkill  hostapd
+sudo hostapd ${DIR_HOSTAPD_CONF}/hostapd.conf
 
 if test -d /etc/NetworkManager; then
 	sudo service network-manager restart
