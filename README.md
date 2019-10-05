@@ -75,7 +75,7 @@ It will destroy your ability to undo and go back to the original firmware
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
 1. Place or link your binary file to ./files/thirdparty.bin.
 
-	Currently a Tasmota [v6.5.0](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.5.0) `sonoff-basic.bin` build is included. In this Tasmota firmware variant, many features and most sensors are disabled. Tasmota strongly recommendeds to update to a [current version](http://thehackbox.org/tasmota) of a "full featured" variant (e.g., `sonoff.bin`). This can be accomplished via OTA after the Tuya-Convert process completes successfully. Please note that while we include this for your convenience, we are not affliated with the Tasmota project and cannot provide support for post installation issues. Please refer to [the respective project](https://github.com/arendst/Sonoff-Tasmota) for configuration and support.  
+	Currently a custom build of Sonoff-Tasmota [v6.6.0](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.6.0) `sonoff-basic.bin` is included. In this Tasmota firmware variant, many features and most sensors are disabled. Tasmota strongly recommendeds to update to a [current version](http://thehackbox.org/tasmota) of a "full featured" variant (e.g., `sonoff.bin`). This can be accomplished via OTA after the Tuya-Convert process completes successfully. Please note that while we include this for your convenience, we are not affliated with the Tasmota project and cannot provide support for post installation issues. Please refer to [the respective project](https://github.com/arendst/Sonoff-Tasmota) for configuration and support.  
 	
 	Binary requirements:
 	* full binary including first-stage bootloader
@@ -97,4 +97,3 @@ Alternatively you can request a certain file to be requested and flashed by the 
 - [TuyAPI](https://github.com/codetheweb/tuyapi) NPM library for LAN control of Tuya devices with stock firmware
 - [TuyOTA](https://github.com/SynAckFin/TuyOTA) Perl based Tuya flashing script using a similar strategy
 - [MockTuyaCloud](https://github.com/kueblc/mocktuyacloud) Framework replicating much of the Tuya cloud functionality
-
