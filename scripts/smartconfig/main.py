@@ -13,15 +13,24 @@ token = "00000000"
 secret = "0101"
 
 from smartconfig import smartconfig
+from time import sleep
 
 print('Put Device in Learn Mode! Sending SmartConfig Packets now')
-
 print('Sending SSID                  '+ssid)
 print('Sending wifiPassword          '+passwd)
-print('SmartConfig in progress')
+print('Sending token                 '+token)
+print('Sending secret                '+secret)
 
-smartconfig( passwd, ssid, region, token, secret )
+for i in range(10): # Make 10 attempts
 
-print()
-print('SmartConfig complete.')
+	smartconfig( passwd, ssid, region, token, secret )
 
+	print()
+	print('SmartConfig complete.')
+
+	for t in range(3, 0, -1):
+		print('Auto retry in %ds. ' % t, end='', flush=True)
+		sleep(1)
+		print(end='\r')
+
+	print('Resending SmartConfig Packets')
