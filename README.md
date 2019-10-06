@@ -1,4 +1,4 @@
-﻿
+
 # TUYA-CONVERT
 
 A Chinese company named Tuya offers a free-to-brand turnkey smart home solution to anyone. Using their offer is dead-simple, since everything can be done by clicking through the [Tuya web page](https://en.tuya.com/), from choosing your pre-designed products or pre-programmed wifi-modules (mostly ESP8266) to building your own app. In the end, this has resulted in as they claim over 11 000 devices 'made' by over 10 000 vendors using Tuyas firmware and cloud services.
@@ -73,9 +73,11 @@ It will destroy your ability to undo and go back to the original firmware
 
 ### FLASH third-party firmware
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
-1. Place or link your binary file to ./files/thirdparty.bin.
+1. Use the provided binaries, or place/link your own binary file to ./files/thirdparty.bin.
 
-	Currently a custom build of Sonoff-Tasmota [v6.6.0](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.6.0) `sonoff-basic.bin` is included. In this Tasmota firmware variant, many features and most sensors are disabled. Tasmota strongly recommendeds to update to a [current version](http://thehackbox.org/tasmota) of a "full featured" variant (e.g., `sonoff.bin`). This can be accomplished via OTA after the Tuya-Convert process completes successfully. Please note that while we include this for your convenience, we are not affliated with the Tasmota project and cannot provide support for post installation issues. Please refer to [the respective project](https://github.com/arendst/Sonoff-Tasmota) for configuration and support.  
+    A custom version of Sonoff-Tasmota 6.6.0.7 is bundled for your convenience as the default `thirdparty.bin` firmware. It is a variant of minimal `sonoff-basic` build which ensures that the WiFi configuration access point is available at first boot without requiring the button to be correctly configured. 
+
+	Additionaly, a minimal build of Sonoff-Tasmota [v6.6.0](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.6.0) `sonoff-basic.bin` is also included. In this Tasmota firmware variant, many features and most sensors are disabled. Tasmota strongly recommendeds to [update to the current release](http://thehackbox.org/tasmota/release) of a "full featured" variant (e.g., `sonoff.bin`). This can easily be accomplished via the `Firmware Upgrade` option after the Tuya-Convert process completes successfully. Please note that while we include this for your convenience, we are not affliated with the Tasmota project and cannot provide support for post installation issues. Please refer to [the respective project](https://github.com/arendst/Sonoff-Tasmota) for configuration and support.  
 	
 	Binary requirements:
 	* full binary including first-stage bootloader
@@ -83,11 +85,13 @@ BE SURE THE FIRMWARE FITS YOUR DEVICE!
 
 3. Start flashing process
 
-        # curl http://10.42.42.42/flash3
+    # curl http://10.42.42.42/flash3
 
 Alternatively you can request a certain file to be requested and flashed by the device:
 
-	# curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/thirdparty.bin
+	# curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/sonoff-basic.bin
+
+If your devices firmware is *not* already running in the user2 userspace, you will be prompted to correct this. See above for more details.
 
 4. Initial Configuration
 
