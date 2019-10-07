@@ -97,10 +97,12 @@ echo
 echo "3. Flash a third party firmware to the device"
 echo "BE SURE THE FIRMWARE FITS THE DEVICE AND USES THE CORRECT FLASH MODE!"
 echo "MAXIMUM SIZE IS 512KB"
-echo "put or link it to ./files/thirdparty.bin"
-echo "A custom build of Sonoff-Tasmota v6.6.0 is already included in this repository."
+echo
+echo "By default, the binary located at ./files/thirdparty.bin is used, which"
+echo "is a custom build of Sonoff-Tasmota v6.6.0.7:"
 echo "   # curl http://10.42.42.42/flash3"
-echo "Alternatively let the device download and flash a file via HTTP:"
-echo "   # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/thirdparty.bin"
+echo
+echo "Alternatively let the device download and flash a specific file via HTTP:"
+echo "   # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/sonoff-basic.bin"
 echo
 echo "HAVE FUN!"
