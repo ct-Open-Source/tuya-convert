@@ -127,19 +127,19 @@ class JSONHandler(tornado.web.RequestHandler):
         if(a == "s.gw.token.get"):
             print("Answer s.gw.token.get")
             answer = {
-                "gwApiUrl": "http://10.42.42.1/gw.json",
+                "gwApiUrl": "http://" + options.addr + "/gw.json",
                 "stdTimeZone": "-05:00",
                 "mqttRanges": "",
                 "timeZone": "-05:00",
-                "httpsPSKUrl": "https://10.42.42.1/gw.json",
-                "mediaMqttUrl": "10.42.42.1",
-                "gwMqttUrl": "10.42.42.1",
+                "httpsPSKUrl": "https://" + options.addr + "/gw.json",
+                "mediaMqttUrl": options.addr,
+                "gwMqttUrl": options.addr,
                 "dstIntervals": [] }
             if encrypted:
-                answer["mqttsUrl"] = "10.42.42.1"
-                answer["mqttsPSKUrl"] = "10.42.42.1"
-                answer["mediaMqttsUrl"] = "10.42.42.1"
-                answer["aispeech"] = "10.42.42.1"
+                answer["mqttsUrl"] = options.addr
+                answer["mqttsPSKUrl"] = options.addr
+                answer["mediaMqttsUrl"] = options.addr
+                answer["aispeech"] = options.addr
             self.reply(answer)
             os.system("pkill -f smartconfig/main.py")
 
@@ -174,7 +174,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "auto": 3,
                 "size": file_len,
                 "type": 0,
-                "pskUrl": "http://10.42.42.1/files/upgrade.bin",
+                "pskUrl": "http://" + options.addr + "/files/upgrade.bin",
                 "hmac": file_hmac,
                 "version": "9.0.0" }
             self.reply(answer, encrypted)
@@ -186,7 +186,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "type": 0,
                 "size": file_len,
                 "version": "9.0.0",
-                "url": "http://10.42.42.1/files/upgrade.bin",
+                "url": "http://" + options.addr + "/files/upgrade.bin",
                 "md5": file_md5 }
             self.reply(answer, encrypted)
 
@@ -197,7 +197,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "fileSize": file_len,
                 "etag": "0000000000",
                 "version": "9.0.0",
-                "url": "http://10.42.42.1/files/upgrade.bin",
+                "url": "http://" + options.addr + "/files/upgrade.bin",
                 "md5": file_md5 }
             self.reply(answer, encrypted)
 
@@ -238,7 +238,7 @@ def main():
             (r"/gw.json", JSONHandler),
             (r"/d.json", JSONHandler),
             ('/files/(.*)', FilesHandler, {'path': str('../files/')}),
-            (r".*", tornado.web.RedirectHandler, {"url": "http://10.42.42.1/", "permanent": False}),
+            (r".*", tornado.web.RedirectHandler, {"url": "http://" + options.addr + "/", "permanent": False}),
         ],
         #template_path=os.path.join(os.path.dirname(__file__), "templates"),
         #static_path=os.path.join(os.path.dirname(__file__), "static"),
@@ -246,7 +246,7 @@ def main():
     )
     try:
         app.listen(options.port, options.addr)
-        print("Listening on " + str(options.addr) + ":" + str(options.port))
+        print("Listening on " + options.addr + ":" + str(options.port))
         tornado.ioloop.IOLoop.current().start()
     except OSError as err:
         print("Could not start server on port " + str(options.port))
