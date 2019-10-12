@@ -3,6 +3,12 @@
 # Source config
 . ../config.txt
 
+if ! iw list | grep -q "* AP"; then
+	echo "AP mode not supported!"
+	echo "Please attach a WiFi card that supports AP mode."
+	exit 1
+fi
+
 echo -n "Checking for network interface $WLAN... "
 if [ -e /sys/class/net/$WLAN ]; then
 	echo "Found."
