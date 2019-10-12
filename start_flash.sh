@@ -122,6 +122,8 @@ echo "MAXIMUM SIZE IS 512KB"
 echo "put or link it to ./files/thirdparty.bin"
 echo "A basic build of Sonoff-Tasmota v6.5.0 is already included in this repository."
 echo "   # curl http://10.42.42.42/flash3"
+echo "If you want to flash the included ESPurna 1.13.5 image use this command:"
+echo "   # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/espurna-base.bin"
 echo "Alternatively let the device download and flash a file via HTTP:"
 echo "   # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/thirdparty.bin"
 echo
