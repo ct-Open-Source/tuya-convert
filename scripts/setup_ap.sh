@@ -24,23 +24,6 @@ if test -d /etc/NetworkManager; then
 	sudo service network-manager stop
 fi
 
-echo "Writing hostapd config file..."
-cat <<- EOF >hostapd.conf
-	interface=$WLAN
-	driver=nl80211
-	ssid=$AP
-	hw_mode=g
-	channel=1
-	macaddr_acl=0
-	auth_algs=1
-	ignore_broadcast_ssid=0
-	wpa=2
-	wpa_passphrase=$PASS
-	wpa_key_mgmt=WPA-PSK
-	wpa_pairwise=TKIP
-	rsn_pairwise=CCMP
-EOF
-
 echo "Configuring AP interface..."
 sudo ifconfig $WLAN down
 sudo ifconfig $WLAN up $GATEWAY netmask 255.255.255.0
@@ -56,7 +39,7 @@ sudo dnsmasq \
 	--address=/#/$GATEWAY
 
 echo "Starting AP on $WLAN..."
-sudo hostapd hostapd.conf
+sudo hostapd hostapd.conf -i $WLAN
 echo "AP closed"
 
 echo "Stopping DNSMASQ server..."
