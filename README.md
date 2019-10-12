@@ -49,7 +49,6 @@ On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/
 Follow the instructions in the start_flash script. It will install our flash loader onto the ESP and connect to the access point created by your wifi adapter.
 
     WIFI: vtrust-flash
-    PASS: flashmeifyoucan
     IP: 10.42.42.42
 A backup of the original firmware will be created and stored locally
 
