@@ -73,6 +73,8 @@ do
 	sleep 1
 done
 
+mkdir -p ./backups && pushd ./backups >/dev/null
+
 echo
 echo "IoT-device is online with ip 10.42.42.42"
 echo "Fetching firmware backup"
@@ -82,6 +84,12 @@ curl -JO http://10.42.42.42/backup
 echo "======================================================"
 echo "Getting Info from IoT-device"
 curl http://10.42.42.42 2> /dev/null | tee device-info.txt
+
+chipID=`cat device-info.txt | grep ChipID | awk '{print $2}'`
+mv device-info.txt device-info_${chipID}.txt
+popd >/dev/null
+find ./backups/*.bin -exec ln -s {} 2>/dev/null \;
+
 echo 
 echo "======================================================"
 echo "Please make sure to note the correct SPI flash mode!"
