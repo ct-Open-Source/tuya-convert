@@ -3,6 +3,10 @@
 # Source config
 . ../config.txt
 
+if test -e /usr/sbin/iptables-legacy; then
+	iptables="/usr/sbin/iptables-legacy"
+fi
+
 if test -d /etc/NetworkManager; then
 	echo "Backing up NetworkManager.cfg..."
 	sudo cp /etc/NetworkManager/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf.backup
