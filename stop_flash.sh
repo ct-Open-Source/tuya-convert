@@ -1,5 +1,5 @@
 #!/bin/bash
-
+killall wpa_supplicant
 echo "Stopping AP in a screen"
 sudo screen -S smarthack-wifi         -X stuff '^C'
 sudo screen -S smarthack-web          -X stuff '^C'
