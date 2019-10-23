@@ -93,6 +93,18 @@ Alternatively you can request a certain file to be requested and flashed by the 
 
 	If you flashed the included Tasmota firmware file, it will broadcast a `sonoff-xxxx` access point (AP) when the device boots. Connect to this AP and open the browser to 192.168.4.1 to configure the device's Wi-Fi credentials. When entering the Wi-Fi password, click the checkbox to view the password you enter to ensure that it is correct and that your mobile device has not inadvertently capitalized the first letter if it is supposed to be lower case nor autocorrected what you entered. ~~Double~~ **Triple check the Wi-Fi credentials** before clicking **Save** to apply the settings.  
 
+## CONTRIBUTING
+
+This project is currently maintained by Colin Kuebler @kueblc
+
+Significant time and resources are devoted to supporting and maintaining this project. Research, development, and testing requires obtaining and often breaking IoT devices and related hardware. To help offset costs and support the developers who make this project possible, please consider making a one-time or recurring donation. This allows us to spend less time worrying about putting food on the table and more time making great software accessible to everyone.
+
+- [Become a Patron](https://www.patreon.com/kueblc)
+- [Buy Me A Coffee](https://www.buymeacoffee.com/kueblc)
+- [PayPal](https://paypal.me/kueblc)
+
+You can also give back by providing or improving documentation, tutorials, issue support, bug reports, feature requests, and pull requests. When planning to contribute major code changes, please post your intention beforehand so we can coordinate, avoid redundant contributions and ensure the changes match project philosophy. Any major PR should be made against the `development` branch.
+
 ## RELATED WORKS
 - [TuyAPI](https://github.com/codetheweb/tuyapi) NPM library for LAN control of Tuya devices with stock firmware
 - [TuyOTA](https://github.com/SynAckFin/TuyOTA) Perl based Tuya flashing script using a similar strategy
