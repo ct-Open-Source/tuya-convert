@@ -6,9 +6,19 @@ Created by nano on 2018-11-22.
 Copyright (c) 2018 VTRUST. All rights reserved.
 """
 
-import tornado.web
+import binascii
+import hashlib
+import hmac
+import json
+import os
+from base64 import b64encode
+from time import time
+
 import tornado.locks
+import tornado.web
 from tornado.options import define, options, parse_command_line
+
+from Crypto.Cipher import AES
 
 define("port", default=80, help="run on the given port", type=int)
 define("debug", default=True, help="run in debug mode")
@@ -16,19 +26,10 @@ define(
     "secKey", default="0000000000000000", help="key used for encrypted communication"
 )
 
-import os
-
-from Crypto.Cipher import AES
 
 pad = lambda s: s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
 unpad = lambda s: s[: -ord(s[len(s) - 1 :])]
 
-from base64 import b64encode
-import hashlib
-import hmac
-import binascii
-
-import json
 
 jsonstr = lambda j: json.dumps(j, separators=(",", ":"))
 
@@ -60,8 +61,6 @@ def get_file_stats(file_name):
     )
     file_len = str(os.path.getsize(file_name))
 
-
-from time import time
 
 timestamp = lambda: int(time())
 

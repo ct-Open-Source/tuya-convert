@@ -20,6 +20,9 @@ MULTICAST_TTL = 1
 from socket import *
 from time import sleep
 
+from broadcast import broadcast_head, encode_broadcast_body
+from multicast import encode_multicast_body, multicast_head
+
 
 class SmartConfigSocket(object):
     def __init__(self, address=BIND_ADDRESS, gap=GAP):
@@ -39,10 +42,6 @@ class SmartConfigSocket(object):
         for ip in data:
             self._socket.sendto(b"\0", (ip, 30012))
             sleep(self._gap)
-
-
-from broadcast import broadcast_head, encode_broadcast_body
-from multicast import multicast_head, encode_multicast_body
 
 
 def smartconfig(password, ssid, region, token, secret):

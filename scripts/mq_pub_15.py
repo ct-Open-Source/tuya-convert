@@ -5,10 +5,15 @@ mq_pub_15.py
 Created by nano on 2018-11-22.
 Copyright (c) 2018 VTRUST. All rights reserved.
 """
-import sys, getopt, time, base64
-import paho.mqtt.publish as publish
-from hashlib import md5
+import base64
 import binascii
+import getopt
+import sys
+import time
+from hashlib import md5
+
+import paho.mqtt.publish as publish
+from Crypto.Cipher import AES
 
 help_message = """USAGE:
 	"-i"/"--deviceID"
@@ -20,7 +25,6 @@ iot:
     sys.argv[0].split("/")[-1]
 )
 
-from Crypto.Cipher import AES
 
 pad = lambda s: s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
 unpad = lambda s: s[: -ord(s[len(s) - 1 :])]

@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
-import socket
 import select
+import socket
 import ssl
-import sslpsk
-
-from Crypto.Cipher import AES
-from hashlib import md5
 from binascii import hexlify, unhexlify
+from hashlib import md5
+
+import sslpsk
+from Crypto.Cipher import AES
 
 
 def listener(host, port):
