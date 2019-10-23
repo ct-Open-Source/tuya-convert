@@ -11,10 +11,18 @@ import tornado.locks
 from tornado.options import define, options, parse_command_line
 
 define("port", default=80, help="run on the given port", type=int)
+define("addr", default="10.42.42.1", help="run on the given ip", type=str)
 define("debug", default=True, help="run in debug mode")
 define("secKey", default="0000000000000000", help="key used for encrypted communication")
 
 import os
+import signal
+
+def exit_cleanly(signal, frame):
+    print("Received SIGINT, exiting...")
+    exit(0)
+
+signal.signal(signal.SIGINT, exit_cleanly)
 
 from Crypto.Cipher import AES
 pad = lambda s: s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
@@ -62,23 +70,8 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.write("You are connected to vtrust-flash")
 
-class SchemaHandler(object):
-    def __init__(self):
-        self.notifier = tornado.locks.Condition()
-        self.activated_ids = {}
-
-    def get(self, gwId):
-        # first try extended schema, otherwise minimal schema
-        schema_key_count = 1 if gwId in self.activated_ids else 10
-        # record that this gwId has been seen
-        self.activated_ids[gwId] = True
-        self.notifier.notify_all()
-        return jsonstr([
-            {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"}] * schema_key_count)
-
-schema = SchemaHandler()
-
 class JSONHandler(tornado.web.RequestHandler):
+    activated_ids = {}
     def get(self):
         self.post()
     def reply(self, result=None, encrypted=False):
@@ -134,26 +127,32 @@ class JSONHandler(tornado.web.RequestHandler):
         if(a == "s.gw.token.get"):
             print("Answer s.gw.token.get")
             answer = {
-                "gwApiUrl": "http://10.42.42.1/gw.json",
+                "gwApiUrl": "http://" + options.addr + "/gw.json",
                 "stdTimeZone": "-05:00",
                 "mqttRanges": "",
                 "timeZone": "-05:00",
-                "httpsPSKUrl": "https://10.42.42.1/gw.json",
-                "mediaMqttUrl": "10.42.42.1",
-                "gwMqttUrl": "10.42.42.1",
+                "httpsPSKUrl": "https://" + options.addr + "/gw.json",
+                "mediaMqttUrl": options.addr,
+                "gwMqttUrl": options.addr,
                 "dstIntervals": [] }
             if encrypted:
-                answer["mqttsUrl"] = "10.42.42.1"
-                answer["mqttsPSKUrl"] = "10.42.42.1"
-                answer["mediaMqttsUrl"] = "10.42.42.1"
-                answer["aispeech"] = "10.42.42.1"
+                answer["mqttsUrl"] = options.addr
+                answer["mqttsPSKUrl"] = options.addr
+                answer["mediaMqttsUrl"] = options.addr
+                answer["aispeech"] = options.addr
             self.reply(answer)
-            #os.system("killall smartconfig.js")
+            os.system("pkill -f smartconfig/main.py")
 
         elif(".active" in a):
             print("Answer s.gw.dev.pk.active")
+            # first try extended schema, otherwise minimal schema
+            schema_key_count = 1 if gwId in self.activated_ids else 10
+            # record that this gwId has been seen
+            self.activated_ids[gwId] = True
+            schema = jsonstr([
+                {"mode":"rw","property":{"type":"bool"},"id":1,"type":"obj"}] * schema_key_count)
             answer = {
-                "schema": schema.get(gwId),
+                "schema": schema,
                 "uid": "00000000000000000000",
                 "devEtag": "0000000000",
                 "secKey": options.secKey,
@@ -175,7 +174,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "auto": 3,
                 "size": file_len,
                 "type": 0,
-                "pskUrl": "http://10.42.42.1/files/upgrade.bin",
+                "pskUrl": "http://" + options.addr + "/files/upgrade.bin",
                 "hmac": file_hmac,
                 "version": "9.0.0" }
             self.reply(answer, encrypted)
@@ -187,7 +186,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "type": 0,
                 "size": file_len,
                 "version": "9.0.0",
-                "url": "http://10.42.42.1/files/upgrade.bin",
+                "url": "http://" + options.addr + "/files/upgrade.bin",
                 "md5": file_md5 }
             self.reply(answer, encrypted)
 
@@ -198,7 +197,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 "fileSize": file_len,
                 "etag": "0000000000",
                 "version": "9.0.0",
-                "url": "http://10.42.42.1/files/upgrade.bin",
+                "url": "http://" + options.addr + "/files/upgrade.bin",
                 "md5": file_md5 }
             self.reply(answer, encrypted)
 
@@ -239,15 +238,22 @@ def main():
             (r"/gw.json", JSONHandler),
             (r"/d.json", JSONHandler),
             ('/files/(.*)', FilesHandler, {'path': str('../files/')}),
-            (r".*", tornado.web.RedirectHandler, {"url": "http://10.42.42.1/", "permanent": False}),
+            (r".*", tornado.web.RedirectHandler, {"url": "http://" + options.addr + "/", "permanent": False}),
         ],
         #template_path=os.path.join(os.path.dirname(__file__), "templates"),
         #static_path=os.path.join(os.path.dirname(__file__), "static"),
         debug=options.debug,
     )
-    app.listen(options.port)
-    print("Listening on port "+str(options.port))
-    tornado.ioloop.IOLoop.current().start()
+    try:
+        app.listen(options.port, options.addr)
+        print("Listening on " + options.addr + ":" + str(options.port))
+        tornado.ioloop.IOLoop.current().start()
+    except OSError as err:
+        print("Could not start server on port " + str(options.port))
+        if err.errno is 98: # EADDRINUSE
+            print("Close the process on this port and try again")
+        else:
+            print(err)
 
 
 if __name__ == "__main__":

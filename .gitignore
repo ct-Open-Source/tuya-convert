@@ -108,3 +108,10 @@ node_modules/
 *.bin
 device-info.txt
 scripts/smartconfig/package-lock.json
+
+# firmware backups directory
+backups/
+
+# flag files
+eula_accepted
+

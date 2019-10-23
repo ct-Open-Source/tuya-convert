@@ -11,8 +11,8 @@ from crc import crc_32
 
 from Crypto.Cipher import AES
 pad = lambda data, block_size : data + ('\0' * ( (block_size - len(data)) % block_size ) )
-aes = AES.new( "a3c6794oiu876t54", AES.MODE_ECB, '' )
-encrypt = lambda data : aes.encrypt( pad(data, 16) )
+aes = AES.new( b'a3c6794oiu876t54', AES.MODE_ECB )
+encrypt = lambda data : aes.encrypt( pad(data, 16).encode() )
 
 def encode_pw( pw ):
 	r = []

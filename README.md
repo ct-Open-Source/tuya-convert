@@ -49,7 +49,6 @@ On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/
 Follow the instructions in the start_flash script. It will install our flash loader onto the ESP and connect to the access point created by your wifi adapter.
 
     WIFI: vtrust-flash
-    PASS: flashmeifyoucan
     IP: 10.42.42.42
 A backup of the original firmware will be created and stored locally
 
@@ -77,21 +76,25 @@ BE SURE THE FIRMWARE FITS YOUR DEVICE!
 
 	Currently a Tasmota [v6.5.0](https://github.com/arendst/Sonoff-Tasmota/releases/tag/v6.5.0) `sonoff-basic.bin` build is included. In this Tasmota firmware variant, many features and most sensors are disabled. Tasmota strongly recommendeds to update to a [current version](http://thehackbox.org/tasmota) of a "full featured" variant (e.g., `sonoff.bin`). This can be accomplished via OTA after the Tuya-Convert process completes successfully. Please note that while we include this for your convenience, we are not affliated with the Tasmota project and cannot provide support for post installation issues. Please refer to [the respective project](https://github.com/arendst/Sonoff-Tasmota) for configuration and support.  
 	
+	An ESPurna [1.13.5](https://github.com/xoseperez/espurna/releases/tag/1.13.5) binary is also included (`espurna-base.bin`). Like before, the binary included does not have any specific hardware defined. Once flashed using Tuya-Convert you can update to the device-specific version via any of the means that ESPurna provides (OTA, web interface update, update via telnet or MQTT). Please refer to the [ESPurna project page](http://espurna.io) for more info and support.
+
 	Binary requirements:
 	* full binary including first-stage bootloader
 	* maximum filesize 512KB for first flash
 
-3. Start flashing process
+2. Start flashing process
 
         # curl http://10.42.42.42/flash3
 
-Alternatively you can request a certain file to be requested and flashed by the device:
+	Alternatively you can request a certain file to be requested and flashed by the device:
 
-	# curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/thirdparty.bin
+        # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/certain_file.bin
 
-4. Initial Configuration
+3. Initial Configuration
 
 	If you flashed the included Tasmota firmware file, it will broadcast a `sonoff-xxxx` access point (AP) when the device boots. Connect to this AP and open the browser to 192.168.4.1 to configure the device's Wi-Fi credentials. When entering the Wi-Fi password, click the checkbox to view the password you enter to ensure that it is correct and that your mobile device has not inadvertently capitalized the first letter if it is supposed to be lower case nor autocorrected what you entered. ~~Double~~ **Triple check the Wi-Fi credentials** before clicking **Save** to apply the settings.  
+
+	If you flashed the included ESPurna fimaware file, the procedure will be very similar. The device will broadcast a `ESPURNA-XXXXXX` access point. You will have to connect to it using the default password: `fibonacci`. Once connected open the browser to 192.168.4.1 and follow the initial configuration instructions. Then go to the WIFI tab and configure your home WiFi connection (remember to save) or go to the ADMIN tab to upgrade the firmware to the device-specific image. 
 
 ## CONTRIBUTING
 
