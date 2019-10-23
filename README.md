@@ -96,6 +96,18 @@ BE SURE THE FIRMWARE FITS YOUR DEVICE!
 
 	If you flashed the included ESPurna fimaware file, the procedure will be very similar. The device will broadcast a `ESPURNA-XXXXXX` access point. You will have to connect to it using the default password: `fibonacci`. Once connected open the browser to 192.168.4.1 and follow the initial configuration instructions. Then go to the WIFI tab and configure your home WiFi connection (remember to save) or go to the ADMIN tab to upgrade the firmware to the device-specific image. 
 
+## CONTRIBUTING
+
+This project is currently maintained by Colin Kuebler @kueblc
+
+Significant time and resources are devoted to supporting and maintaining this project. Research, development, and testing requires obtaining and often breaking IoT devices and related hardware. To help offset costs and support the developers who make this project possible, please consider making a one-time or recurring donation. This allows us to spend less time worrying about putting food on the table and more time making great software accessible to everyone.
+
+- [Become a Patron](https://www.patreon.com/kueblc)
+- [Buy Me A Coffee](https://www.buymeacoffee.com/kueblc)
+- [PayPal](https://paypal.me/kueblc)
+
+You can also give back by providing or improving documentation, tutorials, issue support, bug reports, feature requests, and pull requests. When planning to contribute major code changes, please post your intention beforehand so we can coordinate, avoid redundant contributions and ensure the changes match project philosophy. Any major PR should be made against the `development` branch.
+
 ## RELATED WORKS
 - [TuyAPI](https://github.com/codetheweb/tuyapi) NPM library for LAN control of Tuya devices with stock firmware
 - [TuyOTA](https://github.com/SynAckFin/TuyOTA) Perl based Tuya flashing script using a similar strategy
