@@ -17,10 +17,12 @@ def listener(host, port):
     sock.listen(1)
     return sock
 
+
 def client(host, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect((host, port))
     return sock
+
 
 def gen_psk(identity, hint):
     print("ID: %s" % hexlify(identity))
@@ -32,7 +34,7 @@ def gen_psk(identity, hint):
     return psk
 
 
-class PskFrontend():
+class PskFrontend:
     def __init__(self, listening_host, listening_port, host, port):
         self.listening_port = listening_port
         self.listening_host = listening_host
@@ -41,9 +43,7 @@ class PskFrontend():
 
         self.server_sock = listener(listening_host, listening_port)
         self.sessions = []
-        self.hint = '1dHRsc2NjbHltbGx3eWh5' '0000000000000000'
-
-
+        self.hint = "1dHRsc2NjbHltbGx3eWh5" "0000000000000000"
 
     def readables(self):
         readables = [self.server_sock]
@@ -51,24 +51,30 @@ class PskFrontend():
             readables.append(s1)
             readables.append(s2)
         return readables
-    
+
     def new_client(self, s1):
         try:
-            ssl_sock = sslpsk.wrap_socket(s1,
-                server_side = True,
+            ssl_sock = sslpsk.wrap_socket(
+                s1,
+                server_side=True,
                 ssl_version=ssl.PROTOCOL_TLSv1_2,
-                ciphers='PSK-AES128-CBC-SHA256',
+                ciphers="PSK-AES128-CBC-SHA256",
                 psk=lambda identity: gen_psk(identity, self.hint),
-                hint=self.hint)
+                hint=self.hint,
+            )
 
             s2 = client(self.host, self.port)
             self.sessions.append((ssl_sock, s2))
         except Exception as e:
             print("could not establish sslpsk socket:", e)
+
     def data_ready_cb(self, s):
         if s == self.server_sock:
             _s, frm = s.accept()
-            print("new client on port %d from %s:%d"%(self.listening_port, frm[0], frm[1]))
+            print(
+                "new client on port %d from %s:%d"
+                % (self.listening_port, frm[0], frm[1])
+            )
             self.new_client(_s)
 
         for (s1, s2) in self.sessions:
@@ -81,24 +87,26 @@ class PskFrontend():
                     else:
                         s1.shutdown(socket.SHUT_RDWR)
                         s2.shutdown(socket.SHUT_RDWR)
-                        self.sessions.remove((s1,s2))
+                        self.sessions.remove((s1, s2))
                 except:
-                    self.sessions.remove((s1,s2))
-                    
+                    self.sessions.remove((s1, s2))
+
 
 def main():
-    proxies = [PskFrontend('', 443, '127.0.0.1', 80), PskFrontend('', 8886, '127.0.0.1', 1883)]
-
+    proxies = [
+        PskFrontend("", 443, "127.0.0.1", 80),
+        PskFrontend("", 8886, "127.0.0.1", 1883),
+    ]
 
     while True:
         readables = []
         for p in proxies:
             readables = readables + p.readables()
-        r,_,_ =  select.select(readables, [], [])
+        r, _, _ = select.select(readables, [], [])
         for s in r:
             for p in proxies:
                 p.data_ready_cb(s)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

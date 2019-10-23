@@ -14,14 +14,13 @@ secret = "0101"
 
 from smartconfig import smartconfig
 
-print('Put Device in Learn Mode! Sending SmartConfig Packets now')
+print("Put Device in Learn Mode! Sending SmartConfig Packets now")
 
-print('Sending SSID                  '+ssid)
-print('Sending wifiPassword          '+passwd)
-print('SmartConfig in progress')
+print("Sending SSID                  " + ssid)
+print("Sending wifiPassword          " + passwd)
+print("SmartConfig in progress")
 
-smartconfig( passwd, ssid, region, token, secret )
+smartconfig(passwd, ssid, region, token, secret)
 
 print()
-print('SmartConfig complete.')
-
+print("SmartConfig complete.")
