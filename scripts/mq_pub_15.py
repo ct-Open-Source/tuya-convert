@@ -53,7 +53,7 @@ def iot_enc(message, local_key, protocol):
         signature = md5(signature).hexdigest()[8 : 8 + 16].encode()
         messge_enc = protocol.encode() + signature + messge_enc
     else:
-        timestamp = b"%08d" % ((int(time.time() * 100) % 100000000))
+        timestamp = b"%08d" % (int(time.time() * 100) % 100000000)
         messge_enc = timestamp + messge_enc
         crc = binascii.crc32(messge_enc).to_bytes(4, byteorder="big")
         messge_enc = protocol.encode() + crc + messge_enc
