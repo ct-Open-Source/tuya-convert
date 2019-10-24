@@ -82,7 +82,7 @@ class JSONHandler(tornado.web.RequestHandler):
                 't': ts,
                 'success': True }
             answer = jsonstr(answer)
-            payload = b64encode(AES.new(options.secKey, AES.MODE_ECB).encrypt(pad(answer))).decode()
+            payload = b64encode(AES.new(options.secKey.encode(), AES.MODE_ECB).encrypt(pad(answer))).decode()
             signature = "result=%s||t=%d||%s" % (payload, ts, options.secKey)
             signature = hashlib.md5(signature.encode()).hexdigest()[8:24]
             answer = {
