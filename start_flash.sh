@@ -44,8 +44,10 @@ while ! ping -c 1 -W 1 -n $GATEWAY &> /dev/null; do
 	printf .
 done
 echo
-echo "  Stopping any apache web server"
+echo "  Stopping any web server"
 sudo service apache2 stop >/dev/null 2>&1
+sudo service nginx stop >/dev/null 2>&1
+sudo kill -9 $(lsof -t -i:80 -i:443 -sTCP:LISTEN) >/dev/null 2>&1
 echo "  Starting web server in a screen"
 $screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
