@@ -34,8 +34,10 @@ setup () {
 	fi
 
 	echo "Configuring AP interface..."
-	sudo ifconfig $WLAN down
-	sudo ifconfig $WLAN up $GATEWAY netmask 255.255.255.0
+	sudo ip link set $WLAN down
+	sudo ip addr add $GATEWAY/24 dev $WLAN
+	sudo ip link set $WLAN up
+	sudo ip route add 10.42.42.0/24 dev $WLAN src $GATEWAY
 	sudo ip route add 255.255.255.255 dev $WLAN
 
 	echo "Starting DNSMASQ server..."
