@@ -57,6 +57,7 @@ check_port () {
 		echo "Occupied by $process_name with PID $process_pid."
 		echo "Port $port is needed to $reason"
 		read -p "Do you wish to terminate $process_name? [y/N] " -n 1 -r
+		echo
 		if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 			echo "Aborting due to occupied port"
 			exit 1
