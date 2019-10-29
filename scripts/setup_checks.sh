@@ -3,6 +3,31 @@
 # Source config
 . ../config.txt
 
+check_eula () {
+	if [ ! -f eula_accepted ]; then
+		echo "======================================================"
+		echo "${bold}TUYA-CONVERT${normal}"
+		echo
+		echo "https://github.com/ct-Open-Source/tuya-convert"
+		echo "TUYA-CONVERT was developed by Michael Steigerwald from the IT security company VTRUST (https://www.vtrust.de/) in collaboration with the techjournalists Merlin Schumacher, Pina Merkert, Andrijan Moecker and Jan Mahn at c't Magazine. (https://www.ct.de/)"
+		echo 
+		echo 
+		echo "======================================================"
+		echo "${bold}PLEASE READ THIS CAREFULLY!${normal}"
+		echo "======================================================"
+		echo "TUYA-CONVERT creates a fake update server environment for ESP8266/85 based tuya devices. It enables you to backup your devices firmware and upload an alternative one (e.g. ESPEasy, Tasmota, Espurna) without the need to open the device and solder a serial connection (OTA, Over-the-air)."
+		echo "Please make sure that you understand the consequences of flashing an alternative firmware, since you might lose functionality!"
+		echo
+		echo "Flashing an alternative firmware can cause unexpected device behavior and/or render the device unusable. Be aware that you do use this software at YOUR OWN RISK! Please acknowledge that VTRUST and c't Magazine (or Heise Medien GmbH & Co. KG) CAN NOT be held accountable for ANY DAMAGE or LOSS OF FUNCTIONALITY by typing ${bold}yes + Enter${normal}"
+		echo 
+		read
+		if [ "$REPLY" != "yes" ]; then
+			exit
+		fi
+		touch eula_accepted
+	fi
+}
+
 check_config () {
 	if ! iw list | grep -q "* AP"; then
 		echo "AP mode not supported!"
@@ -50,6 +75,7 @@ check_port () {
 	fi
 }
 
+check_eula
 check_config
 check_port udp 53 "resolve DNS queries"
 check_port tcp 80 "answer HTTP requests"
