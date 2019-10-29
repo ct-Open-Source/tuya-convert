@@ -67,6 +67,7 @@ check_port () {
 				sudo systemctl stop "$service"
 			else
 				sudo kill -9 "$process_pid"
+				sudo tail --pid="$process_pid" -f /dev/null
 			fi
 			sleep 1
 		fi
