@@ -1,5 +1,26 @@
 #!/bin/bash
 
+# Source config
+. ../config.txt
+
+check_config () {
+	if ! iw list | grep -q "* AP"; then
+		echo "AP mode not supported!"
+		echo "Please attach a WiFi card that supports AP mode."
+		exit 1
+	fi
+
+	echo -n "Checking for network interface $WLAN... "
+	if [ -e /sys/class/net/$WLAN ]; then
+		echo "Found."
+	else
+		echo "Not found!"
+		echo -n "Please edit WLAN in config.txt to one of: "
+		ls -m /sys/class/net
+		exit 1
+	fi
+}
+
 check_port () {
 	protocol="$1"
 	port="$2"
@@ -29,6 +50,7 @@ check_port () {
 	fi
 }
 
+check_config
 check_port udp 53 "resolve DNS queries"
 check_port tcp 80 "answer HTTP requests"
 check_port tcp 443 "answer HTTPS requests"
