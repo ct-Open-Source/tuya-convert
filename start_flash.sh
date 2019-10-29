@@ -15,6 +15,8 @@ fi
 
 pushd scripts >/dev/null
 
+. ./setup_checks.sh
+
 echo "======================================================"
 echo -n "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
@@ -22,15 +24,9 @@ while ! ping -c 1 -W 1 -n $GATEWAY &> /dev/null; do
 	printf .
 done
 echo
-echo "  Stopping any web server"
-sudo service apache2 stop >/dev/null 2>&1
-sudo service nginx stop >/dev/null 2>&1
-sudo kill -9 $(lsof -t -i:80 -i:443 -sTCP:LISTEN) >/dev/null 2>&1
 echo "  Starting web server in a screen"
 $screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
-sudo service mosquitto stop >/dev/null 2>&1
-sudo pkill mosquitto
 $screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
 echo "  Starting PSK frontend in a screen"
 $screen_with_log smarthack-psk.log -S smarthack-psk -m -d ./psk-frontend.py -v
