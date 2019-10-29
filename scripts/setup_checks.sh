@@ -79,8 +79,11 @@ check_port () {
 check_eula
 check_config
 check_port udp 53 "resolve DNS queries"
+check_port udp 67 "offer DHCP leases"
 check_port tcp 80 "answer HTTP requests"
 check_port tcp 443 "answer HTTPS requests"
+check_port udp 6666 "detect unencrypted Tuya firmware"
+check_port udp 6667 "detect encrypted Tuya firmware"
 check_port tcp 1883 "run MQTT"
 check_port tcp 8886 "run MQTTS"
 
