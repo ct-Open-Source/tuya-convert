@@ -53,7 +53,7 @@ check_port () {
 	echo -n "Checking ${protocol^^} port $port... "
 	process_pid=$(sudo ss -Hlnp -A "$protocol" "sport = :$port" | grep -Po "(?<=pid=)(\d+)" | head -n1)
 	if [ -n "$process_pid" ]; then
-		process_name=$(sudo ps -p "$process_pid" -o comm=)
+		process_name=$(ps -p "$process_pid" -o comm=)
 		echo "Occupied by $process_name with PID $process_pid."
 		echo "Port $port is needed to $reason"
 		read -p "Do you wish to terminate $process_name? [y/N] " -n 1 -r
@@ -63,7 +63,7 @@ check_port () {
 			exit 1
 		else
 			echo "Attempting to terminate $process_name with PID $process_pid"
-			service=$(sudo ps -p "$process_pid" -o unit=)
+			service=$(ps -p "$process_pid" -o unit=)
 			if [ -n "$service" ]; then
 				sudo systemctl stop "$service"
 			else
