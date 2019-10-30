@@ -63,7 +63,7 @@ check_port () {
 			exit 1
 		else
 			echo "Attempting to terminate $process_name with PID $process_pid"
-			service=$(sudo ps -p "$process_pid" -o unit | grep service)
+			service=$(sudo ps -p "$process_pid" -o unit=)
 			if [ -n "$service" ]; then
 				sudo systemctl stop "$service"
 			else
