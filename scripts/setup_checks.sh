@@ -62,11 +62,12 @@ check_port () {
 			echo "Aborting due to occupied port"
 			exit 1
 		else
-			echo "Attempting to terminate $process_name with PID $process_pid"
 			service=$(ps -p "$process_pid" -o unit=)
 			if [ -n "$service" ]; then
+				echo "Attempting to stop $service"
 				sudo systemctl stop "$service"
 			else
+				echo "Attempting to terminate $process_name with PID $process_pid"
 				sudo kill -9 "$process_pid"
 				sudo tail --pid="$process_pid" -f /dev/null
 			fi
