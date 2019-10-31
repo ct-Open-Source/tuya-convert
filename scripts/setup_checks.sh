@@ -67,9 +67,13 @@ check_port () {
 				echo "Attempting to stop $service"
 				sudo systemctl stop "$service"
 			else
-				echo "Attempting to terminate $process_name with PID $process_pid"
-				sudo kill -9 "$process_pid"
-				sudo tail --pid="$process_pid" -f /dev/null
+				echo "Attempting to terminate $process_name"
+				sudo kill "$process_pid"
+				if ! sudo timeout 10 tail --pid="$process_pid" -f /dev/null; then
+					echo "$process_name is still running after 10 seconds, sending SIGKILL"
+					sudo kill -9 "$process_pid"
+					sudo tail --pid="$process_pid" -f /dev/null
+				fi
 			fi
 			sleep 1
 		fi
