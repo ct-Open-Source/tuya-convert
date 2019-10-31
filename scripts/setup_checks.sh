@@ -62,7 +62,7 @@ check_port () {
 			echo "Aborting due to occupied port"
 			exit 1
 		else
-			service=$(ps -p "$process_pid" -o unit=)
+			service=$(ps -p "$process_pid" -o unit= | grep .service | grep -Ev ^user)
 			if [ -n "$service" ]; then
 				echo "Attempting to stop $service"
 				sudo systemctl stop "$service"
