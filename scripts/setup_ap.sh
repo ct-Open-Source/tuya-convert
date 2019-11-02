@@ -3,24 +3,6 @@
 # Source config
 . ../config.txt
 
-check_config () {
-	if ! iw list | grep -q "* AP"; then
-		echo "AP mode not supported!"
-		echo "Please attach a WiFi card that supports AP mode."
-		exit 1
-	fi
-
-	echo -n "Checking for network interface $WLAN... "
-	if [ -e /sys/class/net/$WLAN ]; then
-		echo "Found."
-	else
-		echo "Not found!"
-		echo -n "Please edit WLAN in config.txt to one of: "
-		ls -m /sys/class/net
-		exit 1
-	fi
-}
-
 setup () {
 	wpa_supplicant_pid=$(pidof wpa_supplicant)
 	if [ -n "$wpa_supplicant_pid" ]; then
@@ -64,7 +46,6 @@ cleanup () {
 	fi
 }
 
-check_config
 trap cleanup EXIT
 setup
 

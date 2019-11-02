@@ -15,28 +15,8 @@ fi
 
 pushd scripts >/dev/null
 
-if [ ! -f eula_accepted ]; then
-	echo "======================================================"
-	echo "${bold}TUYA-CONVERT${normal}"
-	echo
-	echo "https://github.com/ct-Open-Source/tuya-convert"
-	echo "TUYA-CONVERT was developed by Michael Steigerwald from the IT security company VTRUST (https://www.vtrust.de/) in collaboration with the techjournalists Merlin Schumacher, Pina Merkert, Andrijan Moecker and Jan Mahn at c't Magazine. (https://www.ct.de/)"
-	echo 
-	echo 
-	echo "======================================================"
-	echo "${bold}PLEASE READ THIS CAREFULLY!${normal}"
-	echo "======================================================"
-	echo "TUYA-CONVERT creates a fake update server environment for ESP8266/85 based tuya devices. It enables you to backup your devices firmware and upload an alternative one (e.g. ESPEasy, Tasmota, Espurna) without the need to open the device and solder a serial connection (OTA, Over-the-air)."
-	echo "Please make sure that you understand the consequences of flashing an alternative firmware, since you might lose functionality!"
-	echo
-	echo "Flashing an alternative firmware can cause unexpected device behavior and/or render the device unusable. Be aware that you do use this software at YOUR OWN RISK! Please acknowledge that VTRUST and c't Magazine (or Heise Medien GmbH & Co. KG) CAN NOT be held accountable for ANY DAMAGE or LOSS OF FUNCTIONALITY by typing ${bold}yes + Enter${normal}"
-	echo 
-	read
-	if [ "$REPLY" != "yes" ]; then
-		exit
-	fi
-	touch eula_accepted
-fi
+. ./setup_checks.sh
+
 echo "======================================================"
 echo -n "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
@@ -44,13 +24,9 @@ while ! ping -c 1 -W 1 -n $GATEWAY &> /dev/null; do
 	printf .
 done
 echo
-echo "  Stopping any apache web server"
-sudo service apache2 stop >/dev/null 2>&1
 echo "  Starting web server in a screen"
 $screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
-sudo service mosquitto stop >/dev/null 2>&1
-sudo pkill mosquitto
 $screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
 echo "  Starting PSK frontend in a screen"
 $screen_with_log smarthack-psk.log -S smarthack-psk -m -d ./psk-frontend.py -v
