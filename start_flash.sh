@@ -38,6 +38,8 @@ if [ ! -f eula_accepted ]; then
 	touch eula_accepted
 fi
 echo "======================================================"
+echo -n "  Stopping system dnsmasq"
+sudo service dnsmasq stop >/dev/null 2>&1
 echo -n "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
 while ! ping -c 1 -W 1 -n $GATEWAY &> /dev/null; do
