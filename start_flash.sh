@@ -24,6 +24,7 @@ while ! ping -c 1 -W 1 -n $GATEWAY &> /dev/null; do
 	printf .
 done
 echo
+sleep 5
 echo "  Starting web server in a screen"
 $screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
 echo "  Starting Mosquitto in a screen"
