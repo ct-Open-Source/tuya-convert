@@ -58,7 +58,7 @@ cleanup () {
 	echo "Stopping DNSMASQ server..."
 	sudo pkill dnsmasq
 	
-	echo "Starting system DNSMASQ server...
+	echo "Starting system DNSMASQ server..."
 	sudo service dnsmasq start
 
 	if test -d /etc/NetworkManager; then
