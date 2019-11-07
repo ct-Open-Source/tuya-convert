@@ -3,24 +3,6 @@
 # Source config
 . ../config.txt
 
-check_config () {
-	if ! iw list | grep -q "* AP"; then
-		echo "AP mode not supported!"
-		echo "Please attach a WiFi card that supports AP mode."
-		exit 1
-	fi
-
-	echo -n "Checking for network interface $WLAN... "
-	if [ -e /sys/class/net/$WLAN ]; then
-		echo "Found."
-	else
-		echo "Not found!"
-		echo -n "Please edit WLAN in config.txt to one of: "
-		ls -m /sys/class/net
-		exit 1
-	fi
-}
-
 setup () {
 	wpa_supplicant_pid=$(pidof wpa_supplicant)
 	if [ -n "$wpa_supplicant_pid" ]; then
@@ -34,8 +16,10 @@ setup () {
 	fi
 
 	echo "Configuring AP interface..."
-	sudo ifconfig $WLAN down
-	sudo ifconfig $WLAN up $GATEWAY netmask 255.255.255.0
+	sudo ip link set $WLAN down
+	sudo ip addr add $GATEWAY/24 dev $WLAN
+	sudo ip link set $WLAN up
+	sudo ip route add 10.42.42.0/24 dev $WLAN src $GATEWAY
 	sudo ip route add 255.255.255.255 dev $WLAN
 
 	echo "Starting DNSMASQ server..."
@@ -64,7 +48,6 @@ cleanup () {
 	fi
 }
 
-check_config
 trap cleanup EXIT
 setup
 

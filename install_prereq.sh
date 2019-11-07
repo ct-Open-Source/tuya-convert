@@ -3,7 +3,7 @@
 set -e
 
 sudo apt-get update
-sudo apt-get install -y dnsmasq hostapd screen curl python-pip python3-pip python-setuptools python3-setuptools python-wheel python3-wheel python-dev python3-dev mosquitto haveged net-tools libssl-dev
+sudo apt-get install -y git dnsmasq hostapd screen curl build-essential python-pip python3-pip python-setuptools python3-setuptools python-wheel python3-wheel python-dev python3-dev mosquitto haveged net-tools libssl-dev
 
 PY3_DEPENDENCIES="paho-mqtt pyaes tornado git+https://github.com/M4dmartig4n/sslpsk.git pycrypto"
 PY2_DEPENDENCIES="git+https://github.com/M4dmartig4n/sslpsk.git pycrypto"
