@@ -105,28 +105,53 @@ curl -s http://10.42.42.42 | tee device-info.txt
 popd >/dev/null
 
 echo "======================================================"
-echo "Please make sure to note the correct SPI flash mode!"
-echo "Installing an alternative firmware with the wrong flash mode will leave the ESP unable to boot!"
-echo
-echo "Next steps:"
-echo "1. To go back to the orginal software"
-echo "   # curl http://10.42.42.42/undo"
-echo
-echo "2. Be sure the conversion software runs in user2"
-echo "   # curl http://10.42.42.42/flash2"
-echo
-echo "3. Flash a third party firmware to the device"
-echo "BE SURE THE FIRMWARE FITS THE DEVICE AND USES THE CORRECT FLASH MODE!"
-echo "MAXIMUM SIZE IS 512KB"
-echo "put or link it to ./files/thirdparty.bin"
+echo "Ready to flash custom firmware"
 echo "A basic build of Sonoff-Tasmota v6.5.0 is already included in this repository."
-echo "   # curl http://10.42.42.42/flash3"
-echo "If you want to flash the included ESPurna 1.13.5 image use this command:"
-echo "   # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/espurna-base.bin"
-echo "Alternatively let the device download and flash a file via HTTP:"
-echo "   # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/thirdparty.bin"
+echo "To flash a different firmware, replace files/thirdparty.bin"
+echo "BE SURE THE FIRMWARE FITS THE DEVICE!"
+echo "${bold}MAXIMUM SIZE IS 512KB${normal}"
+
+echo "======================================================"
+read -p "Do you wish to continue? (answering no will revert your firmware to stock) [y/N] " -n 1 -r
 echo
-echo "HAVE FUN!"
+echo "======================================================"
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+	if grep -q user1 device-info.txt; then
+		echo "Detected intermediate firmware on userspace 1"
+		echo "Two stage flash required"
+		echo "Requesting device to flash user2.bin"
+		echo "Please wait for flashing to complete. Do not unplug your device."
+		curl -s http://10.42.42.42/flash2
+		sleep 2
+		echo "Making sure device is back online"
+		while ! ping -c 1 -W 1 -n 10.42.42.42 &> /dev/null; do printf .; done
+		echo
+		sleep 2
+	fi
+	echo "Requesting device to flash thirdparty.bin"
+	echo "Please wait for flashing to complete. Do not unplug your device."
+	curl -s http://10.42.42.42/flash3
+	sleep 2
+	echo "The included thirdparty.bin will spawn an access point you can connect to and configure"
+	echo "Look for the SSID sonoff-**** where **** is four unique numbers"
+	echo "Remember to configure your new firmware for proper function"
+	echo
+	echo "HAVE FUN!"
+	popd >/dev/null
+else
+	echo "Shutting down web server"
+	sudo pkill -f fake-registration-server.py
+	echo "Requesting device to revert to stock firmware"
+	curl -s http://10.42.42.42/undo
+	sleep 2
+	echo "You will need to put the device back into pairing mode and register to use"
+	echo "Unplug the device and press ${bold}ENTER${normal} to continue"
+	read
+	popd >/dev/null
+	echo "Restarting web server"
+	$screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
+fi
+
 echo "======================================================"
 read -p "Do you want to flash another device? [y/N] " -n 1 -r
 echo
