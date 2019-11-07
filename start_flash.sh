@@ -98,7 +98,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 		echo "Two stage flash required"
 		echo "Requesting device to flash user2.bin"
 		echo "Please wait for flashing to complete. Do not unplug your device."
-		curl -s http://10.42.42.42/flash2
+		curl -s http://10.42.42.42/flash2 | tee -a flash2.log
+		if grep -q failed flash2.log; then
+			echo "Failure detected, dropping to shell"
+			/bin/bash
+		fi
 		sleep 2
 		echo "Making sure device is back online"
 		while ! ping -c 1 -W 1 -n 10.42.42.42 &> /dev/null; do printf .; done
@@ -107,7 +111,11 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	fi
 	echo "Requesting device to flash thirdparty.bin"
 	echo "Please wait for flashing to complete. Do not unplug your device."
-	curl -s http://10.42.42.42/flash3
+	curl -s http://10.42.42.42/flash3 | tee -a flash3.log
+	if grep -q failed flash3.log; then
+		echo "Failure detected, dropping to shell"
+		/bin/bash
+	fi
 	sleep 2
 	echo "The included thirdparty.bin will spawn an access point you can connect to and configure"
 	echo "Look for the SSID sonoff-**** where **** is four unique numbers"
