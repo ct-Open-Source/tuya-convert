@@ -117,7 +117,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 	fi
 	sleep 2
 	echo "The included thirdparty.bin will spawn an access point you can connect to and configure"
-	echo "Look for the SSID sonoff-**** where **** is four unique numbers"
+	echo "Look for the SSID tasmota-**** where **** is four unique numbers"
 	echo "Remember to configure your new firmware for proper function"
 	echo
 	echo "HAVE FUN!"
