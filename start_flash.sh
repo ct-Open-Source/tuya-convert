@@ -79,7 +79,6 @@ curl -JO http://10.42.42.42/backup
 echo "======================================================"
 echo "Getting Info from IoT-device"
 curl -s http://10.42.42.42 | tee device-info.txt
-popd >/dev/null
 
 echo "======================================================"
 echo "Ready to flash custom firmware"
