@@ -146,7 +146,7 @@ class JSONHandler(tornado.web.RequestHandler):
         elif(".active" in a):
             print("Answer s.gw.dev.pk.active")
             # first try extended schema, otherwise minimal schema
-            schema_key_count = 1 if gwId in self.activated_ids else 10
+            schema_key_count = 1 if gwId in self.activated_ids else 20
             # record that this gwId has been seen
             self.activated_ids[gwId] = True
             schema = jsonstr([
