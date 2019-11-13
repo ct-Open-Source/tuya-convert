@@ -22,7 +22,7 @@ from Crypto.Cipher import AES
 pad = lambda s: s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
 unpad = lambda s: s[:-ord(s[len(s) - 1:])]
 encrypt = lambda msg, key: AES.new(key, AES.MODE_ECB).encrypt(pad(msg))
-decrypt = lambda msg, key: AES.new(key, AES.MODE_ECB).decrypt(unpad(msg))
+decrypt = lambda msg, key: unpad(AES.new(key, AES.MODE_ECB).decrypt(msg))
 
 def iot_dec(message, local_key):
 	message_clear = decrypt(base64.b64decode(message[19:]), local_key)
