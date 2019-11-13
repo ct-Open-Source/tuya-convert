@@ -31,6 +31,8 @@ echo "  Starting Mosquitto in a screen"
 $screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
 echo "  Starting PSK frontend in a screen"
 $screen_with_log smarthack-psk.log -S smarthack-psk -m -d ./psk-frontend.py -v
+echo "  Starting Tuya Discovery in a screen"
+$screen_with_log smarthack-udp.log -S smarthack-udp -m -d ./tuya-discovery.py
 echo
 REPLY=y
 while [[ $REPLY =~ ^[Yy]$ ]]; do
