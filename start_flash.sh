@@ -82,22 +82,18 @@ curl -s http://10.42.42.42 | tee device-info.txt
 popd >/dev/null
 
 echo "======================================================"
-echo "Available options:"
-echo "1. To go back to the orginal software"
-echo "   # curl http://10.42.42.42/undo"
+echo "Ready to flash third party firmware!"
 echo
-echo "2. Flash a third party firmware to the device"
-echo "BE SURE THE FIRMWARE FITS THE DEVICE"
+echo "For your convenience, the following firmware images are already included in this repository:"
+echo "  Tasmota v7.0.0.3"
+echo "  ESPurna 1.13.5"
+echo
+echo "You can also provide your own image by placing it in the /files directory"
+echo "Please ensure the firmware fits the device and includes the bootloader"
 echo "MAXIMUM SIZE IS 512KB"
-echo "put or link it to ./files/thirdparty.bin"
-echo "A build of Tasmota v7.0.0.3 is already included in this repository."
-echo "   # curl http://10.42.42.42/flash"
-echo "If you want to flash the included ESPurna 1.13.5 image use this command:"
-echo "   # curl http://10.42.42.42/flash?url=http://10.42.42.1/files/espurna-base.bin"
-echo "Alternatively let the device download and flash a file via HTTP:"
-echo "   # curl http://10.42.42.42/flash?url=http://10.42.42.1/files/thirdparty.bin"
-echo
-echo "HAVE FUN!"
+
+./firmware_picker.sh
+
 echo "======================================================"
 read -p "Do you want to flash another device? [y/N] " -n 1 -r
 echo
