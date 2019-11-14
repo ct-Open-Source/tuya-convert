@@ -55,7 +55,7 @@ while true; do
 	echo "Could not reach the device!"
 
 	echo "$RESULT"
-	if [[ "$RESULT" =~ failed ]]; then
+	if [[ "$RESULT" =~ failed || -z "$RESULT" ]]; then
 		read -p "Do you want to try something else? [y/N] " -n 1 -r
 		echo
 		[[ "$REPLY" =~ ^[Yy]$ ]] || break
