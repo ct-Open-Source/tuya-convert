@@ -85,8 +85,8 @@ echo "======================================================"
 echo "Ready to flash third party firmware!"
 echo
 echo "For your convenience, the following firmware images are already included in this repository:"
-echo "  Tasmota v7.0.0.3"
-echo "  ESPurna 1.13.5"
+echo "  Tasmota v7.0.0.3 (wifiman)"
+echo "  ESPurna 1.13.5 (base)"
 echo
 echo "You can also provide your own image by placing it in the /files directory"
 echo "Please ensure the firmware fits the device and includes the bootloader"
