@@ -3,6 +3,7 @@
 MAGIC=`printf "\xe9"`
 
 while true; do
+	echo
 	echo "Available options:"
 	echo "  0) return to stock"
 	index=0
@@ -35,8 +36,12 @@ while true; do
 	done
 
 	if [[ "$REPLY" == 0 ]]; then
-		curl -s http://10.42.42.42/undo ||
-		echo "Could not reach the device!"
+		if curl -s http://10.42.42.42/undo; then
+			echo "Disconnect the device to prevent it from repeating the upgrade"
+			echo "You will need to put the device back into pairing mode and register to use again"
+		else
+			echo "Could not reach the device!"
+		fi
 		break
 	fi
 
