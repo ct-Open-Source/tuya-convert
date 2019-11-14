@@ -47,14 +47,10 @@ On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/
     # ./start_flash.sh
 
 Follow the instructions in the start_flash script. It will install our flash loader onto the ESP and connect to the access point created by your wifi adapter.
-
-    WIFI: vtrust-flash
-    IP: 10.42.42.42
-A backup of the original firmware will be created and stored locally
+A backup of the original firmware will be created and stored locally.
 
 ### Device information
 After the firmware backup procedure, the retrieved device information will be shown.
-Please make sure to write down your devices flash mode and size!
 You can show this information again by executing:
 
     # curl http://10.42.42.42
