@@ -60,6 +60,16 @@ while true; do
 		echo
 		[[ "$REPLY" =~ ^[Yy]$ ]] || break
 	else
+		if [[ "$selection" == "tasmota.bin" ]]; then
+			echo "Look for a tasmota-xxxx SSID to which you can connect and configure"
+			echo "Be sure to configure your device for proper function!"
+		elif [[ "$selection" == "espurna.bin" ]]; then
+			echo "Look for an ESPURNA-XXXXXX SSID to which you can connect and configure"
+			echo "Default password is \"fibonacci\""
+			echo "Be sure to upgrade to your device specific firmware for proper function!"
+		fi
+		echo
+		echo "HAVE FUN!"
 		break
 	fi
 done
