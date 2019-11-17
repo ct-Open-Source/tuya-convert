@@ -9,6 +9,7 @@ from Crypto.Cipher import AES
 from hashlib import md5
 from binascii import hexlify, unhexlify
 
+IDENTITY_PREFIX = "BAohbmd6aG91IFR1"
 
 def listener(host, port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,10 +25,13 @@ def client(host, port):
 
 def gen_psk(identity, hint):
     print("ID: %s" % hexlify(identity))
+    # sometimes the device only sends part of the prefix
+    # since it is always the same, we can correct it
+    identity = IDENTITY_PREFIX + identity[17:]
     key = md5(hint[-16:]).digest()
-    iv = md5(identity[1:]).digest()
+    iv = md5(identity).digest()
     cipher = AES.new(key, AES.MODE_CBC, iv)
-    psk = cipher.encrypt(identity[1:33])
+    psk = cipher.encrypt(identity[:32])
     print("PSK: %s" % hexlify(psk))
     return psk
 
