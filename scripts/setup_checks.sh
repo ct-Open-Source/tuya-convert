@@ -82,6 +82,18 @@ check_port () {
 	fi
 }
 
+check_blacklist () {
+	if [ -e /etc/modprobe.d/blacklist-rtl8192cu.conf ]; then
+		echo "Detected /etc/modprobe.d/blacklist-rtl8192cu.conf"
+		echo "This has been known to cause kernel panic in hostapd"
+		read -p "Do you wish to remove this file? [y/N] " -n 1 -r
+		echo
+		if [[ $REPLY =~ ^[Yy]$ ]]; then
+			sudo rm /etc/modprobe.d/blacklist-rtl8192cu.conf
+		fi
+	fi
+}
+
 check_eula
 check_config
 check_port udp 53 "resolve DNS queries"
@@ -92,4 +104,5 @@ check_port udp 6666 "detect unencrypted Tuya firmware"
 check_port udp 6667 "detect encrypted Tuya firmware"
 check_port tcp 1883 "run MQTT"
 check_port tcp 8886 "run MQTTS"
+check_blacklist
 
