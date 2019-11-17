@@ -40,6 +40,7 @@ echo "IMPORTANT"
 echo "1. Connect any other device (a smartphone or something) to the WIFI $AP"
 echo "   This step is IMPORTANT otherwise the smartconfig may not work!"
 echo "2. Put your IoT device in autoconfig/smartconfig/pairing mode (LED will blink fast). This is usually done by pressing and holding the primary button of the device"
+echo "   Make sure nothing else is plugged into your IoT device while attempting to flash."
 echo "3. Press ${bold}ENTER${normal} to continue"
 read
 echo
