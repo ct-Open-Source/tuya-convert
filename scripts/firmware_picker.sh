@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MAGIC=`printf "\xe9"`
+MAGIC=$(printf "\xe9")
 
 while true; do
 	echo
@@ -11,12 +11,12 @@ while true; do
 		# skip null glob
 		[[ -e $file ]] || continue
 		# get short name
-		filename=`basename "$file"`
+		filename=$(basename "$file")
 		# skip files too large or too small
-		filesize=`stat -c%s "$file"`
+		filesize=$(stat -c%s "$file")
 		[[ "$filesize" -gt 0x1000 && "$filesize" -le 0x80000 ]] || continue
 		# skip files without magic byte
-		[[ `head -c 1 "$file"` == $MAGIC ]] || continue
+		[[ $(head -c 1 "$file") == "$MAGIC" ]] || continue
 		echo "  $((++index))) flash $filename"
 		options[$index]="$filename"
 	done
@@ -51,7 +51,7 @@ while true; do
 	[[ "$REPLY" =~ ^[Yy]$ ]] || continue
 
 	echo "Attempting to flash $selection, this may take a few seconds..."
-	RESULT=`curl -s "http://10.42.42.42/flash?url=http://10.42.42.1/files/$selection"` ||
+	RESULT=$(curl -s "http://10.42.42.42/flash?url=http://10.42.42.1/files/$selection") ||
 	echo "Could not reach the device!"
 
 	echo "$RESULT"
