@@ -1,10 +1,10 @@
 #!/bin/bash
 bold=$(tput bold)
 normal=$(tput sgr0)
-screen_minor=`screen --version | cut -d . -f 2`
-if [ $screen_minor -gt 5 ]; then
+screen_minor=$(screen --version | cut -d . -f 2)
+if [ "$screen_minor" -gt 5 ]; then
     screen_with_log="sudo screen -L -Logfile"
-elif [ $screen_minor -eq 5 ]; then
+elif [ "$screen_minor" -eq 5 ]; then
     screen_with_log="sudo screen -L"
 else
     screen_with_log="sudo screen -L -t"
@@ -13,14 +13,14 @@ fi
 
 ./stop_flash.sh >/dev/null
 
-pushd scripts >/dev/null
+pushd scripts >/dev/null || exit
 
 . ./setup_checks.sh
 
 echo "======================================================"
 echo -n "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
-while ! ping -c 1 -W 1 -n $GATEWAY &> /dev/null; do
+while ! ping -c 1 -W 1 -n "$GATEWAY" &> /dev/null; do
 	printf .
 done
 echo
@@ -42,7 +42,7 @@ echo "   This step is IMPORTANT otherwise the smartconfig may not work!"
 echo "2. Put your IoT device in autoconfig/smartconfig/pairing mode (LED will blink fast). This is usually done by pressing and holding the primary button of the device"
 echo "   Make sure nothing else is plugged into your IoT device while attempting to flash."
 echo "3. Press ${bold}ENTER${normal} to continue"
-read
+read -r
 echo
 echo "======================================================"
 
@@ -72,15 +72,15 @@ pkill -f smartconfig/main.py && echo "Stopping smart config"
 
 echo "Fetching firmware backup"
 sleep 2
-timestamp=`date +%Y%m%d_%H%M%S`
+timestamp=$(date +%Y%m%d_%H%M%S)
 mkdir -p "../backups/$timestamp"
-pushd "../backups/$timestamp" >/dev/null
+pushd "../backups/$timestamp" >/dev/null || exit
 curl -JO http://10.42.42.42/backup
 
 echo "======================================================"
 echo "Getting Info from IoT-device"
 curl -s http://10.42.42.42 | tee device-info.txt
-popd >/dev/null
+popd >/dev/null || exit
 
 echo "======================================================"
 echo "Ready to flash third party firmware!"
@@ -102,5 +102,5 @@ done
 
 echo "Exiting..."
 
-popd >/dev/null
+popd >/dev/null || exit
 
