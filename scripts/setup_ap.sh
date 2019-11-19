@@ -35,7 +35,7 @@ setup () {
 
 	# Read hostapd.conf with interface from stdin for
 	# backward compatibility (hostapd < v2.6). See #398
-	echo -e "`cat hostapd.conf`\ninterface=$WLAN" | sudo hostapd /dev/stdin
+	printf "$(cat hostapd.conf)\ninterface=$WLAN" | sudo hostapd /dev/stdin
 }
 
 cleanup () {
