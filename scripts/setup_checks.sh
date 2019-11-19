@@ -86,6 +86,7 @@ check_blacklist () {
 	if [ -e /etc/modprobe.d/blacklist-rtl8192cu.conf ]; then
 		echo "Detected /etc/modprobe.d/blacklist-rtl8192cu.conf"
 		echo "This has been known to cause kernel panic in hostapd"
+		echo "See https://github.com/ct-Open-Source/tuya-convert/issues/373"
 		read -p "Do you wish to remove this file? [y/N] " -n 1 -r
 		echo
 		if [[ $REPLY =~ ^[Yy]$ ]]; then
