@@ -1,10 +1,10 @@
 #!/bin/bash
 bold=$(tput bold)
 normal=$(tput sgr0)
-screen_minor=`screen --version | cut -d . -f 2`
-if [ $screen_minor -gt 5 ]; then
+screen_minor=$(screen --version | cut -d . -f 2)
+if [ "$screen_minor" -gt 5 ]; then
     screen_with_log="sudo screen -L -Logfile"
-elif [ $screen_minor -eq 5 ]; then
+elif [ "$screen_minor" -eq 5 ]; then
     screen_with_log="sudo screen -L"
 else
     screen_with_log="sudo screen -L -t"
@@ -13,14 +13,14 @@ fi
 
 ./stop_flash.sh >/dev/null
 
-pushd scripts >/dev/null
+pushd scripts >/dev/null || exit
 
 . ./setup_checks.sh
 
 echo "======================================================"
 echo -n "  Starting AP in a screen"
 $screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
-while ! ping -c 1 -W 1 -n $GATEWAY &> /dev/null; do
+while ! ping -c 1 -W 1 -n "$GATEWAY" &> /dev/null; do
 	printf .
 done
 echo
@@ -42,8 +42,9 @@ echo "IMPORTANT"
 echo "1. Connect any other device (a smartphone or something) to the WIFI $AP"
 echo "   This step is IMPORTANT otherwise the smartconfig may not work!"
 echo "2. Put your IoT device in autoconfig/smartconfig/pairing mode (LED will blink fast). This is usually done by pressing and holding the primary button of the device"
+echo "   Make sure nothing else is plugged into your IoT device while attempting to flash."
 echo "3. Press ${bold}ENTER${normal} to continue"
-read
+read -r
 echo
 echo "======================================================"
 
@@ -73,39 +74,29 @@ pkill -f smartconfig/main.py && echo "Stopping smart config"
 
 echo "Fetching firmware backup"
 sleep 2
-timestamp=`date +%Y%m%d_%H%M%S`
+timestamp=$(date +%Y%m%d_%H%M%S)
 mkdir -p "../backups/$timestamp"
-pushd "../backups/$timestamp" >/dev/null
+pushd "../backups/$timestamp" >/dev/null || exit
 curl -JO http://10.42.42.42/backup
 
 echo "======================================================"
 echo "Getting Info from IoT-device"
 curl -s http://10.42.42.42 | tee device-info.txt
-popd >/dev/null
+popd >/dev/null || exit
 
 echo "======================================================"
-echo "Please make sure to note the correct SPI flash mode!"
-echo "Installing an alternative firmware with the wrong flash mode will leave the ESP unable to boot!"
+echo "Ready to flash third party firmware!"
 echo
-echo "Next steps:"
-echo "1. To go back to the orginal software"
-echo "   # curl http://10.42.42.42/undo"
+echo "For your convenience, the following firmware images are already included in this repository:"
+echo "  Tasmota v7.0.0.3 (wifiman)"
+echo "  ESPurna 1.13.5 (base)"
 echo
-echo "2. Be sure the conversion software runs in user2"
-echo "   # curl http://10.42.42.42/flash2"
-echo
-echo "3. Flash a third party firmware to the device"
-echo "BE SURE THE FIRMWARE FITS THE DEVICE AND USES THE CORRECT FLASH MODE!"
+echo "You can also provide your own image by placing it in the /files directory"
+echo "Please ensure the firmware fits the device and includes the bootloader"
 echo "MAXIMUM SIZE IS 512KB"
-echo "put or link it to ./files/thirdparty.bin"
-echo "A build of Tasmota v7.0.0.3 is already included in this repository."
-echo "   # curl http://10.42.42.42/flash3"
-echo "If you want to flash the included ESPurna 1.13.5 image use this command:"
-echo "   # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/espurna-base.bin"
-echo "Alternatively let the device download and flash a file via HTTP:"
-echo "   # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/thirdparty.bin"
-echo
-echo "HAVE FUN!"
+
+./firmware_picker.sh
+
 echo "======================================================"
 read -p "Do you want to flash another device? [y/N] " -n 1 -r
 echo
@@ -113,5 +104,5 @@ done
 
 echo "Exiting..."
 
-popd >/dev/null
+popd >/dev/null || exit
 
