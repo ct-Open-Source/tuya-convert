@@ -32,7 +32,10 @@ setup () {
 		--address=/#/$GATEWAY
 
 	echo "Starting AP on $WLAN..."
-	sudo hostapd hostapd.conf -i $WLAN
+
+	# Read hostapd.conf with interface from stdin for
+	# backward compatibility (hostapd < v2.6). See #398
+	printf "$(cat hostapd.conf)\ninterface=$WLAN" | sudo hostapd /dev/stdin
 }
 
 cleanup () {
