@@ -250,7 +250,7 @@ def main():
         tornado.ioloop.IOLoop.current().start()
     except OSError as err:
         print("Could not start server on port " + str(options.port))
-        if err.errno is 98: # EADDRINUSE
+        if err.errno == 98: # EADDRINUSE
             print("Close the process on this port and try again")
         else:
             print(err)
