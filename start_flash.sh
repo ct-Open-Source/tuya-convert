@@ -75,8 +75,9 @@ pkill -f smartconfig/main.py && echo "Stopping smart config"
 echo "Fetching firmware backup"
 sleep 2
 timestamp=$(date +%Y%m%d_%H%M%S)
-mkdir -p "../backups/$timestamp"
-pushd "../backups/$timestamp" >/dev/null || exit
+backupfolder="../backups/$timestamp"
+mkdir -p "$backupfolder"
+pushd "$backupfolder" >/dev/null || exit
 curl -JO http://10.42.42.42/backup
 
 echo "======================================================"
@@ -100,6 +101,8 @@ echo "MAXIMUM SIZE IS 512KB"
 echo "======================================================"
 read -p "Do you want to flash another device? [y/N] " -n 1 -r
 echo
+
+sudo mv *.log "$backupfolder/"
 done
 
 echo "Exiting..."
