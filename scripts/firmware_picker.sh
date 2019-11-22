@@ -19,6 +19,10 @@ while true; do
 		[[ $(head -c 1 "$file") == "$MAGIC" ]] || continue
 		echo "  $((++index))) flash $filename"
 		options[$index]="$filename"
+		# only show first 9 options, accessible with a single keypress
+		if (( index == 9 )); then
+			break
+		fi
 	done
 	echo "  q) quit; do nothing"
 	echo -n "Please select 0-$index: "
