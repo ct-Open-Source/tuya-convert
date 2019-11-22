@@ -30,7 +30,7 @@ while true; do
 		fi
 		if [[ "$REPLY" =~ ^[Qq]$ ]]; then
 			echo "Leaving device as is..."
-			return
+			exit
 		fi
 		echo -n "Invalid selection, please select 0-$index: "
 	done
