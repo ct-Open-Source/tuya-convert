@@ -113,7 +113,7 @@ class JSONHandler(tornado.web.RequestHandler):
         print(self.request.headers)
         if payload:
             try:
-                decrypted_payload = unpad(AES.new(options.secKey, AES.MODE_ECB).decrypt(binascii.unhexlify(payload))).decode()
+                decrypted_payload = unpad(AES.new(options.secKey.encode(), AES.MODE_ECB).decrypt(binascii.unhexlify(payload))).decode()
                 if decrypted_payload[0] != "{":
                     raise ValueError("payload is not JSON")
                 print("payload", decrypted_payload)

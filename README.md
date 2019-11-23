@@ -43,52 +43,25 @@ On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/
     # git clone https://github.com/ct-Open-Source/tuya-convert
     # cd tuya-convert
     # ./install_prereq.sh
-### flash loader firmware + backup
-    # ./start_flash.sh
-
-Follow the instructions in the start_flash script. It will install our flash loader onto the ESP and connect to the access point created by your wifi adapter.
-
-    WIFI: vtrust-flash
-    IP: 10.42.42.42
-A backup of the original firmware will be created and stored locally
-
-### Device information
-After the firmware backup procedure, the retrieved device information will be shown.
-Please make sure to write down your devices flash mode and size!
-You can show this information again by executing:
-
-    # curl http://10.42.42.42
-### BACKUP only and UNDO
-You can use the flash loader to create a backup only.
-If you want to delete the FLASH loader out of the flash again and go back to the stock software just do following:
-
-    # curl http://10.42.42.42/undo
-### FLASH loader to user2
-The FLASH loader only allows flashing the third party firmware if the loader is running in the userspace user2 starting from 0x81000.
-This will flash the FLASH loader in user2 if it is not already there.
-It will destroy your ability to undo and go back to the original firmware
-
-    # curl http://10.42.42.42/flash2
 
 ### FLASH third-party firmware
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
-1. Place or link your binary file to ./files/thirdparty.bin.
+1. Place your binary file in the `/files/` directory or use one of the included firmware images.
 
 	Currently a Tasmota [v7.0.0.3](https://github.com/arendst/Tasmota/releases) `tasmota-wifiman.bin` build is included. You can update to a [current version](http://thehackbox.org/tasmota) via OTA after the Tuya-Convert process completes successfully. Please note that while we include this for your convenience, we are not affiliated with the Tasmota project and cannot provide support for post installation issues. Please refer to [the respective project](https://github.com/arendst/Tasmota) for configuration and support.
-	
+
 	An ESPurna [1.13.5](https://github.com/xoseperez/espurna/releases/tag/1.13.5) binary is also included (`espurna-base.bin`). Like before, the binary included does not have any specific hardware defined. Once flashed using Tuya-Convert you can update to the device-specific version via any of the means that ESPurna provides (OTA, web interface update, update via telnet or MQTT). Please refer to the [ESPurna project page](http://espurna.io) for more info and support.
 
 	Binary requirements:
-	* full binary including first-stage bootloader
+	* full binary including first-stage bootloader (tested with Arduino eboot and Open-RTOS rBoot)
 	* maximum filesize 512KB for first flash
 
 2. Start flashing process
 
-        # curl http://10.42.42.42/flash3
-
-	Alternatively you can request a certain file to be requested and flashed by the device:
-
-        # curl http://10.42.42.42/flash3?url=http://10.42.42.1/files/certain_file.bin
+	Execute `./start_flash.sh` and follow the instructions.
+	It will install our flash loader onto the ESP and connect to the access point created by your wifi adapter.
+	A backup of the original firmware will be automatically downloaded and stored locally.
+	You can then proceed to flash your desired firmware or revert to the stock firmware.
 
 3. Initial Configuration
 
