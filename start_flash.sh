@@ -109,3 +109,5 @@ echo "Exiting..."
 
 popd >/dev/null || exit
 
+./stop_flash.sh >/dev/null
+
