@@ -69,6 +69,33 @@ BE SURE THE FIRMWARE FITS YOUR DEVICE!
 
 	If you flashed the included ESPurna firmware file, the procedure will be very similar. The device will broadcast a `ESPURNA-XXXXXX` access point. You will have to connect to it using the default password: `fibonacci`. Once connected open the browser to 192.168.4.1 and follow the initial configuration instructions. Then go to the WIFI tab and configure your home WiFi connection (remember to save) or go to the ADMIN tab to upgrade the firmware to the device-specific image. 
 
+## USING DOCKER
+You may want to use a docker image instead. Advantage of this solution: You don't have to install anything on your host (except docker), everything goes into the docker image.
+Requirements:
+* Linux computer with a wifi adapter
+* Secondary wifi device (e.g. smartphone)
+* docker is installed
+* docker-compose is installed
+
+Create docker image:
+* git clone https://github.com/ct-Open-Source/tuya-convert
+* cd tuya-convert
+* docker build -t tuya:latest .
+
+Setup docker-compose:
+* take a look at docker-compose.sample.yml and create a similar docker-compose.yml in a separate folder
+* adjust the volume folder to your needs
+* create a .env file and put variables for AP, WLAN and GATEWAY in it (it should look like config.txt)
+
+Run the image:
+* docker-compose up -d
+* docker-compose exec tuya start
+* tuya-convert now starts within docker
+
+Stop the image:
+* docker-compose exec tuya stop
+* docker-compose down 
+
 ## CONTRIBUTING
 
 This project is currently maintained by Colin Kuebler @kueblc

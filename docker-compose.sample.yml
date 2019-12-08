@@ -1,0 +1,12 @@
+version: '3'
+services:
+  tuya:
+    image: tuya:latest
+    privileged: true
+    network_mode: "host"
+    environment:
+      - WLAN=${WLAN}
+      - AP=${AP}
+      - GATEWAY=${GATEWAY}
+    volumes:
+      - ./data/backups:/usr/bin/tuya-convert/backups
