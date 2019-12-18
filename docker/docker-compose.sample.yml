@@ -5,8 +5,8 @@ services:
     privileged: true
     network_mode: "host"
     environment:
-      - WLAN=${WLAN}
-      - AP=${AP}
-      - GATEWAY=${GATEWAY}
+      - WLAN=wlan0
+      - AP=vtrust-flash
+      - GATEWAY=10.42.42.1
     volumes:
       - ./data/backups:/usr/bin/tuya-convert/backups

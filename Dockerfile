@@ -1,6 +1,6 @@
 FROM phusion/baseimage:0.11
 
-RUN apt-get update && apt-get install -y git sudo iptables iproute2 iputils-ping
+RUN apt-get update && apt-get install -y sudo iproute2 iputils-ping
 
 RUN echo '* libraries/restart-without-asking boolean true' | sudo debconf-set-selections
 

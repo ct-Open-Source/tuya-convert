@@ -83,9 +83,9 @@ Create docker image:
 * docker build -t tuya:latest .
 
 Setup docker-compose:
-* take a look at docker-compose.sample.yml and create a similar docker-compose.yml in a separate folder
-* adjust the volume folder to your needs
-* create a .env file and put variables for AP, WLAN and GATEWAY in it (it should look like config.txt)
+* you may adjust docker/docker-compose.sample.yml, if necessary:
+   * environment-variables may be different, for example network-adapter may be different from wlan0
+   * adjust the volume folder, where you want your backups stored
 
 Run the image:
 * docker-compose up -d
