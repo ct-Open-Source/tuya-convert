@@ -83,11 +83,13 @@ Create docker image:
 * docker build -t tuya:latest .
 
 Setup docker-compose:
-* you may adjust docker/docker-compose.sample.yml, if necessary:
+* copy docker/docker-compose.sample.yml to a new folder you created, the file should be named docker-compose.yml
+* you may adjust this docker-compose.yml, if necessary:
    * environment-variables may be different, for example network-adapter may be different from wlan0
    * adjust the volume folder, where you want your backups stored
 
 Run the image:
+* go into the folder you copied docker-compose.yml
 * docker-compose up -d
 * docker-compose exec tuya start
 * tuya-convert now starts within docker
