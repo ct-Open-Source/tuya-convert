@@ -1,0 +1,12 @@
+version: '3'
+services:
+  tuya:
+    image: tuya:latest
+    privileged: true
+    network_mode: "host"
+    environment:
+      - WLAN=wlan0
+      - AP=vtrust-flash
+      - GATEWAY=10.42.42.1
+    volumes:
+      - ./data/backups:/usr/bin/tuya-convert/backups
