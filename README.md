@@ -48,7 +48,7 @@ On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
 1. Place your binary file in the `/files/` directory or use one of the included firmware images.
 
-	Currently a Tasmota [v8.1.0.1](https://github.com/arendst/Tasmota/releases) `tasmota-wifiman.bin` build is included. You can update to a [current version](http://thehackbox.org/tasmota) via OTA after the Tuya-Convert process completes successfully. Please note that while we include this for your convenience, we are not affiliated with the Tasmota project and cannot provide support for post installation issues. Please refer to [the respective project](https://github.com/arendst/Tasmota) for configuration and support.
+	Currently a Tasmota [v8.1.0.2](https://github.com/arendst/Tasmota/releases) `tasmota-wifiman.bin` build is included. You can update to a [current version](http://thehackbox.org/tasmota) via OTA after the Tuya-Convert process completes successfully. Please note that while we include this for your convenience, we are not affiliated with the Tasmota project and cannot provide support for post installation issues. Please refer to [the respective project](https://github.com/arendst/Tasmota) for configuration and support.
 
 	An ESPurna [1.13.5](https://github.com/xoseperez/espurna/releases/tag/1.13.5) binary is also included (`espurna-base.bin`). Like before, the binary included does not have any specific hardware defined. Once flashed using Tuya-Convert you can update to the device-specific version via any of the means that ESPurna provides (OTA, web interface update, update via telnet or MQTT). Please refer to the [ESPurna project page](http://espurna.io) for more info and support.
 
