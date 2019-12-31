@@ -5,8 +5,8 @@ set -e
 sudo apt-get update
 sudo apt-get install -y git iw dnsmasq hostapd screen curl build-essential python-pip python3-pip python-setuptools python3-setuptools python-wheel python3-wheel python-dev python3-dev mosquitto haveged net-tools libssl-dev
 
-PY3_DEPENDENCIES="paho-mqtt pyaes tornado git+https://github.com/M4dmartig4n/sslpsk.git pycrypto"
-PY2_DEPENDENCIES="git+https://github.com/M4dmartig4n/sslpsk.git pycrypto"
+PY3_DEPENDENCIES="paho-mqtt pyaes tornado git+https://github.com/M4dmartig4n/sslpsk.git pycryptodomex"
+PY2_DEPENDENCIES="git+https://github.com/M4dmartig4n/sslpsk.git pycryptodomex"
 
 if python3 -c 'import sys; exit(0) if sys.version_info.major == 3 and sys.version_info.minor < 7 else exit(1)' ;
 then
