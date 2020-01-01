@@ -25,11 +25,9 @@ def client(host, port):
 
 def gen_psk(identity, hint):
 	print("ID: %s" % hexlify(identity))
-	# sometimes the device only sends part of the prefix
-	# since it is always the same, we can correct it
-	if identity[1:17] != IDENTITY_PREFIX:
-		print("Prefix: %s" % identity[1:17])
-	identity = IDENTITY_PREFIX + identity[17:]
+	identity = identity[1:]
+	if identity[:16] != IDENTITY_PREFIX:
+		print("Prefix: %s" % identity[:16])
 	key = md5(hint[-16:]).digest()
 	iv = md5(identity).digest()
 	cipher = AES.new(key, AES.MODE_CBC, iv)
