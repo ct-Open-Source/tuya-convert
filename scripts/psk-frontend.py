@@ -5,7 +5,7 @@ import select
 import ssl
 import sslpsk
 
-from Crypto.Cipher import AES
+from Cryptodome.Cipher import AES
 from hashlib import md5
 from binascii import hexlify, unhexlify
 
