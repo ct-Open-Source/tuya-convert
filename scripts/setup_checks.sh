@@ -44,6 +44,22 @@ check_config () {
 		ls -m /sys/class/net
 		exit 1
 	fi
+
+	if [ -n "$SSH_CONNECTION" ]; then
+		remoteip=$(echo "$SSH_CONNECTION" | cut -d " " -f1)
+		if ip -o route get $remoteip | grep -q " dev $WLAN "; then
+			echo "Warning: It appears that you are running this script over an SSH connection"
+			echo "that uses the WiFi interface $WIFI. This interface will be reconfigured to run"
+			echo "in access point (AP) mode, at which time all connections will be dropped."
+			echo "If you continue, your SSH connection will be dropped and you can likely no longer"
+			echo "interact with this script. To avoid this, connect via wired ethernet or USB."
+			read -p "Continue? [y/N]" -n 1 -r
+			echo
+			if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+				exit
+			fi
+		fi
+	fi
 }
 
 check_port () {
