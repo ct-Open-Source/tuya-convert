@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import socket
 import select
@@ -47,7 +47,7 @@ class PskFrontend():
 
 		self.server_sock = listener(listening_host, listening_port)
 		self.sessions = []
-		self.hint = '1dHRsc2NjbHltbGx3eWh5' '0000000000000000'
+		self.hint = b'1dHRsc2NjbHltbGx3eWh5' b'0000000000000000'
 
 
 
@@ -69,7 +69,7 @@ class PskFrontend():
 
 			s2 = client(self.host, self.port)
 			self.sessions.append((ssl_sock, s2))
-		except Exception as e:
+		except ssl.SSLError as e:
 			print("could not establish sslpsk socket:", e)
 	def data_ready_cb(self, s):
 		if s == self.server_sock:
