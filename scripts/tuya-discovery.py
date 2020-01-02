@@ -9,11 +9,11 @@ Discover Tuya devices on the LAN via UDP broadcast
 import asyncio
 import json
 
-from Crypto.Cipher import AES
+from Cryptodome.Cipher import AES
 pad = lambda s: s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
 unpad = lambda s: s[:-ord(s[len(s) - 1:])]
-encrypt = lambda msg, key: AES.new(key, AES.MODE_ECB).encrypt(pad(msg))
-decrypt = lambda msg, key: unpad(AES.new(key, AES.MODE_ECB).decrypt(msg))
+encrypt = lambda msg, key: AES.new(key.encode(), AES.MODE_ECB).encrypt(pad(msg).encode())
+decrypt = lambda msg, key: unpad(AES.new(key.encode(), AES.MODE_ECB).decrypt(msg.encode()))
 
 from hashlib import md5
 udpkey = md5(b"yGAdlopoPVldABfn").digest()
