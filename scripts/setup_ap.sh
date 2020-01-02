@@ -11,6 +11,7 @@ version_check () {
 	openssl version
 	dnsmasq --version
 	hostapd -v
+	/usr/bin/env python3 --version
 	echo "==========="
 }
 
