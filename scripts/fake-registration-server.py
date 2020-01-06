@@ -24,9 +24,11 @@ def exit_cleanly(signal, frame):
 
 signal.signal(signal.SIGINT, exit_cleanly)
 
-from Crypto.Cipher import AES
+from Cryptodome.Cipher import AES
 pad = lambda s: s + (16 - len(s) % 16) * chr(16 - len(s) % 16)
 unpad = lambda s: s[:-ord(s[len(s) - 1:])]
+encrypt = lambda msg, key: AES.new(key.encode(), AES.MODE_ECB).encrypt(pad(msg).encode())
+decrypt = lambda msg, key: unpad(AES.new(key.encode(), AES.MODE_ECB).decrypt(msg.encode()))
 
 from base64 import b64encode
 import hashlib
@@ -82,7 +84,7 @@ class JSONHandler(tornado.web.RequestHandler):
 				't': ts,
 				'success': True }
 			answer = jsonstr(answer)
-			payload = b64encode(AES.new(options.secKey.encode(), AES.MODE_ECB).encrypt(pad(answer))).decode()
+			payload = b64encode(encrypt(answer, options.secKey)).decode()
 			signature = "result=%s||t=%d||%s" % (payload, ts, options.secKey)
 			signature = hashlib.md5(signature.encode()).hexdigest()[8:24]
 			answer = {
@@ -113,7 +115,7 @@ class JSONHandler(tornado.web.RequestHandler):
 		print(self.request.headers)
 		if payload:
 			try:
-				decrypted_payload = unpad(AES.new(options.secKey.encode(), AES.MODE_ECB).decrypt(binascii.unhexlify(payload))).decode()
+				decrypted_payload = decrypt(binascii.unhexlify(payload), options.secKey).decode()
 				if decrypted_payload[0] != "{":
 					raise ValueError("payload is not JSON")
 				print("payload", decrypted_payload)

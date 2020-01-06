@@ -1,15 +1,15 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import socket
 import select
 import ssl
 import sslpsk
 
-from Crypto.Cipher import AES
+from Cryptodome.Cipher import AES
 from hashlib import md5
 from binascii import hexlify, unhexlify
 
-IDENTITY_PREFIX = "BAohbmd6aG91IFR1"
+IDENTITY_PREFIX = b"BAohbmd6aG91IFR1"
 
 def listener(host, port):
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,7 +24,7 @@ def client(host, port):
 	return sock
 
 def gen_psk(identity, hint):
-	print("ID: %s" % hexlify(identity))
+	print("ID: %s" % hexlify(identity).decode())
 	identity = identity[1:]
 	if identity[:16] != IDENTITY_PREFIX:
 		print("Prefix: %s" % identity[:16])
@@ -32,7 +32,7 @@ def gen_psk(identity, hint):
 	iv = md5(identity).digest()
 	cipher = AES.new(key, AES.MODE_CBC, iv)
 	psk = cipher.encrypt(identity[:32])
-	print("PSK: %s" % hexlify(psk))
+	print("PSK: %s" % hexlify(psk).decode())
 	return psk
 
 
@@ -45,7 +45,7 @@ class PskFrontend():
 
 		self.server_sock = listener(listening_host, listening_port)
 		self.sessions = []
-		self.hint = '1dHRsc2NjbHltbGx3eWh5' '0000000000000000'
+		self.hint = b'1dHRsc2NjbHltbGx3eWh5' b'0000000000000000'
 
 
 
@@ -67,8 +67,10 @@ class PskFrontend():
 
 			s2 = client(self.host, self.port)
 			self.sessions.append((ssl_sock, s2))
-		except Exception as e:
+		except ssl.SSLError as e:
 			print("could not establish sslpsk socket:", e)
+			if "NO_SHARED_CIPHER" in e.reason or "WRONG_VERSION_NUMBER" in e.reason or "WRONG_SSL_VERSION" in e.reason:
+				print("don't panic this is probably just your phone!")
 	def data_ready_cb(self, s):
 		if s == self.server_sock:
 			_s, frm = s.accept()
