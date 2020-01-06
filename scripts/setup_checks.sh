@@ -74,6 +74,10 @@ check_port () {
 		echo "Port $port is needed to $reason"
 		read -p "Do you wish to terminate $process_name? [y/N] " -n 1 -r
 		echo
+		if [[ "$REPLY" =~ ^[Ss]$ ]]; then
+			echo "Skipping..."
+			return
+		fi
 		if [[ ! $REPLY =~ ^[Yy]$ ]]; then
 			echo "Aborting due to occupied port"
 			exit 1
