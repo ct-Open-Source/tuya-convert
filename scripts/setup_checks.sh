@@ -29,7 +29,7 @@ check_eula () {
 }
 
 check_config () {
-	if ! iw list | grep -q "* AP"; then
+	if ! iw list | grep -A 10 "Supported interface modes" | grep -q -e "\* AP$"; then
 		echo "AP mode not supported!"
 		echo "Please attach a WiFi card that supports AP mode."
 		exit 1
