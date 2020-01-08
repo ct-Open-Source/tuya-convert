@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
+# type: ignore
 """
 crc.py
 Created by kueblc on 2019-01-25.
