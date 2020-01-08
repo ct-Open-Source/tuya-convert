@@ -7,7 +7,7 @@ Encode data for Tuya smartconfig via multicast
 multicast strategy reverse engineered by kueblc
 """
 
-from crc import crc_32
+from .crc import crc_32
 
 from Cryptodome.Cipher import AES
 pad = lambda data, block_size : data + ('\0' * ( (block_size - len(data)) % block_size ) )

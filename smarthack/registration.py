@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 """
-fake-registration-server.py
 Created by nano on 2018-11-22.
 Copyright (c) 2018 VTRUST. All rights reserved.
 """
@@ -143,7 +142,7 @@ class JSONHandler(tornado.web.RequestHandler):
 				answer["mediaMqttsUrl"] = options.addr
 				answer["aispeech"] = options.addr
 			self.reply(answer)
-			os.system("pkill -f smartconfig/main.py")
+			os.system("pkill -f smarthack.smartconfig.main")
 
 		elif(".active" in a):
 			print("Answer s.gw.dev.pk.active")
@@ -163,7 +162,8 @@ class JSONHandler(tornado.web.RequestHandler):
 			self.reply(answer)
 			print("TRIGGER UPGRADE IN 10 SECONDS")
 			protocol = "2.2" if encrypted else "2.1"
-			os.system("sleep 10 && ./mq_pub_15.py -i %s -p %s &" % (gwId, protocol))
+			mqttbin = os.path.dirname(os.path.abspath(__file__)) + "/" + "mqtt.py"
+			os.system("sleep 10 && %s -i %s -p %s &" % (mqttbin, gwId, protocol))
 
 		# Upgrade endpoints
 		elif(".updatestatus" in a):

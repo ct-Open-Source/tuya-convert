@@ -7,7 +7,7 @@ Encode data for Tuya smartconfig via broadcast
 broadcast strategy ported from https://github.com/tuyapi/link
 """
 
-from crc import crc_8
+from .crc import crc_8
 
 broadcast_head = [1, 3, 6, 10]
 

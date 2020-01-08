@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 """
-tuya-discovery.py
 Created by kueblc on 2019-11-13.
 Discover Tuya devices on the LAN via UDP broadcast
 """

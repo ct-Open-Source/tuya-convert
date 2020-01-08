@@ -39,8 +39,8 @@ class SmartConfigSocket(object):
 			self._socket.sendto( b'\0', (ip, 30012))
 			sleep(self._gap)
 
-from broadcast import broadcast_head, encode_broadcast_body
-from multicast import multicast_head, encode_multicast_body
+from .broadcast import broadcast_head, encode_broadcast_body
+from .multicast import multicast_head, encode_multicast_body
 
 def smartconfig( password, ssid, region, token, secret ):
 	sock = SmartConfigSocket()

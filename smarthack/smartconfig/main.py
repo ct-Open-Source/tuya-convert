@@ -12,7 +12,7 @@ region = "US"
 token = "00000000"
 secret = "0101"
 
-from smartconfig import smartconfig
+from .smartconfig import smartconfig
 from time import sleep
 
 print('Put device in EZ config mode (blinking fast)')
