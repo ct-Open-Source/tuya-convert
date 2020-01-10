@@ -3,6 +3,18 @@
 # Source config
 . ../config.txt
 
+version_check () {
+	echo "System info"
+	echo "==========="
+	git rev-parse --short HEAD
+	uname -a
+	openssl version
+	dnsmasq --version
+	hostapd -v
+	/usr/bin/env python3 --version
+	echo "==========="
+}
+
 setup () {
 	wpa_supplicant_pid=$(pidof wpa_supplicant)
 	if [ -n "$wpa_supplicant_pid" ]; then
@@ -51,6 +63,7 @@ cleanup () {
 	fi
 }
 
+version_check
 trap cleanup EXIT
 setup
 
