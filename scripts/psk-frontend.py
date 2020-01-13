@@ -63,7 +63,7 @@ class PskFrontend():
 				ssl_version=ssl.PROTOCOL_TLSv1_2,
 				ciphers='PSK-AES128-CBC-SHA256',
 				psk=lambda identity: gen_psk(identity, self.hint),
-				hint=self.hint.decode())
+				hint=self.hint)
 
 			s2 = client(self.host, self.port)
 			self.sessions.append((ssl_sock, s2))
