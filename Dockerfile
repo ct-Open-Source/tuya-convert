@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.11
+FROM phusion/baseimage:master
 
 RUN apt-get update && apt-get install -y sudo iproute2 iputils-ping
 
