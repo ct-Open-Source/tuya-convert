@@ -23,13 +23,13 @@ setup () {
 	echo
 	sleep 5
 	echo "  Starting web server in a screen"
-	$screen_with_log smarthack-web.log -S smarthack-web -m -d ./fake-registration-server.py
+	$screen_with_log smarthack-web.log -S smarthack-web -m -d ../smarthack/registration.py
 	echo "  Starting Mosquitto in a screen"
 	$screen_with_log smarthack-mqtt.log -S smarthack-mqtt -m -d mosquitto -v
 	echo "  Starting PSK frontend in a screen"
-	$screen_with_log smarthack-psk.log -S smarthack-psk -m -d ./psk-frontend.py -v
+	$screen_with_log smarthack-psk.log -S smarthack-psk -m -d ../smarthack/pskproxy.py -v
 	echo "  Starting Tuya Discovery in a screen"
-	$screen_with_log smarthack-udp.log -S smarthack-udp -m -d ./tuya-discovery.py
+	$screen_with_log smarthack-udp.log -S smarthack-udp -m -d ../smarthack/discovery.py
 	echo
 }
 
@@ -63,7 +63,7 @@ while true; do
 	echo "======================================================"
 
 	echo "Starting smart config pairing procedure"
-	./smartconfig/main.py &
+	PYTHONPATH=.. python3 -m smarthack.smartconfig.main
 
 	echo "Waiting for the device to install the intermediate firmware"
 
@@ -74,7 +74,7 @@ while true; do
 			echo
 			echo "Device did not appear with the intermediate firmware"
 			echo "Check the *.log files in the scripts folder"
-			pkill -f smartconfig/main.py && echo "Stopping smart config"
+			pkill -f smarthack.smartconfig.main && echo "Stopping smart config"
 			read -p "Do you want to try flashing another device? [y/N] " -n 1 -r
 			echo
 			[[ "$REPLY" =~ ^[Yy]$ ]] || break 2
@@ -85,7 +85,7 @@ while true; do
 	echo
 	echo "IoT-device is online with ip 10.42.42.42"
 
-	pkill -f smartconfig/main.py && echo "Stopping smart config"
+	pkill -f smarthack.smartconfig.main && echo "Stopping smart config"
 
 	echo "Fetching firmware backup"
 	sleep 2

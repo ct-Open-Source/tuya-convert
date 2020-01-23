@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # encoding: utf-8
+# type: ignore
 """
 mq_pub_15.py
 Created by nano on 2018-11-22.
