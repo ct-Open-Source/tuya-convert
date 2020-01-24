@@ -33,13 +33,18 @@ class TuyaDiscovery(asyncio.DatagramProtocol):
 		try:
 			data = decrypt_udp(data)
 		except:
-			pass
+			data = data.decode()
+		print(addr[0], data)
 		# parse json
 		try:
 			data = json.loads(data)
+			# there is a typo present only in Tuya SDKs for non-ESP devices ("ablilty")
+			# it is spelled correctly in the Tuya SDK for the ESP ("ability")
+			# we can use this as a clue to report unsupported devices
+			if "ablilty" in data:
+				print("WARNING: it appears this device does not use an ESP82xx and therefore cannot install ESP based firmware")
 		except:
 			pass
-		print(addr[0], data)
 
 def main():
 	loop = asyncio.get_event_loop()
