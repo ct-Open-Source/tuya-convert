@@ -19,8 +19,14 @@ from hashlib import md5
 udpkey = md5(b"yGAdlopoPVldABfn").digest()
 decrypt_udp = lambda msg: decrypt(msg, udpkey)
 
+devices_seen = set()
+
 class TuyaDiscovery(asyncio.DatagramProtocol):
 	def datagram_received(self, data, addr):
+		# ignore devices we've already seen
+		if data in devices_seen:
+			return
+		devices_seen.add(data)
 		# remove message frame
 		data = data[20:-8]
 		# decrypt if encrypted
