@@ -4,6 +4,7 @@ normal=$(tput sgr0)
 . ./config.txt
 
 setup () {
+	echo "tuya-convert $(git describe --tags)"
 	pushd scripts >/dev/null || exit
 	. ./setup_checks.sh
 	screen_minor=$(screen --version | cut -d . -f 2)
