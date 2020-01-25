@@ -71,6 +71,8 @@ class PskFrontend():
 			print("could not establish sslpsk socket:", e)
 			if "NO_SHARED_CIPHER" in e.reason or "WRONG_VERSION_NUMBER" in e.reason or "WRONG_SSL_VERSION" in e.reason:
 				print("don't panic this is probably just your phone!")
+		except Exception as e:
+			print(e)
 	def data_ready_cb(self, s):
 		if s == self.server_sock:
 			_s, frm = s.accept()

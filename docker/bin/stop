@@ -1,3 +1,2 @@
 #!/bin/bash
-cd /usr/bin/tuya-convert
-./stop_flash.sh
+pkill -SIGINT -f start_flash.sh
