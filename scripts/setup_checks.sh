@@ -102,6 +102,17 @@ check_port () {
 	fi
 }
 
+check_firewall () {
+	if sudo systemctl stop firewalld.service &>/dev/null; then
+		echo "Attempting to stop firewalld.service"
+		echo "When done, enable with: ${bold}sudo systemctl start firewalld.service${normal}"
+	fi
+	if sudo ufw status | grep -qw active; then
+		sudo ufw disable
+		echo "When done, enable with: ${bold}sudo ufw enable${normal}"
+	fi
+}
+
 check_blacklist () {
 	if [ -e /etc/modprobe.d/blacklist-rtl8192cu.conf ]; then
 		echo "Detected /etc/modprobe.d/blacklist-rtl8192cu.conf"
@@ -125,5 +136,6 @@ check_port udp 6666 "detect unencrypted Tuya firmware"
 check_port udp 6667 "detect encrypted Tuya firmware"
 check_port tcp 1883 "run MQTT"
 check_port tcp 8886 "run MQTTS"
+check_firewall
 check_blacklist
 
