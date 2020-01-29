@@ -94,7 +94,14 @@ while true; do
 	backupfolder="../backups/$timestamp"
 	mkdir -p "$backupfolder"
 	pushd "$backupfolder" >/dev/null || exit
-	curl -JO http://10.42.42.42/backup
+
+	if ! curl -JOm 90 http://10.42.42.42/backup; then
+		echo "Could not fetch a complete backup"
+		read -p "Do you want to continue anyway? [y/N] " -n 1 -r
+		echo
+		[[ "$REPLY" =~ ^[Yy]$ ]] || break
+		sleep 2
+	fi
 
 	echo "======================================================"
 	echo "Getting Info from IoT-device"
