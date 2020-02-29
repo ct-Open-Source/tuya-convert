@@ -69,6 +69,12 @@ while true; do
 	echo "Waiting for the device to install the intermediate firmware"
 
 	i=120
+	# !!! IMPORTANT !!!
+	# Did your device get an IP address other than 10.42.42.42?
+	# That is because it is not running the intermediate firmware
+	# The intermediate firmware will request 10.42.42.42
+	# Do NOT change this address!!!
+	# It will NOT make it install and will break this script
 	while ! ping -c 1 -W 1 -n 10.42.42.42 &> /dev/null; do
 		printf .
 		if (( --i == 0 )); then
