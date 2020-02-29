@@ -107,7 +107,7 @@ check_firewall () {
 		echo "Attempting to stop firewalld.service"
 		echo "When done, enable with: ${bold}sudo systemctl start firewalld.service${normal}"
 	fi
-	if sudo ufw status | grep -qw active; then
+	if command -v ufw >/dev/null && sudo ufw status | grep -qw active; then
 		sudo ufw disable
 		echo "When done, enable with: ${bold}sudo ufw enable${normal}"
 	fi
