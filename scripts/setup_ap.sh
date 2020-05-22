@@ -16,6 +16,8 @@ version_check () {
 }
 
 setup () {
+	rfkill unblock wifi
+
 	wpa_supplicant_pid=$(pidof wpa_supplicant)
 	if [ -n "$wpa_supplicant_pid" ]; then
 		echo "Attempting to stop wpa_supplicant"
