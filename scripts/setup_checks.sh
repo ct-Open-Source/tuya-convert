@@ -67,7 +67,7 @@ check_port () {
 	port="$2"
 	reason="$3"
 	echo -n "Checking ${protocol^^} port $port... "
-	process_pid=$(sudo ss -Hlnp -A "$protocol" "sport = :$port" | grep -Po "(?<=pid=)(\d+)" | head -n1)
+	process_pid=$(sudo ss -lnp -A "$protocol" "sport = :$port" | grep -Po "(?<=pid=)(\d+)" | head -n1)
 	if [ -n "$process_pid" ]; then
 		process_name=$(ps -p "$process_pid" -o comm=)
 		echo "Occupied by $process_name with PID $process_pid."
@@ -107,7 +107,7 @@ check_firewall () {
 		echo "Attempting to stop firewalld.service"
 		echo "When done, enable with: ${bold}sudo systemctl start firewalld.service${normal}"
 	fi
-	if sudo ufw status | grep -qw active; then
+	if command -v ufw >/dev/null && sudo ufw status | grep -qw active; then
 		sudo ufw disable
 		echo "When done, enable with: ${bold}sudo ufw enable${normal}"
 	fi
