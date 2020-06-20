@@ -13,7 +13,7 @@ while true; do
 		# get short name
 		filename=$(basename "$file")
 		# skip files too large or too small
-		filesize=$(stat -c%s "$file")
+		filesize=$(stat -Lc%s "$file")
 		[[ "$filesize" -gt 0x1000 && "$filesize" -le 0x80000 ]] || continue
 		# skip files without magic byte
 		[[ $(head -c 1 "$file") == "$MAGIC" ]] || continue

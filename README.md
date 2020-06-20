@@ -5,14 +5,14 @@ A Chinese company named Tuya offers a free-to-brand turnkey smart home solution 
 
 Aside from that, they claim their cloud solution has 'military grade security'. Michael Steigerwald, founder of the German IT security startup VTRUST, was able to disprove this claim and presented his results in the "Smart home - Smart hack" talk at 35C3 in Leipzig: https://media.ccc.de/v/35c3-9723-smart_home_-_smart_hack
 
-In the following days, VTRUST and the German tech magazine c't decided to work together. Since reflashing devices using the ESP8266/85 is widespread among DIY smart home enthusiasts, we wanted to provide an easy way for everyone to free their devices from the cloud without the need for a soldering iron. 
+In the following days, VTRUST and the German tech magazine c't decided to work together. Since reflashing devices using the ESP8266/85 is widespread among DIY smart home enthusiasts, we wanted to provide an easy way for everyone to free their devices from the cloud without the need for a soldering iron.
 
 Please make sure to visit VTRUST (https://www.vtrust.de/), since the hack is their work.
 
 ## 🚨WARNING🚨
-Please be sure that you understand what you're doing before using this software. Flashing an alternative firmware can lead to unexpected behavior and/or render the device unusable, so that it might be permanently damaged (highly unlikely) or require soldering a serial connection to the processor in order to reflash it (likely). 
+Please be sure that you understand what you're doing before using this software. Flashing an alternative firmware can lead to unexpected behavior and/or render the device unusable, so that it might be permanently damaged (highly unlikely) or require soldering a serial connection to the processor in order to reflash it (likely).
 
-### ⚠️ Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality. ⚠️ 
+### ⚠️ Be aware that you use this software at your own risk so neither VTRUST nor c't/heise can be held accountable for any damage done or loss of functionality. ⚠️
 
 TUYA-CONVERT only provides with the means to backup the original and flash an alternative firmware. Please do not ask for hardware support for your favorite alternative firmware in this repository, rather open an issue in the corresponding repository.
 
@@ -27,13 +27,14 @@ Since Tuya devices are spread around the world with likely a vast amount of diff
 * Secondary wifi device (e.g. smartphone)
 * Dependencies will be installed by `install_prereq.sh`
 
-These scripts were tested in 
+These scripts were tested in
 * Kali-Linux 2018.4 in VMWARE
-* a Raspberry Pi 3B / 3B+ with Raspbian Stretch and its internal Wifi chip
-* a Raspberry Pi 3B+ + USB-WIFI with this image from [here](https://www.offensive-security.com/kali-linux-arm-images/)
-	https://images.offensive-security.com/arm-images/kali-linux-2018.4a-rpi3-nexmon-64.img.xz
+* a Raspberry Pi Zero W with Rasbian
+* a Raspberry Pi 3B / 3B+ / 4B with Raspbian Stretch and its internal Wifi chip
+* a Raspberry Pi 3B / 3B+ Raspberry Pi OS Buster (previously called Raspbian) and its internal Wifi chip
+* a Raspberry Pi 3B+ + USB-WIFI with an image from [here](https://www.offensive-security.com/kali-linux-arm-images/)
 * Ubuntu 18.04.3 64Bit in VirtualBox on Win10 with a [cheap RTL8188CU Wifi Adapter](http://s.click.aliexpress.com/e/KrKIoPdI) connected to the VM
-	
+
 Any Linux with a Wifi adapter which can act as an Access Point should also work. Please note that we have tested the Raspberry Pi with clean installations only. If you use your Raspberry Pi for anything else, we recommend using another SD card with a clean installation.
 
 ## PROCEDURE
@@ -49,7 +50,7 @@ On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
 1. Place your binary file in the `/files/` directory or use one of the included firmware images.
 
-	Currently a [Tasmota](https://github.com/arendst/Tasmota) `tasmota-wifiman.bin` build is included in the Tuya-Convert package. You can update to the [current maintenance release](http://thehackbox.org/tasmota) via OTA after the flashing process completes successfully. The included binary does not have any specific hardware configured. Once flashed using Tuya-Convert you will need to configure your device(s) properly. Please note that while we include this firmware for your convenience, we are not affiliated with the Tasmota project and cannot provide support for post installation issues. Please refer to the [Tasmota project](https://github.com/arendst/Tasmota) and [its documentation](http://tasmota.com) for configuration and support.
+	Currently a [Tasmota](https://github.com/arendst/Tasmota) `tasmota-wifiman.bin` build is included in the Tuya-Convert package. You can easily update to the [current maintenance release](http://thehackbox.org/tasmota) via OTA **after** the flashing process completes successfully. The included binary does not have any specific hardware configured. Once flashed using Tuya-Convert you will need to configure your device(s) properly. Please note that while we include this firmware for your convenience, we are not affiliated with the Tasmota project and cannot provide support for post installation issues. Please refer to the [Tasmota project](https://github.com/arendst/Tasmota) and [its documentation](http://tasmota.com) for configuration and support. **IMPORTANT:** If you still want to update the tasmota binary before using Tuya-Convert, always pickup `tasmota-wifiman.bin`. Never ever use `tasmota-minimal.bin` as you will brick your device.
 
 	An ESPurna [1.13.5](https://github.com/xoseperez/espurna/releases/tag/1.13.5) binary is also included (`espurna-base.bin`). Like before, the binary included does not have any specific hardware defined. Once flashed using Tuya-Convert you can update to the device-specific version via any of the means that ESPurna provides (OTA, web interface update, update via telnet or MQTT). Please refer to the [ESPurna project page](http://espurna.io) for more info and support.
 
@@ -68,7 +69,7 @@ BE SURE THE FIRMWARE FITS YOUR DEVICE!
 
 	If you flashed the included Tasmota firmware file, it will broadcast a `tasmota-xxxx` access point (AP) when the device boots. Connect to this AP and open the browser to 192.168.4.1 to configure the device's Wi-Fi credentials. When entering the Wi-Fi password, click the checkbox to view the password you enter to ensure that it is correct and that your mobile device has not inadvertently capitalized the first letter if it is supposed to be lower case nor autocorrected what you entered. ~~Double~~ **Triple check the Wi-Fi credentials** before clicking **Save** to apply the settings.
 
-	If you flashed the included ESPurna firmware file, the procedure will be very similar. The device will broadcast a `ESPURNA-XXXXXX` access point. You will have to connect to it using the default password: `fibonacci`. Once connected open the browser to 192.168.4.1 and follow the initial configuration instructions. Then go to the WIFI tab and configure your home WiFi connection (remember to save) or go to the ADMIN tab to upgrade the firmware to the device-specific image. 
+	If you flashed the included ESPurna firmware file, the procedure will be very similar. The device will broadcast a `ESPURNA-XXXXXX` access point. You will have to connect to it using the default password: `fibonacci`. Once connected open the browser to 192.168.4.1 and follow the initial configuration instructions. Then go to the WIFI tab and configure your home WiFi connection (remember to save) or go to the ADMIN tab to upgrade the firmware to the device-specific image.
 
 ## USING DOCKER
 You may want to use a docker image instead. Advantage of this solution: You don't have to install anything on your host (except docker), everything goes into the docker image.
@@ -97,7 +98,7 @@ Run the image:
 
 Stop the image:
 * docker-compose exec tuya stop
-* docker-compose down 
+* docker-compose down
 
 ## CONTRIBUTING
 
@@ -115,4 +116,3 @@ You can also give back by providing or improving documentation, tutorials, issue
 - [TuyAPI](https://github.com/codetheweb/tuyapi) NPM library for LAN control of Tuya devices with stock firmware
 - [TuyOTA](https://github.com/SynAckFin/TuyOTA) Perl based Tuya flashing script using a similar strategy
 - [MockTuyaCloud](https://github.com/kueblc/mocktuyacloud) Framework replicating much of the Tuya cloud functionality
-
