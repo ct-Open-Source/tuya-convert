@@ -43,7 +43,8 @@ setup () {
 		--bind-interfaces \
 		--listen-address=$GATEWAY \
 		--dhcp-range=10.42.42.10,10.42.42.40,12h \
-		--address=/#/$GATEWAY
+		--address=/#/$GATEWAY \
+		--conf-file=../empty.conf
 
 	echo "Starting AP on $WLAN..."
 
