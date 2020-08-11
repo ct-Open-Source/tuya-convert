@@ -2,6 +2,10 @@
 
 # Source config
 . ../config.txt
+if [[ "$WLAN" == "auto" || "$(echo $(iw dev | grep "Interface ") | grep "$WLAN")" ]]; then
+    WLAN=$(echo $(iw dev | grep "Interface ") | cut -d" " -f 2 | head -1)
+    echo "Wireless interface autodetected as $WLAN..."
+fi
 
 check_eula () {
 	if [ ! -f eula_accepted ]; then

@@ -1,7 +1,12 @@
 # Please input the wlan device to be used (most of the time it is wlan0 or wlan1)
+# Set to "auto" to auto-detection of the 1st wifi device found
 WLAN=wlan0
 
 # Here you could change the WIFI-name but most likely most scripts won't work after
 # Because the WIFI-credentials are hardcoded in the esp8266-ota-flash-convert
 AP=vtrust-flash
 GATEWAY=10.42.42.1
+
+# Uncomment and change the password to set WPA for security for the access point
+# Password should be at least 8 characters long and a mix of uppercase, lowercase and numbers.
+#WPA_PASS=Raspberry

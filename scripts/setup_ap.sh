@@ -2,6 +2,10 @@
 
 # Source config
 . ../config.txt
+if [[ "$WLAN" == "auto" || "$(echo $(iw dev | grep "Interface ") | grep "$WLAN")" ]]; then
+    WLAN=$(echo $(iw dev | grep "Interface ") | cut -d" " -f 2 | head -1)
+    echo "Wireless interface autodetected as $WLAN..."
+fi
 
 version_check () {
 	echo "System info"
@@ -49,7 +53,15 @@ setup () {
 
 	# Read hostapd.conf with interface from stdin for
 	# backward compatibility (hostapd < v2.6). See #398
-	printf "$(cat hostapd.conf)\ninterface=$WLAN" | sudo hostapd /dev/stdin
+	(cat hostapd.conf
+     echo "interface=$WLAN"
+     if [[ ! -z "$WPA_PASS" ]]; then
+         echo wpa=2
+         echo wpa_passphrase="$WPA_PASS"
+         echo wpa_key_mgmt=WPA-PSK
+         echo wpa_pairwise=TKIP
+         echo rsn_pairwise=CCMP
+     fi) | sudo hostapd /dev/stdin
 }
 
 cleanup () {
