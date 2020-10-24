@@ -42,7 +42,7 @@ Any Linux with a Wifi adapter which can act as an Access Point should also work.
 On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/newsticker/meldung/Smart-Home-Hack-Tuya-veroeffentlicht-Sicherheitsupdate-4292028.html) that prevented older versions of tuya-convert from completing successfully. We have since developed a work around to enable OTA flashing once again, but there is always the possibility that Tuya will respond with yet another patch. To ensure the best chance of success, **do not connect your device with the official app** as it may automatically update the device, preventing you from flashing with tuya-convert. It is up to the individual brands to update their firmware, so some devices may be affected sooner than others.
 
 ### INSTALLATION
-    # git clone https://github.com/ct-Open-Source/tuya-convert
+    # git clone https://github.com/ct-Open-Source/tuya-convert.git
     # cd tuya-convert
     # ./install_prereq.sh
 
