@@ -42,6 +42,7 @@ setup () {
 		--interface=$WLAN \
 		--bind-interfaces \
 		--listen-address=$GATEWAY \
+		--except-interface=lo \
 		--dhcp-range=10.42.42.10,10.42.42.40,12h \
 		--address=/#/$GATEWAY
 
