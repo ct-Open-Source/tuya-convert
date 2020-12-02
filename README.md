@@ -33,13 +33,15 @@ These scripts were tested in
 * a Raspberry Pi 3B / 3B+ / 4B with Raspbian Stretch and its internal Wifi chip
 * a Raspberry Pi 3B / 3B+ Raspberry Pi OS Buster (previously called Raspbian) and its internal Wifi chip
 * a Raspberry Pi 3B+ + USB-WIFI with an image from [here](https://www.offensive-security.com/kali-linux-arm-images/)
-* Ubuntu 18.04.3 64Bit in VirtualBox on Win10 with a [cheap RTL8188CU Wifi Adapter](http://s.click.aliexpress.com/e/KrKIoPdI) connected to the VM
+* Ubuntu 18.04.3 64Bit in VirtualBox on Win10 with a cheap RTL8188CU Wifi Adapter connected to the VM
 
 Any Linux with a Wifi adapter which can act as an Access Point should also work. Please note that we have tested the Raspberry Pi with clean installations only. If you use your Raspberry Pi for anything else, we recommend using another SD card with a clean installation.
 
 ## PROCEDURE
 
 On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/newsticker/meldung/Smart-Home-Hack-Tuya-veroeffentlicht-Sicherheitsupdate-4292028.html) that prevented older versions of tuya-convert from completing successfully. We have since developed a work around to enable OTA flashing once again, but there is always the possibility that Tuya will respond with yet another patch. To ensure the best chance of success, **do not connect your device with the official app** as it may automatically update the device, preventing you from flashing with tuya-convert. It is up to the individual brands to update their firmware, so some devices may be affected sooner than others.
+
+
 
 ### INSTALLATION
     # git clone https://github.com/ct-Open-Source/tuya-convert
