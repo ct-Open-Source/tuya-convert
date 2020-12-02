@@ -39,9 +39,11 @@ Any Linux with a Wifi adapter which can act as an Access Point should also work.
 
 ## PROCEDURE
 
-On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/newsticker/meldung/Smart-Home-Hack-Tuya-veroeffentlicht-Sicherheitsupdate-4292028.html) that prevented older versions of tuya-convert from completing successfully. We have since developed a work around to enable OTA flashing once again, but there is always the possibility that Tuya will respond with yet another patch. To ensure the best chance of success, **do not connect your device with the official app** as it may automatically update the device, preventing you from flashing with tuya-convert. It is up to the individual brands to update their firmware, so some devices may be affected sooner than others.
+On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/newsticker/meldung/Smart-Home-Hack-Tuya-veroeffentlicht-Sicherheitsupdate-4292028.html) that prevented older versions of tuya-convert from completing successfully. We have since developed a work around to enable OTA flashing on some newer devices, but Tuya has since released [yet another patch](https://github.com/ct-Open-Source/tuya-convert/issues/483).
 
+To ensure the best chance of success, **do not connect your device with the official app** as it may automatically update the device, preventing you from flashing with tuya-convert. It is up to the individual brands to update their firmware, so some devices may be affected sooner than others.
 
+Unfortunately many devices have already been shipping with the new patched firmware, evident by a PSK ID beginning with 02 in smarthack-psk.log. There is no workaround at this time. Additionally, manufacturers have been silently switching from the ESP82xx based modules to other chipsets, making it impossible to install alternative ESP firmware on these devices.
 
 ### INSTALLATION
     # git clone https://github.com/ct-Open-Source/tuya-convert
