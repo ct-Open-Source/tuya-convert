@@ -83,9 +83,9 @@ while true; do
 			echo "Check the *.log files in the scripts folder"
 			pkill -f smartconfig/main.py && echo "Stopping smart config"
 			echo "If the device left easy pairing mode (LED stopped blinking quickly) when config"
-			echo "packets were sent, your device may have too new of firmware for this tool: "
+			echo "packets were sent, your device may have too new of firmware for this tool:"
 			echo "see https://github.com/ct-Open-Source/tuya-convert/wiki/Collaboration-document-for-PSK-Identity-02#known-affected-devices"
-			echo ""
+			echo
 			read -p "Do you want to try flashing another device? [y/N] " -n 1 -r
 			echo
 			[[ "$REPLY" =~ ^[Yy]$ ]] || break 2
@@ -137,4 +137,3 @@ while true; do
 	echo
 	[[ "$REPLY" =~ ^[Yy]$ ]] || break
 done
-
