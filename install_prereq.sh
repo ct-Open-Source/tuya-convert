@@ -4,12 +4,12 @@ set -euo pipefail
 debianInstall() {
 	sudo apt-get update
 	sudo apt-get install -y git iw dnsmasq hostapd screen curl build-essential python3-pip python3-setuptools python3-wheel python3-dev mosquitto haveged net-tools libssl-dev
-	python3 -m pip install --user --upgrade paho-mqtt tornado git+https://github.com/drbild/sslpsk.git pycryptodomex
+	sudo python3 -m pip install --user --upgrade paho-mqtt tornado git+https://github.com/drbild/sslpsk.git pycryptodomex
 }
 
 archInstall() {
 	sudo pacman -S --needed git iw dnsmasq hostapd screen curl python-pip python-wheel python-pycryptodomex python-paho-mqtt python-tornado mosquitto haveged net-tools openssl
-	python -m pip install --user --upgrade git+https://github.com/drbild/sslpsk.git
+	sudo python -m pip install --user --upgrade git+https://github.com/drbild/sslpsk.git
 }
 
 if [[ -e /etc/os-release ]]; then
