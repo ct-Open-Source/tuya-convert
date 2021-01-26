@@ -8,7 +8,7 @@ debianInstall() {
 }
 
 archInstall() {
-	sudo pacman -S --needed git iw dnsmasq util-linux hostapd screen curl python-pip python-wheel python-pycryptodomex python-paho-mqtt python-tornado mosquitto haveged net-tools openssl
+	sudo pacman -S --needed git iw dnsmasq hostapd screen curl python-pip python-wheel python-pycryptodomex python-paho-mqtt python-tornado mosquitto haveged net-tools openssl
 	sudo python -m pip install --user --upgrade git+https://github.com/drbild/sslpsk.git
 }
 
