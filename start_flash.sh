@@ -80,9 +80,12 @@ while true; do
 		printf .
 		if (( --i == 0 )); then
 			echo
-			echo "Device did not appear with the intermediate firmware"
-			echo "Check the *.log files in the scripts folder"
+			echo "Timed out while waiting for the device to (re)connect"
 			pkill -f smartconfig/main.py && echo "Stopping smart config"
+			echo "======================================================"
+			echo "Attempting to diagnose the issue..."
+			./dr_tuya.sh
+			echo "======================================================"
 			read -p "Do you want to try flashing another device? [y/N] " -n 1 -r
 			echo
 			[[ "$REPLY" =~ ^[Yy]$ ]] || break 2

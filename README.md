@@ -33,13 +33,17 @@ These scripts were tested in
 * a Raspberry Pi 3B / 3B+ / 4B with Raspbian Stretch and its internal Wifi chip
 * a Raspberry Pi 3B / 3B+ Raspberry Pi OS Buster (previously called Raspbian) and its internal Wifi chip
 * a Raspberry Pi 3B+ + USB-WIFI with an image from [here](https://www.offensive-security.com/kali-linux-arm-images/)
-* Ubuntu 18.04.3 64Bit in VirtualBox on Win10 with a [cheap RTL8188CU Wifi Adapter](http://s.click.aliexpress.com/e/KrKIoPdI) connected to the VM
+* Ubuntu 18.04.3 64Bit in VirtualBox on Win10 with a cheap RTL8188CU Wifi Adapter connected to the VM
 
 Any Linux with a Wifi adapter which can act as an Access Point should also work. Please note that we have tested the Raspberry Pi with clean installations only. If you use your Raspberry Pi for anything else, we recommend using another SD card with a clean installation.
 
 ## PROCEDURE
 
-On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/newsticker/meldung/Smart-Home-Hack-Tuya-veroeffentlicht-Sicherheitsupdate-4292028.html) that prevented older versions of tuya-convert from completing successfully. We have since developed a work around to enable OTA flashing once again, but there is always the possibility that Tuya will respond with yet another patch. To ensure the best chance of success, **do not connect your device with the official app** as it may automatically update the device, preventing you from flashing with tuya-convert. It is up to the individual brands to update their firmware, so some devices may be affected sooner than others.
+On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/newsticker/meldung/Smart-Home-Hack-Tuya-veroeffentlicht-Sicherheitsupdate-4292028.html) that prevented older versions of tuya-convert from completing successfully. We have since developed a work around to enable OTA flashing on some newer devices, but Tuya has since released [yet another patch](https://github.com/ct-Open-Source/tuya-convert/issues/483).
+
+To ensure the best chance of success, **do not connect your device with the official app** as it may automatically update the device, preventing you from flashing with tuya-convert. It is up to the individual brands to update their firmware, so some devices may be affected sooner than others.
+
+Unfortunately many devices have already been shipping with the new patched firmware, evident by a PSK ID beginning with 02 in smarthack-psk.log. There is no workaround at this time. Additionally, manufacturers have been silently switching from the ESP82xx based modules to other chipsets, making it impossible to install alternative ESP firmware on these devices.
 
 ### INSTALLATION
     # git clone https://github.com/ct-Open-Source/tuya-convert
@@ -50,7 +54,7 @@ On January 28th, 2019, Tuya started [distributing a patch](https://www.heise.de/
 BE SURE THE FIRMWARE FITS YOUR DEVICE!
 1. Place your binary file in the `/files/` directory or use one of the included firmware images.
 
-	Currently a [Tasmota](https://github.com/arendst/Tasmota) `tasmota-wifiman.bin` build is included in the Tuya-Convert package. You can easily update to the [current maintenance release](http://thehackbox.org/tasmota) via OTA **after** the flashing process completes successfully. The included binary does not have any specific hardware configured. Once flashed using Tuya-Convert you will need to configure your device(s) properly. Please note that while we include this firmware for your convenience, we are not affiliated with the Tasmota project and cannot provide support for post installation issues. Please refer to the [Tasmota project](https://github.com/arendst/Tasmota) and [its documentation](http://tasmota.com) for configuration and support. **IMPORTANT:** If you still want to update the tasmota binary before using Tuya-Convert, always pickup `tasmota-wifiman.bin`. Never ever use `tasmota-minimal.bin` as you will brick your device.
+	Currently a [Tasmota](https://github.com/arendst/Tasmota) `tasmota-lite.bin` build is included in the Tuya-Convert package. You can easily update to the [current maintenance release](http://thehackbox.org/tasmota) via OTA **after** the flashing process completes successfully. The included binary does not have any specific hardware configured. Once flashed using Tuya-Convert you will need to configure your device(s) properly. Please note that while we include this firmware for your convenience, we are not affiliated with the Tasmota project and cannot provide support for post installation issues. Please refer to the [Tasmota project](https://github.com/arendst/Tasmota) and [its documentation](http://tasmota.com) for configuration and support. **IMPORTANT:** If you still want to update the tasmota binary before using Tuya-Convert, always pickup `tasmota-lite.bin`. **Never ever** use `tasmota-minimal.bin` as you will brick your device.
 
 	An ESPurna [1.13.5](https://github.com/xoseperez/espurna/releases/tag/1.13.5) binary is also included (`espurna-base.bin`). Like before, the binary included does not have any specific hardware defined. Once flashed using Tuya-Convert you can update to the device-specific version via any of the means that ESPurna provides (OTA, web interface update, update via telnet or MQTT). Please refer to the [ESPurna project page](http://espurna.io) for more info and support.
 

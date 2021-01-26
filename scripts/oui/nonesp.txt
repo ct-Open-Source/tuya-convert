@@ -1,0 +1,17 @@
+# Known unsupported OUIs including
+# "Tuya (HK) Limietd"
+# "Tuya Smart Inc."
+# "Beijing Winner Microelectronics Ltd"
+# updated Jan 26 2021
+000D8A
+000F89
+10D561
+1869D8
+286DCD
+68572D
+708976
+807484
+84E342
+D4A651
+DC446D
+E078A3
