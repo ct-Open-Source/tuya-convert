@@ -1,7 +1,9 @@
 version: '3'
 services:
   tuya:
-    image: tuya:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     privileged: true
     network_mode: "host"
     environment:
