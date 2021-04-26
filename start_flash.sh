@@ -10,10 +10,8 @@ setup () {
 	screen_minor=$(screen --version | cut -d . -f 2)
 	if [ "$screen_minor" -gt 5 ]; then
 		screen_with_log="sudo screen -L -Logfile"
-	elif [ "$screen_minor" -eq 5 ]; then
-		screen_with_log="sudo screen -L"
 	else
-		screen_with_log="sudo screen -L -t"
+		screen_with_log="./old_screen_with_log.sh ${screen_minor}"
 	fi
 	echo "======================================================"
 	echo -n "  Starting AP in a screen"
