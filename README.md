@@ -68,6 +68,13 @@ BE SURE THE FIRMWARE FITS YOUR DEVICE!
 	It will install our flash loader onto the ESP and connect to the access point created by your wifi adapter.
 	A backup of the original firmware will be automatically downloaded and stored locally.
 	You can then proceed to flash your desired firmware or revert to the stock firmware.
+	
+	Notice 1: If you see that the execution stuck on the Starting AP, just stop the process and restart your OS.
+	In some cases it will help. Some AP creation troubles can be also overcome by unpluging ang pluging the adapter.
+	
+	Notice 2: If you see the vtrust-flash WiFi network but cannot connect to it,
+	you faced the problem of jamming your WiFi adapter with many stronger devices around.
+	Try other WiFi channels (`scripts/hostapd.conf -> channel`) or other times of day.
 
 3. Initial Configuration
 
