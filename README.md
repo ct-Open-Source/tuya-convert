@@ -34,6 +34,7 @@ These scripts were tested in
 * a Raspberry Pi 3B / 3B+ Raspberry Pi OS Buster (previously called Raspbian) and its internal Wifi chip
 * a Raspberry Pi 3B+ + USB-WIFI with an image from [here](https://www.offensive-security.com/kali-linux-arm-images/)
 * Ubuntu 18.04.3 64Bit in VirtualBox on Win10 with a cheap RTL8188CU Wifi Adapter connected to the VM
+* Ubuntu Mate 18.04.5 32bit in VirtualBox on Win 10 with cheap Ralink 802.11n WLAN (MediaTek RT5370) WiFi Adapter connected to VM
 
 Any Linux with a Wifi adapter which can act as an Access Point should also work. Please note that we have tested the Raspberry Pi with clean installations only. If you use your Raspberry Pi for anything else, we recommend using another SD card with a clean installation.
 
