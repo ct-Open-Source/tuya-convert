@@ -83,26 +83,24 @@ Requirements:
 * docker is installed
 * docker-compose is installed
 
-Create docker image:
+Preparations:
 * git clone https://github.com/ct-Open-Source/tuya-convert
 * cd tuya-convert
-* docker build -t tuya:latest .
+* if you have already cloned this repo just cd into the directory and execute `git pull`
+* cp .env-template .env 
+* adjust the created .env-file, it contains usage information as comments
 
-Setup docker-compose:
-* copy docker/docker-compose.sample.yml to a new folder you created, the file should be named docker-compose.yml
-* you may adjust this docker-compose.yml, if necessary:
-   * environment-variables may be different, for example network-adapter may be different from wlan0
-   * adjust the volume folder, where you want your backups stored
+Building and running your container:
+* `docker-compose build && docker-compose run --rm tuya`
+* This directly starts into tuya. If you press ctrl+break or exit tuya after flashing, your container is closed and deleted
 
-Run the image:
-* go into the folder you copied docker-compose.yml
-* docker-compose up -d
-* docker-compose exec tuya start
-* tuya-convert now starts within docker
-
-Stop the image:
-* docker-compose exec tuya stop
-* docker-compose down
+Troubleshooting:
+* Q: Where are my logs after flashing? A: The folder can be adjusted in .env with LOCALBACKUPDIR, the path here may be relative or absolute
+* Q: I don't want that my container is deleted after running tuya, I need this for troubleshooting! How do I accomplish this? A: Just remove --rm from `docker-compose run --rm tuya`
+* Q: I want to start the container, but instead of starting tuya immediately I want to get into bash. Is this possible? A: Yes just start the container with `docker-compose run --entrypoint bash tuya`.
+* Q: I want to rebuild my docker-image, even if there are no changes. Is this possible? A: Just start `docker-compose build --no-cache` instead of `docker-compose build`! Don't do this all the time, this is a time consuming process ...
+* Q: I can't connect to my USB, PCI, ... network card. How do I get this working? A: You may have an error in your .env-File. The WLAN-variable should reflect the name of your network interface on your host. Execute ifconfig and look through your interfaces.
+* Q: I can't get an IP-address and or connection on my phone, what's the problem? A: You may look into smarthack-wifi.log (location is set in .env with LOCALBACKUPDIR) or possible stop your firewall (e.g. NixOS seems to have a problem here). It may be a problem with a wrongly set network interface (see previous question)
 
 ## CONTRIBUTING
 

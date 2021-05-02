@@ -1,2 +1,0 @@
-#!/bin/bash
-pkill -SIGINT -f start_flash.sh
