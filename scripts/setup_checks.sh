@@ -67,7 +67,8 @@ check_port () {
 	port="$2"
 	reason="$3"
 	echo -n "Checking ${protocol^^} port $port... "
-	process_pid=$(sudo ss -lnp -A "$protocol" "sport = :$port" | grep -Po "(?<=pid=)(\d+)" | head -n1)
+	ss_output=$(sudo ss -lnp -A "$protocol" "sport = :$port")
+	process_pid=$(echo "$ss_output" | grep -Po "(?<=pid=)(\d+)" | head -n1)
 	if [ -n "$process_pid" ]; then
 		process_name=$(ps -p "$process_pid" -o comm=)
 		echo "Occupied by $process_name with PID $process_pid."
@@ -98,6 +99,12 @@ check_port () {
 			sleep 1
 		fi
 	else
+		if [ $(echo "$ss_output" | wc -l) -gt 1 ]; then
+			echo "Occupied by unknown process."
+			echo "Port $port is needed to $reason"
+			echo "Aborting due to occupied port"
+			exit 1
+		fi
 		echo "Available."
 	fi
 }
