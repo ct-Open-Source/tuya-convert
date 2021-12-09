@@ -4,9 +4,15 @@ name: Docker images build
 
 on:
   push:
-    branches: ['master']
+    paths:
+      - 'docker/**'
+      - 'version.json'
+    branches: ['main']
   workflow_dispatch:
   pull_request:
+    paths:
+      - 'docker/**'
+      - 'version.json'
 
 jobs:
   docker-build:
@@ -46,7 +52,7 @@ jobs:
           build-args: |
             VERSION=${{ steps.version.outputs.prop }}
             CHANNEL=${{ steps.channel.outputs.prop }}
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ${{ secrets.DOCKER_HUB_USER }}/tuya-convert:latest
             ${{ secrets.DOCKER_HUB_USER }}/tuya-convert:${{ steps.version.outputs.prop }}
