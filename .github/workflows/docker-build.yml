@@ -5,13 +5,13 @@ name: Docker images build
 on:
   push:
     paths:
-      - 'docker/**'
+      - 'Dockerfile'
       - 'version.json'
     branches: ['main']
   workflow_dispatch:
   pull_request:
     paths:
-      - 'docker/**'
+      - 'Dockerfile'
       - 'version.json'
 
 jobs:
