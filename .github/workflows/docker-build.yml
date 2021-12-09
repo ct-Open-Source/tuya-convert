@@ -7,7 +7,7 @@ on:
     paths:
       - 'Dockerfile'
       - 'version.json'
-    branches: ['main']
+    branches: ['master']
   workflow_dispatch:
   pull_request:
     paths:
