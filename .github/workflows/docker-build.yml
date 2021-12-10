@@ -1,6 +1,6 @@
 ---
 
-name: Docker images build
+name: Docker image build
 
 on:
   push:
@@ -40,7 +40,7 @@ jobs:
             path: 'version.json'
             prop_path: 'version'
 
-      - name: Build and push ${{ matrix.name }}
+      - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: ./
