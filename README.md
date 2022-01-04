@@ -95,6 +95,7 @@ Setup docker-compose:
    * adjust the volume folder, where you want your backups stored
 
 Run the image:
+* it may be necessary to disconnect from your wifi or switch off wifi
 * go into the folder you copied docker-compose.yml
 * docker-compose up -d
 * docker-compose exec tuya start
