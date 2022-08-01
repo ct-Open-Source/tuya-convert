@@ -10,10 +10,8 @@ setup () {
 	screen_minor=$(screen --version | cut -d . -f 2)
 	if [ "$screen_minor" -gt 5 ]; then
 		screen_with_log="sudo screen -L -Logfile"
-	elif [ "$screen_minor" -eq 5 ]; then
-		screen_with_log="sudo screen -L"
 	else
-		screen_with_log="sudo screen -L -t"
+		screen_with_log="./old_screen_with_log.sh ${screen_minor}"
 	fi
 	echo "======================================================"
 	echo "  If you have a network manager setup for your Wi-Fi, you might want to temporarily disable it, for example: 'sudo systemctl stop NetworkManager' !"
@@ -76,7 +74,7 @@ while true; do
 	# The intermediate firmware will request 10.42.42.42
 	# Do NOT change this address!!!
 	# It will NOT make it install and will break this script
-	while ! ping -c 1 -W 1 -n 10.42.42.42 &> /dev/null; do
+	while ! ping -c 1 -W 1 -n 10.42.42.42 -S 10.42.42.1 &> /dev/null; do
 		printf .
 		if (( --i == 0 )); then
 			echo
