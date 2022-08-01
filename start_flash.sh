@@ -14,7 +14,6 @@ setup () {
 		screen_with_log="./old_screen_with_log.sh ${screen_minor}"
 	fi
 	echo "======================================================"
-	echo "  If you have a network manager setup for your Wi-Fi, you might want to temporarily disable it, for example: 'sudo systemctl stop NetworkManager' !"
 	echo -n "  Starting AP in a screen"
 	$screen_with_log smarthack-wifi.log -S smarthack-wifi -m -d ./setup_ap.sh
 	while ! ping -c 1 -W 1 -n "$GATEWAY" &> /dev/null; do
