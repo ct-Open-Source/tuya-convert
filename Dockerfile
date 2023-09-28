@@ -1,4 +1,4 @@
-FROM phusion/baseimage:master
+FROM phusion/baseimage:jammy-1.0.1
 
 RUN apt-get update && apt-get install -y sudo iproute2 iputils-ping
 
