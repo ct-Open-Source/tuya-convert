@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 bold=$(tput bold)
 normal=$(tput sgr0)
 . ./config.txt
