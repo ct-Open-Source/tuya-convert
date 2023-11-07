@@ -1,0 +1,13 @@
+FROM registry.fedoraproject.org/fedora-minimal:latest as base
+
+RUN microdnf install iproute iw dnsmasq hostapd screen git curl python3-pip python3-setuptools python3-wheel python3-devel mosquitto haveged net-tools openssl-devel gcc sudo procps-ng iputils openssl && \
+    microdnf clean all
+
+RUN python3 -m pip install --upgrade paho-mqtt tornado git+https://github.com/drbild/sslpsk.git pycryptodomex
+COPY docker/bin /usr/bin/
+
+COPY . /usr/bin/tuya-convert
+
+WORKDIR /usr/bin/tuya-convert
+
+RUN mkdir -p /etc/service/tuya && cd /etc/service/tuya && ln -s /usr/bin/config.sh run
