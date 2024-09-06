@@ -26,7 +26,13 @@ setup () {
 
 	if test -d /etc/NetworkManager; then
 		echo "Stopping NetworkManager..."
-		sudo service network-manager stop
+		if ! sudo systemctl stop network-manager 2>/dev/null
+		then
+			if ! sudo systemctl stop NetworkManager 2>/dev/null
+			then
+				echo "** Failed to stop NetworkManager, AP may not work! **"
+			fi
+		fi
 	fi
 
 	echo "Configuring AP interface..."
@@ -62,11 +68,16 @@ cleanup () {
 
 	if test -d /etc/NetworkManager; then
 		echo "Restarting NetworkManager..."
-		sudo service network-manager restart
+		if ! sudo systemctl restart network-manager 2>/dev/null
+		then
+			if ! sudo systemctl restart NetworkManager 2>/dev/null
+			then
+				echo "** Failed to restart NetworkManager: network may not be functional! **"
+			fi
+		fi
 	fi
 }
 
 version_check
 trap cleanup EXIT
 setup
-

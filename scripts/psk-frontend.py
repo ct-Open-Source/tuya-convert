@@ -69,7 +69,7 @@ class PskFrontend():
 			self.sessions.append((ssl_sock, s2))
 		except ssl.SSLError as e:
 			print("could not establish sslpsk socket:", e)
-			if "NO_SHARED_CIPHER" in e.reason or "WRONG_VERSION_NUMBER" in e.reason or "WRONG_SSL_VERSION" in e.reason:
+			if e and ("NO_SHARED_CIPHER" in e.reason or "WRONG_VERSION_NUMBER" in e.reason or "WRONG_SSL_VERSION" in e.reason):
 				print("don't panic this is probably just your phone!")
 		except Exception as e:
 			print(e)

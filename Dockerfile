@@ -1,13 +1,13 @@
-FROM phusion/baseimage:master
+FROM alpine:3.13
 
-RUN apt-get update && apt-get install -y sudo iproute2 iputils-ping
+RUN apk add --update bash git iw dnsmasq hostapd screen curl py3-pip py3-wheel python3-dev mosquitto haveged net-tools openssl openssl-dev gcc musl-dev linux-headers sudo coreutils grep iproute2 ncurses
 
-RUN echo '* libraries/restart-without-asking boolean true' | sudo debconf-set-selections
+RUN python3 -m pip install --upgrade paho-mqtt tornado git+https://github.com/drbild/sslpsk.git pycryptodomex
 
 COPY docker/bin /usr/bin/
 
 COPY . /usr/bin/tuya-convert
 
-RUN cd /usr/bin/tuya-convert && ./install_prereq.sh
+WORKDIR "/usr/bin/tuya-convert"
 
-RUN mkdir -p /etc/service/tuya && cd /etc/service/tuya && ln -s /usr/bin/config.sh run
+ENTRYPOINT ["tuya-start"]
