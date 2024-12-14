@@ -102,6 +102,7 @@ Troubleshooting:
 * Q: I want to rebuild my docker-image, even if there are no changes. Is this possible? A: Just start `docker-compose build --no-cache` instead of `docker-compose build`! Don't do this all the time, this is a time consuming process ...
 * Q: I can't connect to my USB, PCI, ... network card. How do I get this working? A: You may have an error in your .env-File. The WLAN-variable should reflect the name of your network interface on your host. Execute ifconfig and look through your interfaces.
 * Q: I can't get an IP-address and or connection on my phone, what's the problem? A: You may look into smarthack-wifi.log (location is set in .env with LOCALBACKUPDIR) or possible stop your firewall (e.g. NixOS seems to have a problem here). It may be a problem with a wrongly set network interface (see previous question)
+* Q: The tool gets stuck on starting AP in a screen...? Ensure the WiFi card used for the procedure is not connected to any other WiFi network (disconnect and disable auto-connect / remove saved networks), and use a different network adapter (e.g., LAN or another WiFi card) for SSH access if needed.
 
 ## CONTRIBUTING
 
