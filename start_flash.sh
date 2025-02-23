@@ -2,9 +2,21 @@
 bold=$(tput bold)
 normal=$(tput sgr0)
 . ./config.txt
+# whether we found systemd-resolved during setup
+resolved=""
 
 setup () {
 	echo "tuya-convert $(git describe --tags)"
+	if sudo systemctl is-active systemd-resolved.service > /dev/null 2>&1; then
+		resolved="yes"
+		echo "systemd-resolved is running! we must disable it."
+		echo "name resolution will not work until this script is done."
+		echo "if this script does not exit cleanly, you may need to run:"
+		echo "sudo systemctl unmask systemd-resolved.service"
+		echo "sudo systemctl start systemd-resolved.service"
+		sudo systemctl stop systemd-resolved.service
+		sudo systemctl mask systemd-resolved.service
+	fi
 	pushd scripts >/dev/null || exit
 	. ./setup_checks.sh
 	screen_minor=$(screen --version | cut -d . -f 2)
@@ -41,6 +53,11 @@ cleanup () {
 	sudo screen -S smarthack-udp          -X stuff '^C'
 	echo "Closing AP"
 	sudo pkill hostapd
+	if [ -n ${resolved} ]; then
+		echo "Re-enabling systemd-resolved..."
+		sudo systemctl unmask systemd-resolved.service || echo "Unmasking systemd-resolved.service failed! Please clean up manually"
+		sudo systemctl start systemd-resolved.service || echo "Restarting systemd-resolved.service failed! Please clean up manually"
+	fi
 	echo "Exiting..."
 	popd >/dev/null || exit
 }
