@@ -12,6 +12,11 @@ archInstall() {
 	sudo python -m pip install --user --upgrade git+https://github.com/drbild/sslpsk.git
 }
 
+fedoraInstall() {
+	sudo dnf -y install git iw dnsmasq hostapd screen curl python3-pip python3-wheel python3-pycryptodomex python3-paho-mqtt python3-tornado mosquitto haveged iproute iputils openssl
+	sudo python3 -m pip install --user --upgrade git+https://github.com/doronz88/sslpsk.git@refactor/ssl-context
+}
+
 if [[ -e /etc/os-release ]]; then
 	source /etc/os-release
 else
@@ -23,6 +28,8 @@ if [[ ${ID} == 'debian' ]] || [[ ${ID_LIKE-} == 'debian' ]]; then
 	debianInstall
 elif [[ ${ID} == 'arch' ]] || [[ ${ID_LIKE-} == 'arch' ]]; then
 	archInstall
+elif [[ ${ID} == 'fedora' ]] || [[ ${ID_LIKE-} == 'fedora' ]]; then
+	fedoraInstall
 else
 	if [[ -n ${ID_LIKE-} ]]; then
 		printID="${ID}/${ID_LIKE}"
