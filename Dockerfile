@@ -6,7 +6,7 @@ RUN python3 -m pip install --upgrade paho-mqtt tornado git+https://github.com/dr
 
 COPY docker/bin /usr/bin/
 
-COPY . /usr/bin/tuya-convert
+# COPY . /usr/bin/tuya-convert
 
 WORKDIR "/usr/bin/tuya-convert"
 
