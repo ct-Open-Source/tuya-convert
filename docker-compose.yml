@@ -9,4 +9,5 @@ services:
         AP: ${AP}
         GATEWAY: ${GATEWAY}
     volumes:
+      - ./:/usr/bin/tuya-convert
       - $LOCALBACKUPDIR:/usr/bin/tuya-convert/backups
