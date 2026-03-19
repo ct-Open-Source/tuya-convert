@@ -8,5 +8,7 @@ services:
         WLAN: ${WLAN}
         AP: ${AP}
         GATEWAY: ${GATEWAY}
+        MQTT_PORT: ${MQTT_PORT:-1883}
+        MQTTS_PORT: ${MQTTS_PORT:-8886}
     volumes:
       - $LOCALBACKUPDIR:/usr/bin/tuya-convert/backups

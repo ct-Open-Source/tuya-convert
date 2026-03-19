@@ -6,6 +6,15 @@ normal=$(tput sgr0)
 setup () {
 	echo "tuya-convert $(git describe --tags)"
 	pushd scripts >/dev/null || exit
+	
+	# Generate mosquitto.conf with configurable port
+	MQTT_PORT=${MQTT_PORT:-1883}
+	cat > mosquitto.conf <<EOF
+allow_anonymous true
+listener $MQTT_PORT
+EOF
+	echo "  Mosquitto configured to listen on port $MQTT_PORT"
+	
 	. ./setup_checks.sh
 	screen_minor=$(screen --version | cut -d . -f 2)
 	if [ "$screen_minor" -gt 5 ]; then
